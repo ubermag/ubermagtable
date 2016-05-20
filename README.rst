@@ -6,7 +6,6 @@
   :target: https://codecov.io/gh/joommf/oommfodt
   :align: right
 
-A Python package for reading and analysing
-OOMMF odt files.
+A Python package for reading and analysing OOMMF odt files.
 
 Authors: Marijan Beg, Ryan Pepper, Hans Fangohr
