@@ -2,10 +2,6 @@
   :target: https://travis-ci.org/joommf/oommfodt
   :align: left
 
-.. image:: https://codecov.io/gh/joommf/oommfodt/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/joommf/oommfodt
-  :align: right
-
 A Python package for reading and analysing
 OOMMF odt files.
 
