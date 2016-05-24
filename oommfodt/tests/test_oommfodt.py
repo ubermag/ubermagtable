@@ -96,4 +96,4 @@ class TestOOMMFodt(object):
     def test_header_dictionary(self):
         dic = self.odt.get_header_dictionary()
         assert isinstance(dic, dict)
-        assert len(dic.keys()) == 19
+        assert len(dic.keys()) == 35

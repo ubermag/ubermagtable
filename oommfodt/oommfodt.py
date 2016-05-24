@@ -19,7 +19,23 @@ header_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
               'TimeDriver::my': 'my',
               'TimeDriver::mz': 'mz',
               'TimeDriver::Lasttimestep': 'last_time_step',
-              'TimeDriver::Simulationtime': 't'}
+              'TimeDriver::Simulationtime': 't',
+              'CGEvolve:evolver:MaxmxHxm': 'max_mxHxm',
+              'CGEvolve:evolver:Totalenergy': 'E',
+              'CGEvolve:evolver:DeltaE': 'delta_E',
+              'CGEvolve:evolver:Bracketcount': 'bracket_count',
+              'CGEvolve:evolver:Linemincount': 'line_min_count',
+              'CGEvolve:evolver:Conjugatecyclecount': 'conjugate_cycle_count',
+              'CGEvolve:evolver:Cyclecount': 'cycle_count',
+              'CGEvolve:evolver:Cyclesubcount': 'cycle_sub_count',
+              'CGEvolve:evolver:Energycalccount': 'energy_cal_count',
+              'UniaxialAnisotropy::Energy': 'Ea',
+              'MinDriver::Iteration': 'iteration',
+              'MinDriver::Stageiteration': 'stage_iteration',
+              'MinDriver::Stage': 'stage',
+              'MinDriver::mx': 'mx',
+              'MinDriver::my': 'my',
+              'MinDriver::mz': 'mz'}
 
 
 class OOMMFodt(object):
