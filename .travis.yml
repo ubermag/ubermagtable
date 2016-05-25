@@ -10,3 +10,5 @@ script:
   py.test --cov=oommfodt --cov-config .coveragerc
 after_success:
   codecov
+notifications:
+  slack: joommf:eqKxGPXuUP3LxnOfxg7GWgDF
