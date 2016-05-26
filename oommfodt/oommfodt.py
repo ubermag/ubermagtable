@@ -39,8 +39,24 @@ header_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
 
 
 class OOMMFodt(object):
+
+    """
+    An instance of this class holds a Pandas DataFrame containing information
+    from an OOMMF ODT file.
+
+    Once initialised, the data can be accessed through the OOMMFodt.df
+    attribute.
+    """
+
     def __init__(self, odt_filename):
-        """Opens the oommf odt file and creates a pandas dataframe."""
+        """
+        
+        Opens an OOMMF ODT file and creates a Pandas DataFrame.
+
+        Inputs:
+        odt_filename, string:
+            Filename of an OOMMF ODT File
+        """
         # Open and read the lines of an odt file.
         f = open(odt_filename)
         lines = f.readlines()
@@ -89,13 +105,25 @@ class OOMMFodt(object):
         self.df = pd.DataFrame(self.data, columns=self.header)
 
     def last_row(self):
-        """Return the data from the last row of pandas dataframe."""
+        """
+        last_row()
+
+        Returns the data from the last row of the Pandas DataFrame.
+        """
         return self.df.loc[self.df.index[-1]]
 
     def get_header_dictionary(self):
-        """Print the header dictionary."""
+        """
+        get_header_dictionary()
+
+        Print the header dictionary.
+        """
         return header_dic
 
     def times(self):
-        """Return the stage times."""
+        """
+        times()
+
+        Return the stage times.
+        """
         return self.df['t'].as_matrix()
