@@ -5,6 +5,10 @@
 .. image:: https://codecov.io/gh/joommf/oommfodt/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/joommf/oommfodt
   :align: right
+
+.. image:: https://readthedocs.org/projects/oommfodt/badge/?version=latest
+  :target: http://oommfodt.readthedocs.io/en/latest/?badge=latest
+  :alt: Documentation Status
   
 A Python package for reading and analysing OOMMF odt files.
 
