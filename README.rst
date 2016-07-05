@@ -9,6 +9,9 @@
 .. image:: https://readthedocs.org/projects/oommfodt/badge/?version=latest
   :target: http://oommfodt.readthedocs.io/en/latest/?badge=latest
   :alt: Documentation Status
+
+.. image:: https://badge.fury.io/py/oommfodt.svg
+  :target: https://badge.fury.io/py/oommfodt
   
 A Python package for reading and analysing OOMMF odt files.
 
