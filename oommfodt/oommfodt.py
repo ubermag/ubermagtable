@@ -127,3 +127,12 @@ class OOMMFodt(object):
         Return the stage times.
         """
         return self.df['t'].as_matrix()
+
+    def save_excel(self, filename):
+        """
+        save_excel(filename)
+
+        Saves the file to an excel file
+        """
+        self.df.to_excel(filename)
+
