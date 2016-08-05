@@ -4,7 +4,7 @@ python:
   - "3.4"
   - "2.7"
 # Install any dependencies for running the tests:
-install: pip install codecov pytest-cov pandas openpyxl
+install: pip install codecov pytest-cov pandas openpyxl xlrd
 # command to run tests
 script:
   py.test --cov=oommfodt --cov-config .coveragerc
