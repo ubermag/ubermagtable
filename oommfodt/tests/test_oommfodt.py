@@ -97,3 +97,37 @@ class TestOOMMFodt(object):
         dic = self.odt.get_header_dictionary()
         assert isinstance(dic, dict)
         assert len(dic.keys()) == 35
+
+    def test_can_write_xls(self):
+        import numpy as np
+        
+        # write xlsx
+        self.odt.save_excel('tmp.xlsx')
+
+        # read file back and check shape is identical
+        df = pd.read_excel('tmp.xlsx')
+        assert df.shape == (200, 19)
+        
+        # compare data with source
+        assert np.allclose(np.array(df), np.array(self.odt.df))
+
+        # write xls
+        self.odt.save_excel('tmp.xls')
+        # read file back and check shape is identical
+        df2 = pd.read_excel('tmp.xls')
+        assert df2.shape == (200, 19)
+        
+        # compare data with source
+        assert np.allclose(np.array(df2), np.array(self.odt.df))
+
+        # Note: we could compare the data frame directly instead of comparing numpy arrays:
+        # assert (df == self.odt.df).all().all()
+        # Interestingly, this passes at the interactive prompt, but not when run in the test.
+        # In the test, there appear to be small floating point deviations between the
+        # saved xlsx / xls file and the data frame we started from.
+        #
+        # HF, 5 Aug 2016, pandas 0.18.1
+        
+        
+        
+        

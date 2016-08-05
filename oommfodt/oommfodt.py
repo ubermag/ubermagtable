@@ -132,7 +132,9 @@ class OOMMFodt(object):
         """
         save_excel(filename)
 
-        Saves the file to an excel file
+        Saves the file to an excel file. Both *.xls and *.xlsx formats are supported.
+        
+        `filename` should end in `.xls` or `.xlsx` to decide on format.
         """
         self.df.to_excel(filename)
 
