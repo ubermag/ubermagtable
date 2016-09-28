@@ -1,14 +1,16 @@
 language: python
+
 python:
   - "3.5"
-  - "3.4"
-  - "2.7"
-# Install any dependencies for running the tests:
-install: pip install codecov pytest-cov pandas openpyxl xlrd xlwt
-# command to run tests
+
+install:
+  pip install codecov pytest-cov pandas openpyxl xlrd xlwt
+
 script:
   py.test --cov=oommfodt --cov-config .coveragerc
+
 after_success:
   codecov
+
 notifications:
   slack: joommf:eqKxGPXuUP3LxnOfxg7GWgDF
