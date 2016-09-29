@@ -7,6 +7,6 @@ RUN apt-get update -y && \
     python3 -m pip install --upgrade pip pytest-cov codecov \
       pandas openpyxl xlrd xlwt
 
-WORKDIR cd /usr/local/
+WORKDIR /usr/local/
 
 RUN git clone https://github.com/joommf/oommfodt.git
