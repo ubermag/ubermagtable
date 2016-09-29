@@ -14,7 +14,10 @@ setup(
     download_url="https://github.com/joommf/oommfodt/tarball/0.1",
     packages=["oommfodt",
               "oommfodt.tests"],
-    install_requires=["pandas"],
+    install_requires=["pandas",
+                      "openpyxl",
+                      "xlrd",
+                      "xlwt"],
     classifiers=[
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
