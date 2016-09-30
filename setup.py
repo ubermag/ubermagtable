@@ -5,13 +5,13 @@ with open("README.rst") as f:
 
 setup(
     name="oommfodt",
-    version="0.5.1",
+    version="0.5.2",
     description="A Python package for reading and analysing OOMMF odt files",
     long_description=readme,
     author="Computational Modelling Group",
     author_email="fangohr@soton.ac.uk",
     url="https://github.com/joommf/oommfodt",
-    download_url="https://github.com/joommf/oommfodt/tarball/0.5.1",
+    download_url="https://github.com/joommf/oommfodt/tarball/0.5.2",
     packages=["oommfodt",
               "oommfodt.tests"],
     install_requires=["pandas",
