@@ -50,12 +50,12 @@ class OOMMFodt(object):
 
     def __init__(self, odt_filename):
         """
-        
         Opens an OOMMF ODT file and creates a Pandas DataFrame.
 
         Inputs:
         odt_filename, string:
             Filename of an OOMMF ODT File
+
         """
         # Open and read the lines of an odt file.
         f = open(odt_filename)
@@ -132,9 +132,10 @@ class OOMMFodt(object):
         """
         save_excel(filename)
 
-        Saves the file to an excel file. Both *.xls and *.xlsx formats are supported.
-        
+        Saves the file to an excel file.
+        Both *.xls and *.xlsx formats are supported.
+
         `filename` should end in `.xls` or `.xlsx` to decide on format.
+
         """
         self.df.to_excel(filename)
-
