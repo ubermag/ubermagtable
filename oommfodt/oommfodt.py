@@ -1,3 +1,4 @@
+import re
 import pandas as pd
 import numpy as np
 
@@ -67,7 +68,8 @@ class OOMMFodt(object):
             if lines[i].startswith('# Columns:'):
                 columns_line = i
                 line = lines[i]
-                parts = line.split('Oxs_')[1:]
+                parts = re.split('Oxs_|Anv_', line)[1:]
+                print(parts)
                 self.header = []
                 for part in parts:
                     tmp_string = part
@@ -101,6 +103,7 @@ class OOMMFodt(object):
                     data_line.append(float(number))
                 self.data.append(data_line)
 
+        print(self.header)
         # Create pandas dataframe.
         self.df = pd.DataFrame(self.data, columns=self.header)
 
