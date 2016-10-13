@@ -1,1 +1,2 @@
 include README.rst
+include oommfodt/tests/test_odt_file.odt
