@@ -13,36 +13,36 @@ class TestOOMMFodt(object):
     def test_init(self):
         assert isinstance(self.odt.df, pd.DataFrame)
     
-    def test_header(self):
-        assert isinstance(self.odt.header, list)
+    def test_headers(self):
+        assert isinstance(self.odt.headers, list)
 
-        assert len(self.odt.header) == 19
+        assert len(self.odt.headers) == 19
 
-        for i in self.odt.header:
+        for i in self.odt.headers:
             assert isinstance(i, str)
 
-        assert 'E' in self.odt.header
-        assert 'Ecount' in self.odt.header
-        assert 'max_dm/dt' in self.odt.header
-        assert 'dE/dt' in self.odt.header
-        assert 'deltaE' in self.odt.header
-        assert 'Eex' in self.odt.header
-        assert 'max_spin_angle' in self.odt.header
-        assert 'stage_max_spin_angle' in self.odt.header
-        assert 'run_max_spin_angle' in self.odt.header
-        assert 'Ed' in self.odt.header
-        assert 'Ez' in self.odt.header
-        assert 'iteration' in self.odt.header
-        assert 'stage' in self.odt.header
-        assert 'mx' in self.odt.header
-        assert 'my' in self.odt.header
-        assert 'mz' in self.odt.header
-        assert 'last_time_step' in self.odt.header
-        assert 't' in self.odt.header
+        assert 'E' in self.odt.headers
+        assert 'Ecount' in self.odt.headers
+        assert 'max_dm/dt' in self.odt.headers
+        assert 'dE/dt' in self.odt.headers
+        assert 'deltaE' in self.odt.headers
+        assert 'Eex' in self.odt.headers
+        assert 'max_spin_angle' in self.odt.headers
+        assert 'stage_max_spin_angle' in self.odt.headers
+        assert 'run_max_spin_angle' in self.odt.headers
+        assert 'Ed' in self.odt.headers
+        assert 'Ez' in self.odt.headers
+        assert 'iteration' in self.odt.headers
+        assert 'stage' in self.odt.headers
+        assert 'mx' in self.odt.headers
+        assert 'my' in self.odt.headers
+        assert 'mz' in self.odt.headers
+        assert 'last_time_step' in self.odt.headers
+        assert 't' in self.odt.headers
 
     def test_units(self):
         assert isinstance(self.odt.units, list)
-        assert len(self.odt.header) == 19
+        assert len(self.odt.headers) == 19
 
         for i in self.odt.units:
             assert isinstance(i, str)
@@ -57,7 +57,7 @@ class TestOOMMFodt(object):
     def test_data(self):
         assert self.odt.df.as_matrix().shape == (200, 19)
 
-    def test_time(self):
+    def test_times(self):
         dt = 5e-12
         T = 1e-9
         tol = 1e-20
@@ -93,8 +93,8 @@ class TestOOMMFodt(object):
         
         assert len(lr) == 19
 
-    def test_header_dictionary(self):
-        dic = self.odt.get_header_dictionary()
+    def test_headers_dictionary(self):
+        dic = self.odt.get_headers_dictionary()
         assert isinstance(dic, dict)
         assert len(dic.keys()) == 35
 

@@ -2,41 +2,41 @@ import re
 import pandas as pd
 import numpy as np
 
-header_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
-              'RungeKuttaEvolve:evolver:Energycalccount': 'Ecount',
-              'RungeKuttaEvolve:evolver:Maxdm/dt': 'max_dm/dt',
-              'RungeKuttaEvolve:evolver:dE/dt': 'dE/dt',
-              'RungeKuttaEvolve:evolver:DeltaE': 'deltaE',
-              'UniformExchange::Energy': 'Eex',
-              'UniformExchange::MaxSpinAng': 'max_spin_angle',
-              'UniformExchange::StageMaxSpinAng': 'stage_max_spin_angle',
-              'UniformExchange::RunMaxSpinAng': 'run_max_spin_angle',
-              'Demag::Energy': 'Ed',
-              'FixedZeeman:fixedzeeman:Energy': 'Ez',
-              'TimeDriver::Iteration': 'iteration',
-              'TimeDriver::Stageiteration': 'stage_iteration',
-              'TimeDriver::Stage': 'stage',
-              'TimeDriver::mx': 'mx',
-              'TimeDriver::my': 'my',
-              'TimeDriver::mz': 'mz',
-              'TimeDriver::Lasttimestep': 'last_time_step',
-              'TimeDriver::Simulationtime': 't',
-              'CGEvolve:evolver:MaxmxHxm': 'max_mxHxm',
-              'CGEvolve:evolver:Totalenergy': 'E',
-              'CGEvolve:evolver:DeltaE': 'delta_E',
-              'CGEvolve:evolver:Bracketcount': 'bracket_count',
-              'CGEvolve:evolver:Linemincount': 'line_min_count',
-              'CGEvolve:evolver:Conjugatecyclecount': 'conjugate_cycle_count',
-              'CGEvolve:evolver:Cyclecount': 'cycle_count',
-              'CGEvolve:evolver:Cyclesubcount': 'cycle_sub_count',
-              'CGEvolve:evolver:Energycalccount': 'energy_cal_count',
-              'UniaxialAnisotropy::Energy': 'Ea',
-              'MinDriver::Iteration': 'iteration',
-              'MinDriver::Stageiteration': 'stage_iteration',
-              'MinDriver::Stage': 'stage',
-              'MinDriver::mx': 'mx',
-              'MinDriver::my': 'my',
-              'MinDriver::mz': 'mz'}
+headers_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
+               'RungeKuttaEvolve:evolver:Energycalccount': 'Ecount',
+               'RungeKuttaEvolve:evolver:Maxdm/dt': 'max_dm/dt',
+               'RungeKuttaEvolve:evolver:dE/dt': 'dE/dt',
+               'RungeKuttaEvolve:evolver:DeltaE': 'deltaE',
+               'UniformExchange::Energy': 'Eex',
+               'UniformExchange::MaxSpinAng': 'max_spin_angle',
+               'UniformExchange::StageMaxSpinAng': 'stage_max_spin_angle',
+               'UniformExchange::RunMaxSpinAng': 'run_max_spin_angle',
+               'Demag::Energy': 'Ed',
+               'FixedZeeman:fixedzeeman:Energy': 'Ez',
+               'TimeDriver::Iteration': 'iteration',
+               'TimeDriver::Stageiteration': 'stage_iteration',
+               'TimeDriver::Stage': 'stage',
+               'TimeDriver::mx': 'mx',
+               'TimeDriver::my': 'my',
+               'TimeDriver::mz': 'mz',
+               'TimeDriver::Lasttimestep': 'last_time_step',
+               'TimeDriver::Simulationtime': 't',
+               'CGEvolve:evolver:MaxmxHxm': 'max_mxHxm',
+               'CGEvolve:evolver:Totalenergy': 'E',
+               'CGEvolve:evolver:DeltaE': 'delta_E',
+               'CGEvolve:evolver:Bracketcount': 'bracket_count',
+               'CGEvolve:evolver:Linemincount': 'line_min_count',
+               'CGEvolve:evolver:Conjugatecyclecount': 'conjugate_cycle_count',
+               'CGEvolve:evolver:Cyclecount': 'cycle_count',
+               'CGEvolve:evolver:Cyclesubcount': 'cycle_sub_count',
+               'CGEvolve:evolver:Energycalccount': 'energy_cal_count',
+               'UniaxialAnisotropy::Energy': 'Ea',
+               'MinDriver::Iteration': 'iteration',
+               'MinDriver::Stageiteration': 'stage_iteration',
+               'MinDriver::Stage': 'stage',
+               'MinDriver::mx': 'mx',
+               'MinDriver::my': 'my',
+               'MinDriver::mz': 'mz'}
 
 
 class OOMMFodt(object):
@@ -63,23 +63,23 @@ class OOMMFodt(object):
         lines = f.readlines()
         f.close()
 
-        # Extract the header from the odt file.
+        # Extract the headers from the odt file.
         for i in range(len(lines)):
             if lines[i].startswith('# Columns:'):
                 columns_line = i
                 line = lines[i]
                 parts = re.split('Oxs_|Anv_', line)[1:]
-                self.header = []
+                self.headers = []
                 for part in parts:
                     tmp_string = part
                     tmp_string = tmp_string.replace('{', '')
                     tmp_string = tmp_string.replace('}', '')
                     tmp_string = tmp_string.replace(' ', '')
                     tmp_string = tmp_string.replace('\n', '')
-                    if tmp_string in header_dic.keys():
-                        self.header.append(header_dic[tmp_string])
+                    if tmp_string in headers_dic.keys():
+                        self.headers.append(headers_dic[tmp_string])
                     else:
-                        self.header.append(tmp_string)
+                        self.headers.append(tmp_string)
 
         # Extract units from the odt file.
         for i in range(len(lines)):
@@ -103,7 +103,7 @@ class OOMMFodt(object):
                 self.data.append(data_line)
 
         # Create pandas dataframe.
-        self.df = pd.DataFrame(self.data, columns=self.header)
+        self.df = pd.DataFrame(self.data, columns=self.headers)
 
     def last_row(self):
         """
@@ -113,20 +113,14 @@ class OOMMFodt(object):
         """
         return self.df.loc[self.df.index[-1]]
 
-    def get_header_dictionary(self):
+    def get_headers_dictionary(self):
         """
-        get_header_dictionary()
-
         Print the header dictionary.
         """
-        return header_dic
+        return headers_dic
 
     def times(self):
-        """
-        times()
-
-        Return the stage times.
-        """
+        """Return the stage times."""
         return self.df['t'].as_matrix()
 
     def save_excel(self, filename):
