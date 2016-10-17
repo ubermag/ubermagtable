@@ -61,7 +61,7 @@ class TestOOMMFodt(object):
         dt = 5e-12
         T = 1e-9
         tol = 1e-20
-        t_array = self.odt.times()
+        t_array = self.odt.times
         assert len(t_array) == 200
         assert abs(t_array.min() - dt) < tol
         assert abs(t_array.max() - T) < tol

@@ -119,6 +119,7 @@ class OOMMFodt(object):
         """
         return headers_dic
 
+    @property
     def times(self):
         """Return the stage times."""
         return self.df['t'].as_matrix()
