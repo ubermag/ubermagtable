@@ -3,7 +3,7 @@ import setuptools
 with open("README.rst") as f:
     readme = f.read()
 
-setup(
+setuptools.setup(
     name="oommfodt",
     version="0.5.4.2",
     description="A Python package for reading and analysing OOMMF odt files",
