@@ -8,9 +8,10 @@ install:
 
 script:
   - ci_env=`bash <(curl -s https://codecov.io/env)`
-  - docker run -e ci_env -ti dockertestimage /bin/bash -c
-     "python3 -m pytest --cov=oommfodt --cov-config .coveragerc &&
-      bash <(curl -s https://codecov.io/bash) -t dee03a75-54f6-4959-8fe3-0ccf993a8374"
+  - docker run -e ci_env -ti -d --name testcontainer dockertestimage
+  - docker exec testcontainer make travis-build
+  - docker stop testcontainer
+  - docker rm testcontainer
 
 notifications:
   slack: joommf:eqKxGPXuUP3LxnOfxg7GWgDF
