@@ -120,6 +120,9 @@ class TestOOMMFodt(object):
         # compare data with source
         assert np.allclose(np.array(df2), np.array(self.odt.df))
 
+        # Delete created files
+        os.system("rm -f tmp.xls tmp.xlsx")
+
         # Note: we could compare the data frame directly instead of comparing numpy arrays:
         # assert (df == self.odt.df).all().all()
         # Interestingly, this passes at the interactive prompt, but not when run in the test.
