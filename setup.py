@@ -5,7 +5,7 @@ with open("README.rst") as f:
 
 setuptools.setup(
     name="oommfodt",
-    version="0.5.4.2",
+    version="0.5.6",
     description="A Python package for reading and analysing OOMMF odt files",
     long_description=readme,
     url='https://joommf.github.io',
