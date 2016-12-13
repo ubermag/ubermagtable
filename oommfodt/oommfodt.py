@@ -49,7 +49,7 @@ class OOMMFodt(object):
     attribute.
     """
 
-    def __init__(self, odt_filename):
+    def __init__(self, odt_filename, replace_headers=True):
         """
         Opens an OOMMF ODT file and creates a Pandas DataFrame.
 
@@ -76,7 +76,7 @@ class OOMMFodt(object):
                     tmp_string = tmp_string.replace('}', '')
                     tmp_string = tmp_string.replace(' ', '')
                     tmp_string = tmp_string.replace('\n', '')
-                    if tmp_string in headers_dic.keys():
+                    if (tmp_string in headers_dic.keys()) and replace_headers:
                         self.headers.append(headers_dic[tmp_string])
                     else:
                         self.headers.append(tmp_string)
