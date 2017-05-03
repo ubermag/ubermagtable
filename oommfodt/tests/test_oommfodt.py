@@ -26,7 +26,7 @@ def test_read():
 
     assert df.as_matrix().shape == (200, 19)
 
-    
+
 def test_times():
     df = oommfodt.read(test_file)
 
@@ -53,6 +53,7 @@ def test_can_write_xlsx():
 
     os.remove("tmp.xlsx")
 
+
 def test_can_write_xls():
     df = oommfodt.read(test_file)
 
@@ -61,6 +62,5 @@ def test_can_write_xls():
     df_load = pd.read_excel('tmp.xls')
     assert df_load.shape == (200, 19)
     assert np.allclose(np.array(df_load), np.array(df))
-    
+
     os.remove("tmp.xls")
-        
