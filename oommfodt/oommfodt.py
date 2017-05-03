@@ -40,7 +40,6 @@ headers_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
 
 
 class OOMMFodt(object):
-
     """
     An instance of this class holds a Pandas DataFrame containing information
     from an OOMMF ODT file.
