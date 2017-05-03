@@ -1,4 +1,4 @@
-from .oommfodt import OOMMFodt
+from .oommfodt import read
 
 
 def test():

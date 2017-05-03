@@ -39,103 +39,69 @@ headers_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'MinDriver::mz': 'mz'}
 
 
-class OOMMFodt(object):
+def read(filename, replace_headers=True):
     """
-    An instance of this class holds a Pandas DataFrame containing information
-    from an OOMMF ODT file.
+    Opens an OOMMF odt file and returns a Pandas DataFrame.
 
-    Once initialised, the data can be accessed through the OOMMFodt.df
-    attribute.
+    Parameters
+    ----------
+    filename : str
+        Filename of an OOMMF odt File
+
+    Returns
+    -------
+    pandas dataframe
 
     Examples
     --------
+    Reading simple odt file.
 
     >>> import oommfodt
 
     """
-    def __init__(self, odt_filename, replace_headers=True):
-        """
-        Opens an OOMMF ODT file and creates a Pandas DataFrame.
+    f = open(filename)
+    lines = f.readlines()
+    f.close()
 
-        Inputs:
-        odt_filename, string:
-            Filename of an OOMMF ODT File
-
-        """
-        # Open and read the lines of an odt file.
-        f = open(odt_filename)
-        lines = f.readlines()
-        f.close()
-
-        # Extract the headers from the odt file.
-        for i in range(len(lines)):
-            if lines[i].startswith('# Columns:'):
-                columns_line = i
-                line = lines[i]
-                parts = re.split('Oxs_|Anv_', line)[1:]
-                self.headers = []
-                for part in parts:
-                    tmp_string = part
-                    tmp_string = tmp_string.replace('{', '')
-                    tmp_string = tmp_string.replace('}', '')
-                    tmp_string = tmp_string.replace(' ', '')
-                    tmp_string = tmp_string.replace('\n', '')
-                    if (tmp_string in headers_dic.keys()) and replace_headers:
-                        self.headers.append(headers_dic[tmp_string])
-                    else:
-                        self.headers.append(tmp_string)
-
-        # Extract units from the odt file.
-        for i in range(len(lines)):
-            if lines[i].startswith('# Units:'):
-                units_line = i
-                line = lines[i]
-                parts = line.split()[1:]
-                self.units = []
-                for part in parts:
-                    self.units.append(part)
-
-        # Extract the data from the odt file.
-        self.data = []
-        for i in range(columns_line, len(lines)):
+    # Extract the headers from the odt file.
+    for i in range(len(lines)):
+        if lines[i].startswith('# Columns:'):
+            columns_line = i
             line = lines[i]
-            if line[0] != '#':
-                data_line = []
-                numbers = line.split()
-                for number in numbers:
-                    data_line.append(float(number))
-                self.data.append(data_line)
+            parts = re.split('Oxs_|Anv_', line)[1:]
+            headers = []
+            for part in parts:
+                tmp_string = part
+                tmp_string = tmp_string.replace('{', '')
+                tmp_string = tmp_string.replace('}', '')
+                tmp_string = tmp_string.replace(' ', '')
+                tmp_string = tmp_string.replace('\n', '')
+                if (tmp_string in headers_dic.keys()) and replace_headers:
+                    headers.append(headers_dic[tmp_string])
+                else:
+                    headers.append(tmp_string)
 
-        # Create pandas dataframe.
-        self.df = pd.DataFrame(self.data, columns=self.headers)
+    # Extract units from the odt file.
+    for i in range(len(lines)):
+        if lines[i].startswith('# Units:'):
+            units_line = i
+            line = lines[i]
+            parts = line.split()[1:]
+            units = []
+            for part in parts:
+                units.append(part)
 
-    def last_row(self):
-        """
-        last_row()
+    # Extract the data from the odt file.
+    data = []
+    for i in range(columns_line, len(lines)):
+        line = lines[i]
+        if line[0] != '#':
+            data_line = []
+            numbers = line.split()
+            for number in numbers:
+                data_line.append(float(number))
+            data.append(data_line)
 
-        Returns the data from the last row of the Pandas DataFrame.
-        """
-        return self.df.loc[self.df.index[-1]]
-
-    def get_headers_dictionary(self):
-        """
-        Print the header dictionary.
-        """
-        return headers_dic
-
-    @property
-    def times(self):
-        """Return the stage times."""
-        return self.df['t'].as_matrix()
-
-    def save_excel(self, filename):
-        """
-        save_excel(filename)
-
-        Saves the file to an excel file.
-        Both *.xls and *.xlsx formats are supported.
-
-        `filename` should end in `.xls` or `.xlsx` to decide on format.
-
-        """
-        self.df.to_excel(filename)
+    df = pd.DataFrame(data, columns=headers)
+    df.units = units
+    return df
