@@ -43,7 +43,7 @@ def test_times():
 
 
 def test_can_write_xlsx():
-    df = oommfodt.read(test_file, replace_headers=False)
+    df = oommfodt.read(test_file, replace_columns=False)
 
     df.to_excel('tmp.xlsx')
 

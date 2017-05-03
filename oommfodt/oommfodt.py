@@ -2,7 +2,7 @@ import re
 import pandas as pd
 import numpy as np
 
-headers_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
+columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'RungeKuttaEvolve:evolver:Energycalccount': 'Ecount',
                'RungeKuttaEvolve:evolver:Maxdm/dt': 'max_dm/dt',
                'RungeKuttaEvolve:evolver:dE/dt': 'dE/dt',
@@ -31,6 +31,7 @@ headers_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'CGEvolve:evolver:Cyclesubcount': 'cycle_sub_count',
                'CGEvolve:evolver:Energycalccount': 'energy_cal_count',
                'UniaxialAnisotropy::Energy': 'Ea',
+               'Southampton_UniaxialAnisotropy4::Energy': 'Ea',
                'MinDriver::Iteration': 'iteration',
                'MinDriver::Stageiteration': 'stage_iteration',
                'MinDriver::Stage': 'stage',
@@ -39,7 +40,7 @@ headers_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'MinDriver::mz': 'mz'}
 
 
-def read(filename, replace_headers=True):
+def read(filename, replace_columns=True):
     """
     Opens an OOMMF odt file and returns a Pandas DataFrame.
 
@@ -63,45 +64,32 @@ def read(filename, replace_headers=True):
     lines = f.readlines()
     f.close()
 
-    # Extract the headers from the odt file.
-    for i in range(len(lines)):
-        if lines[i].startswith('# Columns:'):
-            columns_line = i
-            line = lines[i]
-            parts = re.split('Oxs_|Anv_', line)[1:]
-            headers = []
-            for part in parts:
-                tmp_string = part
-                tmp_string = tmp_string.replace('{', '')
-                tmp_string = tmp_string.replace('}', '')
-                tmp_string = tmp_string.replace(' ', '')
-                tmp_string = tmp_string.replace('\n', '')
-                if (tmp_string in headers_dic.keys()) and replace_headers:
-                    headers.append(headers_dic[tmp_string])
+    # Extract column names from the odt file.
+    for i, line in enumerate(lines):
+        if line.startswith('# Columns:'):
+            columns = []
+            odt_section = i
+            for part in re.split('Oxs_|Anv_|Southampton_', line)[1:]:
+                column = part
+                for char in ["{", "}", " ", "\n"]:
+                    column = column.replace(char, '')
+
+                if column in columns_dic.keys() and replace_columns:
+                    columns.append(columns_dic[column])
                 else:
-                    headers.append(tmp_string)
+                    columns.append(column)
 
     # Extract units from the odt file.
-    for i in range(len(lines)):
-        if lines[i].startswith('# Units:'):
-            units_line = i
-            line = lines[i]
-            parts = line.split()[1:]
-            units = []
-            for part in parts:
-                units.append(part)
+    for i, line in enumerate(lines):
+        if line.startswith('# Units:'):
+            units = line.split()[1:]
 
     # Extract the data from the odt file.
     data = []
-    for i in range(columns_line, len(lines)):
-        line = lines[i]
-        if line[0] != '#':
-            data_line = []
-            numbers = line.split()
-            for number in numbers:
-                data_line.append(float(number))
-            data.append(data_line)
+    for i, line in enumerate(lines[odt_section:]):
+        if not line.startswith("#"):
+            data.append([float(number) for number in line.split()])
 
-    df = pd.DataFrame(data, columns=headers)
+    df = pd.DataFrame(data, columns=columns)
     df.units = units
     return df
