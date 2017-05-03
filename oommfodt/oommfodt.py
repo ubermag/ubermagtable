@@ -46,8 +46,13 @@ class OOMMFodt(object):
 
     Once initialised, the data can be accessed through the OOMMFodt.df
     attribute.
-    """
 
+    Examples
+    --------
+
+    >>> import oommfodt
+
+    """
     def __init__(self, odt_filename, replace_headers=True):
         """
         Opens an OOMMF ODT file and creates a Pandas DataFrame.
