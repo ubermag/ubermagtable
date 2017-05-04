@@ -7,12 +7,12 @@ columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'RungeKuttaEvolve:evolver:Maxdm/dt': 'max_dm/dt',
                'RungeKuttaEvolve:evolver:dE/dt': 'dE/dt',
                'RungeKuttaEvolve:evolver:DeltaE': 'deltaE',
-               'UniformExchange::Energy': 'Eex',
+               'UniformExchange::Energy': 'E_Exchange',
                'UniformExchange::MaxSpinAng': 'max_spin_angle',
                'UniformExchange::StageMaxSpinAng': 'stage_max_spin_angle',
                'UniformExchange::RunMaxSpinAng': 'run_max_spin_angle',
-               'Demag::Energy': 'Ed',
-               'FixedZeeman:fixedzeeman:Energy': 'Ez',
+               'Demag::Energy': 'E_Demag',
+               'FixedZeeman:fixedzeeman:Energy': 'E_Zeeman',
                'TimeDriver::Iteration': 'iteration',
                'TimeDriver::Stageiteration': 'stage_iteration',
                'TimeDriver::Stage': 'stage',
@@ -30,8 +30,8 @@ columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'CGEvolve:evolver:Cyclecount': 'cycle_count',
                'CGEvolve:evolver:Cyclesubcount': 'cycle_sub_count',
                'CGEvolve:evolver:Energycalccount': 'energy_cal_count',
-               'UniaxialAnisotropy::Energy': 'Ea',
-               'Southampton_UniaxialAnisotropy4::Energy': 'Ea',
+               'UniaxialAnisotropy::Energy': 'E_UniaxialAnisotropy',
+               'Southampton_UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy',
                'MinDriver::Iteration': 'iteration',
                'MinDriver::Stageiteration': 'stage_iteration',
                'MinDriver::Stage': 'stage',
@@ -41,17 +41,19 @@ columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
 
 
 def read(filename, replace_columns=True):
-    """
-    Opens an OOMMF odt file and returns a Pandas DataFrame.
+    """Read an OOMMF odt file and return pandas DataFrame.
 
     Parameters
     ----------
     filename : str
-        Filename of an OOMMF odt File
+        Name/path of an OOMMF odt file
+    replace_columns : bool
+        Flag (the default is True) if column names should be replaced
+        with their shorter versions.
 
     Returns
     -------
-    pandas dataframe
+    pandas DataFrame
 
     Examples
     --------
@@ -68,21 +70,22 @@ def read(filename, replace_columns=True):
     for i, line in enumerate(lines):
         if line.startswith('# Columns:'):
             columns = []
-            odt_section = i
+            odt_section = i  # Should be removed after runs are split.
             for part in re.split('Oxs_|Anv_|Southampton_', line)[1:]:
-                column = part
                 for char in ["{", "}", " ", "\n"]:
-                    column = column.replace(char, '')
-
-                if column in columns_dic.keys() and replace_columns:
-                    columns.append(columns_dic[column])
+                    part = part.replace(char, '')
+                if replace_columns:
+                    for key in columns_dic.keys():
+                        if part == key:
+                            columns.append(columns_dic[key])
+                            print(columns)
                 else:
-                    columns.append(column)
+                    columns.append(part)
 
     # Extract units from the odt file.
     for i, line in enumerate(lines):
         if line.startswith('# Units:'):
-            units = line.split()[1:]
+            units = line.split()[2:]
 
     # Extract the data from the odt file.
     data = []
