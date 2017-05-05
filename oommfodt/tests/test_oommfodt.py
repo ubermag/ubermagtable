@@ -15,11 +15,11 @@ def test_read():
         df = oommfodt.read(test_file)
 
         assert isinstance(df, pd.DataFrame)
-        assert isinstance(df.units, list)
-        for i in df.units:
+        assert isinstance(df.units, dict)
+        for i in df.units.values():
             assert isinstance(i, str)
-        assert 'J' in df.units
-        assert '{}' in df.units
+        assert 'J' in df.units.values()
+        assert '{}' in df.units.values()
 
         for column in df.columns:
             assert ':' not in column

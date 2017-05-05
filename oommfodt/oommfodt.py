@@ -111,5 +111,5 @@ def read(filename, replace_columns=True):
             data.append([float(number) for number in line.split()])
 
     df = pd.DataFrame(data, columns=columns)
-    df.units = units
+    df.units = dict(zip(columns, units))
     return df
