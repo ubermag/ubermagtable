@@ -46,7 +46,8 @@ columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'SpinTEvolve::averageu': 'average_u',
                'UniaxialAnisotropy::Energy': 'E_UniaxialAnisotropy',
                'UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy4',
-               'Southampton_UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy',
+               'Southampton_UniaxialAnisotropy4::Energy':
+               'E_UniaxialAnisotropy',
                'MinDriver::Iteration': 'iteration',
                'MinDriver::Stageiteration': 'stage_iteration',
                'MinDriver::Stage': 'stage',
@@ -93,7 +94,8 @@ def read(filename, replace_columns=True):
                     if part in columns_dic.keys():
                         columns.append(columns_dic[part])
                     else:
-                        columns.append(part)
+                        msg = "Entry {} not in lookup table.".format(part)
+                        raise ValueError(msg)
                 else:
                     columns.append(part)
 

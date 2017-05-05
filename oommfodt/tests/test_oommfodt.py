@@ -4,32 +4,38 @@ import numpy as np
 import pandas as pd
 
 
-test_file = os.path.join(os.path.dirname(__file__),
-                         'test_odt_files/test_odt_file1.odt')
+test_file1 = os.path.join(os.path.dirname(__file__),
+                          'test_odt_files/test_odt_file1.odt')
+test_file2 = os.path.join(os.path.dirname(__file__),
+                          'test_odt_files/test_odt_file2.odt')
 
 
 def test_read():
-    df = oommfodt.read(test_file)
+    for test_file in [test_file1, test_file2]:
+        df = oommfodt.read(test_file)
 
-    assert isinstance(df, pd.DataFrame)
+        assert isinstance(df, pd.DataFrame)
+        assert isinstance(df.units, list)
+        for i in df.units:
+            assert isinstance(i, str)
+        assert 'J' in df.units
+        assert '{}' in df.units
 
-    assert len(df.columns) == 19
+        for column in df.columns:
+            assert ':' not in column
 
-    assert isinstance(df.units, list)
-    for i in df.units:
-        assert isinstance(i, str)
-
-    assert 'J' in df.units
-    assert '{}' in df.units
-    assert 'deg/ns' in df.units
-
-    assert len(df['E'].as_matrix()) == 200
-
-    assert df.as_matrix().shape == (200, 19)
+        assert 'E' in df.columns
 
 
-def test_times():
-    df = oommfodt.read(test_file)
+def test_single_row():
+    df = oommfodt.read(test_file1)
+
+    assert len(df.columns) == 23
+    assert len(df['E'].as_matrix()) == 1
+
+
+def test_multiple_rows():
+    df = oommfodt.read(test_file2)
 
     dt = 5e-12
     T = 1e-9
@@ -44,24 +50,24 @@ def test_times():
 
 
 def test_can_write_xlsx():
-    df = oommfodt.read(test_file, replace_columns=False)
+    df = oommfodt.read(test_file2, replace_columns=False)
 
     df.to_excel('tmp.xlsx')
 
     df_load = pd.read_excel('tmp.xlsx')
-    assert df_load.shape == (200, 19)
+    assert df_load.shape == (200, 22)
     assert np.allclose(np.array(df_load), np.array(df))
 
     os.remove("tmp.xlsx")
 
 
 def test_can_write_xls():
-    df = oommfodt.read(test_file)
+    df = oommfodt.read(test_file1)
 
     df.to_excel('tmp.xls')
 
     df_load = pd.read_excel('tmp.xls')
-    assert df_load.shape == (200, 19)
+    assert df_load.shape == (1, 23)
     assert np.allclose(np.array(df_load), np.array(df))
 
     os.remove("tmp.xls")
