@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 
 
-test_file = os.path.join(os.path.dirname(__file__), 'test_odt_file.odt')
+test_file = os.path.join(os.path.dirname(__file__),
+                         'test_odt_files/test_odt_file1.odt')
 
 
 def test_read():
