@@ -78,7 +78,6 @@ def read(filename, replace_columns=True):
                     for key in columns_dic.keys():
                         if part == key:
                             columns.append(columns_dic[key])
-                            print(columns)
                 else:
                     columns.append(part)
 
