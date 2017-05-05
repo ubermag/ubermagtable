@@ -75,9 +75,10 @@ def read(filename, replace_columns=True):
                 for char in ["{", "}", " ", "\n"]:
                     part = part.replace(char, '')
                 if replace_columns:
-                    for key in columns_dic.keys():
-                        if part == key:
-                            columns.append(columns_dic[key])
+                    if part in columns_dic.keys():
+                        columns.append(columns_dic[part])
+                    else:
+                        columns.append(part)
                 else:
                     columns.append(part)
 
