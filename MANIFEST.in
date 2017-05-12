@@ -1,2 +1,3 @@
 include README.rst
+include LICENSE
 include oommfodt/tests/test_odt_files/*.odt
