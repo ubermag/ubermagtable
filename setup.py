@@ -5,7 +5,7 @@ with open("README.rst") as f:
 
 setuptools.setup(
     name="oommfodt",
-    version="0.7.1",
+    version="0.7.2",
     description="A Python package for reading and analysing OOMMF odt files",
     long_description=readme,
     url='https://joommf.github.io',
@@ -16,6 +16,7 @@ setuptools.setup(
                       "openpyxl",
                       "xlrd",
                       "xlwt"],
+    package_data={'oommfodt.tests': ["test_odt_files/*.odt"]},
     classifiers=['Development Status :: 3 - Alpha',
                  'License :: OSI Approved :: BSD License',
                  'Topic :: Scientific/Engineering :: Physics',
