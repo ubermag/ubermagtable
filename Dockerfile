@@ -6,6 +6,7 @@ RUN python3 -m pip install --upgrade pip pytest-cov nbval \
       pandas openpyxl xlrd xlwt
 
 WORKDIR /usr/local
-RUN git clone https://github.com/joommf/oommfodt.git
+#RUN git clone https://github.com/joommf/oommfodt.git
+COPY . /usr/local/oommfodt/
 WORKDIR /usr/local/oommfodt
 RUN python3 -m pip install .
