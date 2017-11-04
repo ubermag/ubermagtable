@@ -6,6 +6,10 @@ PYTHON?=python3
 test:
 	$(PYTHON) -m pytest
 
+# run test() function as users would
+test-test:
+	$(PYTHON) -c "import oommfodt as o; import sys; sys.exit(o.test())"
+
 test-coverage:
 	$(PYTHON) -m pytest --cov=$(PROJECT) --cov-config .coveragerc
 
@@ -15,7 +19,7 @@ test-ipynb:
 test-docs:
 	$(PYTHON) -m pytest --doctest-modules --ignore=$(PROJECT)/tests $(PROJECT)
 
-test-all: test-coverage test-ipynb test-docs
+test-all: test-test test-coverage test-ipynb test-docs
 
 upload-coverage: SHELL:=/bin/bash
 upload-coverage:
