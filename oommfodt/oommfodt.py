@@ -111,5 +111,8 @@ def read(filename, replace_columns=True):
             data.append([float(number) for number in line.split()])
 
     df = pd.DataFrame(data, columns=columns)
+    # next line is required to allow adding list-like attribute to pandas DataFrame
+    # see https://github.com/pandas-dev/pandas/blob/2f9d4fbc7f289a48ed8b29f573675cd2e21b2c89/pandas/core/generic.py#L3631
+    df._metadata.append('units')
     df.units = dict(zip(columns, units))
     return df
