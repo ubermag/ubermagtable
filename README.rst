@@ -13,6 +13,10 @@
 .. image:: https://badge.fury.io/py/oommfodt.svg
   :target: https://badge.fury.io/py/oommfodt
   
+.. image:: https://anaconda.org/conda-forge/oommfodt/badges/version.svg  
+  :target: https://anaconda.org/conda-forge/oommfodt
+
+  
 A Python package for reading and analysing OOMMF odt files.
 
 Authors: Marijan Beg, Ryan Pepper, Hans Fangohr
