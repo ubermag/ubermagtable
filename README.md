@@ -41,7 +41,7 @@ After installing Anaconda on MacOS or Windows, `pip` will also be installed. How
 
     sudo apt install python3-pip
 
-To install the `oommfodt' version currently in the Python Package Index repository [PyPI](https://pypi.org/project/oommfodt/) on all operating systems run:
+To install the `oommfodt` version currently in the Python Package Index repository [PyPI](https://pypi.org/project/oommfodt/) on all operating systems run:
 
     python3 -m pip install oommfodt
 
