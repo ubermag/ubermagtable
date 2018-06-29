@@ -69,7 +69,7 @@ On the other hand, if you used `conda` for installation, update `oommfodt` with
 
 The most recent development version of `oommfodt` that is not yet released can be installed/updated with
 
-    git clone https://github.com/joommf/oommfodt
+    git clone https://github.com/joommf/oommfodt.git
     python3 -m pip install --upgrade oommfodt
 
 **Note**: If you do not have `git` on your system, it can be installed by following the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
