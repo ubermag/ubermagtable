@@ -57,7 +57,7 @@ For further information on the `conda` package, dependency, and environment mana
 
 ## Updating
 
-If you used pip to install `oommfodt`, you can update to the latest released version in [PyPI](https://pypi.org/) by running
+If you used pip to install `oommfodt`, you can update to the latest released version in [PyPI](https://pypi.org/project/oommfodt/) by running
 
     python3 -m pip install --upgrade oommfodt
 
