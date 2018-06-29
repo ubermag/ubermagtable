@@ -1,6 +1,0 @@
-* Versions on PyPI
-** 0.7
-
-*** 0.7.7
-- fix https://github.com/joommf/help/issues/13 (Pandas UserWarning)
-- add this ~history.org~ file
