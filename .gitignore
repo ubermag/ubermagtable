@@ -1,0 +1,8 @@
+.cache
+.coverage
+.pytest_cache/
+.ipynb_checkpoints/
+__pycache__/
+build/
+dist/
+oommfodt.egg-info/
