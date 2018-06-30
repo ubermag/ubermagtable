@@ -6,20 +6,19 @@ PYTHON?=python3
 test:
 	$(PYTHON) -m pytest
 
-# run test() function as users would
 test-test:
-	$(PYTHON) -c "import oommfodt as o; import sys; sys.exit(o.test())"
+	$(PYTHON) -c "import sys; import $(PROJECT); sys.exit($(PROJECT).test())"
 
 test-coverage:
 	$(PYTHON) -m pytest --cov=$(PROJECT) --cov-config .coveragerc
 
-test-ipynb:
-	$(PYTHON) -m pytest --nbval $(IPYNBPATH)
-
 test-docs:
 	$(PYTHON) -m pytest --doctest-modules --ignore=$(PROJECT)/tests $(PROJECT)
 
-test-all: test-test test-coverage test-ipynb test-docs
+test-ipynb:
+	$(PYTHON) -m pytest --nbval $(IPYNBPATH)
+
+test-all: test-test test-coverage test-docs test-ipynb
 
 upload-coverage: SHELL:=/bin/bash
 upload-coverage:
@@ -44,8 +43,7 @@ test-docker:
 
 build-dists:
 	rm -rf dist/
-	$(PYTHON) setup.py sdist
-	$(PYTHON) setup.py bdist_wheel
+	$(PYTHON) setup.py sdist bdist_wheel
 
 release: build-dists
 	twine upload dist/*
