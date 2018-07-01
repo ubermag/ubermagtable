@@ -31,7 +31,7 @@ def test_single_row():
     df = oommfodt.read(test_file1)
 
     assert len(df.columns) == 23
-    assert len(df['E'].as_matrix()) == 1
+    assert len(df['E'].values) == 1
 
 
 def test_multiple_rows():
@@ -40,7 +40,7 @@ def test_multiple_rows():
     dt = 5e-12
     T = 1e-9
     tol = 1e-20
-    t_array = df['t'].as_matrix()
+    t_array = df['t'].values
     assert len(t_array) == 200
     assert abs(t_array.min() - dt) < tol
     assert abs(t_array.max() - T) < tol
