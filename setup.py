@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setuptools.setup(
     name='oommfodt',
-    version='0.8.1',
+    version='0.8.2',
     description='Python package for reading and analysis of OOMMF .odt files.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -16,7 +16,8 @@ setuptools.setup(
     install_requires=['pandas',
                       'openpyxl',
                       'xlrd',
-                      'xlwt'],
+                      'xlwt',
+                      'pytest'],
     package_data={'oommfodt.tests': ['test_odt_files/*.odt']},
     classifiers=['Development Status :: 3 - Alpha',
                  'License :: OSI Approved :: BSD License',
