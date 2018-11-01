@@ -1,78 +1,90 @@
 import os
-import oommfodt
-import numpy as np
+import math
+import itertools
 import pandas as pd
+import oommfodt as oo
 
 
+tol = 1e-20
 test_file1 = os.path.join(os.path.dirname(__file__),
-                          'test_odt_files/test_odt_file1.odt')
+                          'test_files', 'file1.odt')
 test_file2 = os.path.join(os.path.dirname(__file__),
-                          'test_odt_files/test_odt_file2.odt')
+                          'test_files', 'file2.odt')
+test_file3 = os.path.join(os.path.dirname(__file__),
+                          'test_files', 'file3.odt')
+test_files = [test_file1, test_file2, test_file3]
+
+
+def test_columns():
+    for test_file in test_files:
+        columns = oo.columns(test_file, rename=False)
+        assert isinstance(columns, list)
+        assert all(isinstance(column, str) for column in columns)
+        assert all(':' in column for column in columns)
+
+        columns = oo.columns(test_file, rename=True)
+        assert isinstance(columns, list)
+        assert all(isinstance(column, str) for column in columns)
+        assert all(':' not in column for column in columns)
+
+
+def test_units():
+    for test_file in test_files:
+        units = oo.units(test_file, rename=False)
+        assert isinstance(units, dict)
+        assert all(isinstance(unit, str) for unit in units.keys())
+        assert all(':' in unit for unit in units.keys())
+        assert 'J' in units.values()
+        assert '' in units.values()
+
+        units = oo.units(test_file, rename=True)
+        assert isinstance(units, dict)
+        assert all(isinstance(unit, str) for unit in units.keys())
+        assert all(':' not in unit for unit in units.keys())
+        assert units['E'] == 'J'
+        assert '' in units.values()
+
+
+def test_data():
+    for test_file in test_files:
+        data = oo.data(test_file)
+        assert isinstance(data, list)
+        assert all(isinstance(x, float) for x in itertools.chain(*data))
 
 
 def test_read():
-    for test_file in [test_file1, test_file2]:
-        df = oommfodt.read(test_file)
-
+    for test_file in test_files:
+        df = oo.read(test_file, rename=False)
         assert isinstance(df, pd.DataFrame)
-        assert isinstance(df.units, dict)
-        for i in df.units.values():
-            assert isinstance(i, str)
-        assert 'J' in df.units.values()
-        assert '{}' in df.units.values()
 
-        for column in df.columns:
-            assert ':' not in column
-
-        assert 'E' in df.columns
+        df = oo.read(test_file, rename=True)
+        assert isinstance(df, pd.DataFrame)
 
 
-def test_single_row():
-    df = oommfodt.read(test_file1)
+def test_read_timedriver1():
+    df = oo.read(test_file1)
+    assert df.shape == (25, 18)
 
-    assert len(df.columns) == 23
-    assert len(df['E'].values) == 1
-
-
-def test_multiple_rows():
-    df = oommfodt.read(test_file2)
-
-    dt = 5e-12
-    T = 1e-9
-    tol = 1e-20
-    t_array = df['t'].values
-    assert len(t_array) == 200
-    assert abs(t_array.min() - dt) < tol
-    assert abs(t_array.max() - T) < tol
-    assert t_array.min() == t_array[0]
-    assert t_array.max() == t_array[-1]
-    assert np.all(np.sort(t_array) == t_array)
+    t = df['t'].values
+    assert abs(t[0] - 1e-12) < tol
+    assert abs(t[-1] - 25e-12) < tol
 
 
-def test_can_write_xlsx():
-    df = oommfodt.read(test_file2, replace_columns=False)
+def test_read_timedriver2():
+    df = oo.read(test_file2)
+    assert df.shape == (15, 18)
 
-    df.to_excel('tmp.xlsx')
-
-    df_load = pd.read_excel('tmp.xlsx')
-    assert df_load.shape == (200, 22)
-    assert np.allclose(np.array(df_load), np.array(df))
-
-    os.remove("tmp.xlsx")
+    t = df['t'].values
+    assert abs(t[0] - 1e-12) < tol
+    assert abs(t[-1] - 15e-12) < tol
 
 
-def test_can_write_xls():
-    df = oommfodt.read(test_file1)
-
-    df.to_excel('tmp.xls')
-
-    df_load = pd.read_excel('tmp.xls')
-    assert df_load.shape == (1, 23)
-    assert np.allclose(np.array(df_load), np.array(df))
-
-    os.remove("tmp.xls")
+def test_read_mindriver():
+    df = oo.read(test_file3)
+    assert df.shape == (1, 20)
 
 
 def test_merge_files():
-    df = oommfodt.merge([test_file1, test_file2])
-    assert df.shape == (201, 30)
+    df = oo.merge(test_files)
+    assert df.shape == (41, 24)
+    assert any(math.isnan(x) for x in df['t'].values)
