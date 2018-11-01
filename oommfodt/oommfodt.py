@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 
-column_dict = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
+column_dict = {'RungeKuttaEvolve::Totalenergy': 'E',
                'UniformExchange::Energy': 'E_Exchange',
                'DMExchange6Ngbr::Energy': 'E_DMI',
                'DMI_Cnv::Energy': 'E_DMI_Cnv',
