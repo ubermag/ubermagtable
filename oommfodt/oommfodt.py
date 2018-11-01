@@ -175,13 +175,13 @@ def read(filename, rename_columns=True):
 
     Examples
     --------
-    Reading simple odt file.
+    Reading an .odt file.
 
     >>> import os
-    >>> import oommfodt
+    >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file1.odt')
-    >>> df = read(odtfile)
+    >>> df = oo.read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
@@ -190,6 +190,40 @@ def read(filename, rename_columns=True):
                         columns=columns(filename, rename_columns=rename_columns))
 
 
-def merge(files):
-    frames = [read(file) for file in files]
-    return pd.concat(frames, ignore_index=True)
+def merge(odtfiles):
+    """Read multiple .odt files and merge them into a single pandas.DataFrame.
+
+    This function takes an iterable of OOMMF .odt files, merges them,
+    and returns a single pandas.DataFrame. If there are non-matching
+    columns, the missing values will be NaN. If rename_columns=True,
+    the column names will be renamed with their shorter versions.
+
+    Parameters
+    ----------
+    filenames : list(str)
+        List of .odt filenames.
+    rename_columns : bool
+        Flag (the default is True) if column names should be renamed
+        with their shorter versions.
+
+    Returns
+    -------
+    pandas.DataFrame
+
+    Examples
+    --------
+    Reading and merging odt files.
+
+    >>> import os
+    >>> import oommfodt as oo
+    ...
+    >>> odtfile1 = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file1.odt')
+    >>> odtfile2 = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file2.odt')
+    >>> odtfile3 = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file3.odt')
+    >>> df = oo.merge([odtfile1, odtfile2, odtfile3])
+    >>> type(df)
+    <class 'pandas.core.frame.DataFrame'>
+
+    """
+    dataframes = map(read, odtfiles)
+    return pd.concat(dataframes, ignore_index=True, sort=False)
