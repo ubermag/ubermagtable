@@ -5,15 +5,15 @@ import pandas as pd
 import oommfodt as oo
 
 
+tol = 1e-20
 test_file1 = os.path.join(os.path.dirname(__file__),
-                          'test-files/odt-file1.odt')
+                          'test-files', 'odt-file1.odt')
 test_file2 = os.path.join(os.path.dirname(__file__),
-                          'test-files/odt-file2.odt')
+                          'test-files', 'odt-file2.odt')
 test_file3 = os.path.join(os.path.dirname(__file__),
-                          'test-files/odt-file3.odt')
+                          'test-files', 'odt-file3.odt')
 test_files = [test_file1, test_file2, test_file3]
 
-tol = 1e-20
 
 def test_columns():
     for test_file in test_files:
