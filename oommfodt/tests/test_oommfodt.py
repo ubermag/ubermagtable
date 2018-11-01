@@ -71,3 +71,8 @@ def test_can_write_xls():
     assert np.allclose(np.array(df_load), np.array(df))
 
     os.remove("tmp.xls")
+
+
+def test_merge_files():
+    df = oommfodt.merge([test_file1, test_file2])
+    assert df.shape == (201, 30)

@@ -118,3 +118,9 @@ def read(filename, replace_columns=True):
     df._metadata.append('units')
     df.units = dict(zip(columns, units))
     return df
+
+
+def merge(files):
+
+    frames = [read(file) for file in files]
+    return pd.concat(frames, ignore_index=True)

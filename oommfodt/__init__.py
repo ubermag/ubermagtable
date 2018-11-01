@@ -1,6 +1,6 @@
 import pytest
 import pkg_resources
-from .oommfodt import read
+from .oommfodt import read, merge
 
 
 def test():
