@@ -20,6 +20,87 @@ column_dict = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'E_UniaxialAnisotropy'}
 
 
+def columns(filename, rename_columns=True):
+    """Read column names from an OOMMF .odt file.
+
+    This function extracts the names of columns from an OOMMF odt file
+    and returns it as a list of strings. If rename_columns=True, the
+    column names will be renamed to their shorter versions.
+
+    Parameters
+    ----------
+    filename : str
+        Name of an OOMMF .odt file
+    rename_columns : bool
+        Flag (the default is True) if column names should be renamed
+        with their shorter versions.
+
+    Returns
+    -------
+    list(str)
+
+    Examples
+    --------
+    Reading names of columns from an odt file.
+
+    >>> import os
+    >>> import oommfodt as oo
+    ...
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_odt_files', 'test_odt_file1.odt')
+    >>> columns = oo.columns(odtfile)
+    >>> type(columns)
+    <class 'list'>
+
+    """
+    with open(filename) as f:
+        lines = f.readlines()
+
+    columns = []
+    for line in lines:
+        if line.startswith('# Columns:'):
+            line_split = re.split(r'Oxs_|Anv_|Southampton_', line)[1:]
+            for column in line_split:
+                column = re.sub(r'[{}\s]', '', column)
+                if rename_columns:
+                    if column in column_dict.keys():
+                        column = column_dict[column]
+                    else:
+                        column = column.split(':')[-1]
+                columns.append(column)
+            break
+
+    return columns
+
+
+def units(filename):
+    """Read units from an .odt file.
+
+    This function extracts the units from an
+    """
+    with open(filename) as f:
+        lines = f.readlines()
+
+    units = []
+    for line in lines:
+        if line.startswith('# Units:'):
+            units = line.split()[2:]
+            break
+
+    return units
+
+
+def data(filename):
+    with open(filename) as f:
+        lines = f.readlines()
+
+    values = []
+    for line in lines:
+        if not line.startswith("#"):
+            values.append(map(float, line.split()))
+
+    return values
+
+
 def read(filename, rename_columns=True):
     """Read an .odt file and convert it into pandas.DataFrame.
 
@@ -55,27 +136,8 @@ def read(filename, rename_columns=True):
     <class 'pandas.core.frame.DataFrame'>
 
     """
-    with open(filename) as f:
-        lines = f.readlines()
-
-    data = []
-    for line in lines:
-        if line.startswith('# Columns:'):
-            columns = []
-            line_split = re.split(r'Oxs_|Anv_|Southampton_', line)[1:]
-            for column in line_split:
-                column = re.sub(r'[{}\s]', '', column)
-                if rename_columns:
-                    if column in column_dict.keys():
-                        column = column_dict[column]
-                    else:
-                        column = column.split(':')[-1]
-                columns.append(column)
-            
-        if not line.startswith("#"):
-            data.append(map(float, line.split()))
-
-    return pd.DataFrame(data, columns=columns)
+    return pd.DataFrame(data(filename),
+                        columns=columns(filename, rename_columns=rename_columns))
 
 
 def merge(files):

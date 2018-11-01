@@ -1,6 +1,6 @@
 import pytest
 import pkg_resources
-from .oommfodt import read, merge
+from .oommfodt import columns, units, data, read, merge
 
 
 def test():
