@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
+column_dict = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'UniformExchange::Energy': 'E_Exchange',
                'DMExchange6Ngbr::Energy': 'E_DMI',
                'DMI_Cnv::Energy': 'E_DMI_Cnv',
@@ -29,15 +29,15 @@ def rename(column):
         return column.split(':')[-1]
 
 
-def read(filename, replace_columns=True):
+def read(filename, rename_columns=True):
     """Read an OOMMF odt file and return pandas DataFrame.
 
     Parameters
     ----------
     filename : str
         Name/path of an OOMMF odt file
-    replace_columns : bool
-        Flag (the default is True) if column names should be replaced
+    rename_columns : bool
+        Flag (the default is True) if column names should be renamed
         with their shorter versions.
 
     Returns
@@ -63,12 +63,8 @@ def read(filename, replace_columns=True):
             for part in re.split('Oxs_|Anv_|Southampton_', line)[1:]:
                 for char in ["{", "}", " ", "\n"]:
                     part = part.replace(char, '')
-                if replace_columns:
-                    if part in columns_dic.keys():
-                        columns.append(columns_dic[part])
-                    else:
-                        msg = "Entry {} not in lookup table.".format(part)
-                        raise ValueError(msg)
+                if rename_columns:
+                    columns.append(rename(part))
                 else:
                     columns.append(part)
 
