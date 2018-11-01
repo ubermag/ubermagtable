@@ -46,7 +46,7 @@ def columns(filename, rename=True):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file1.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file1.odt')
     >>> columns = oo.columns(odtfile)
     >>> type(columns)
     <class 'list'>
@@ -94,7 +94,7 @@ def units(filename, rename=False):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file2.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file2.odt')
     >>> units = oo.units(odtfile)
     >>> type(units)
     <class 'dict'>
@@ -135,7 +135,7 @@ def data(filename):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file3.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file3.odt')
     >>> data = oo.data(odtfile)
     >>> type(data)
     <class 'list'>
@@ -181,7 +181,7 @@ def read(filename, rename=True):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file1.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file1.odt')
     >>> df = oo.read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
@@ -217,9 +217,9 @@ def merge(odtfiles):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile1 = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file1.odt')
-    >>> odtfile2 = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file2.odt')
-    >>> odtfile3 = os.path.join('oommfodt', 'tests', 'test-files', 'odt-file3.odt')
+    >>> odtfile1 = os.path.join('oommfodt', 'tests', 'test_files', 'file1.odt')
+    >>> odtfile2 = os.path.join('oommfodt', 'tests', 'test_files', 'file2.odt')
+    >>> odtfile3 = os.path.join('oommfodt', 'tests', 'test_files', 'file3.odt')
     >>> df = oo.merge([odtfile1, odtfile2, odtfile3])
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>

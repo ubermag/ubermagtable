@@ -7,11 +7,11 @@ import oommfodt as oo
 
 tol = 1e-20
 test_file1 = os.path.join(os.path.dirname(__file__),
-                          'test-files', 'odt-file1.odt')
+                          'test_files', 'file1.odt')
 test_file2 = os.path.join(os.path.dirname(__file__),
-                          'test-files', 'odt-file2.odt')
+                          'test_files', 'file2.odt')
 test_file3 = os.path.join(os.path.dirname(__file__),
-                          'test-files', 'odt-file3.odt')
+                          'test_files', 'file3.odt')
 test_files = [test_file1, test_file2, test_file3]
 
 
