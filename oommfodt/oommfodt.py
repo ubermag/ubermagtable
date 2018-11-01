@@ -1,7 +1,5 @@
 import re
 import pandas as pd
-import numpy as np
-
 
 column_dict = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'UniformExchange::Energy': 'E_Exchange',
@@ -22,72 +20,64 @@ column_dict = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'E_UniaxialAnisotropy'}
 
 
-def rename(column):
-    if column in column_dict:
-        return column_dict[column]
-    else:
-        return column.split(':')[-1]
-
-
 def read(filename, rename_columns=True):
-    """Read an OOMMF odt file and return pandas DataFrame.
+    """Read an .odt file and convert it into pandas.DataFrame.
+
+    This function is going to read column names and data from an OOMMF
+    .odt file and return a pandas.DataFrame. Because there is no
+    appropriate way of adding metadata to the pandas.DataFrame,
+    obtaining units from the .odt file is ignored at the moment. If
+    rename_columns=True, the column names will be renamed to their
+    shorter versions.
 
     Parameters
     ----------
     filename : str
-        Name/path of an OOMMF odt file
+        Name of an OOMMF .odt file
     rename_columns : bool
         Flag (the default is True) if column names should be renamed
         with their shorter versions.
 
     Returns
     -------
-    pandas DataFrame
+    pandas.DataFrame
 
     Examples
     --------
     Reading simple odt file.
 
+    >>> import os
     >>> import oommfodt
+    ...
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_odt_files', 'test_odt_file1.odt')
+    >>> df = read(odtfile)
+    >>> type(df)
+    <class 'pandas.core.frame.DataFrame'>
 
     """
-    f = open(filename)
-    lines = f.readlines()
-    f.close()
+    with open(filename) as f:
+        lines = f.readlines()
 
-    # Extract column names from the odt file.
-    for i, line in enumerate(lines):
+    data = []
+    for line in lines:
         if line.startswith('# Columns:'):
             columns = []
-            odt_section = i  # Should be removed after runs are split.
-            for part in re.split('Oxs_|Anv_|Southampton_', line)[1:]:
-                for char in ["{", "}", " ", "\n"]:
-                    part = part.replace(char, '')
+            line_split = re.split(r'Oxs_|Anv_|Southampton_', line)[1:]
+            for column in line_split:
+                column = re.sub(r'[{}\s]', '', column)
                 if rename_columns:
-                    columns.append(rename(part))
-                else:
-                    columns.append(part)
-
-    # Extract units from the odt file.
-    for i, line in enumerate(lines):
-        if line.startswith('# Units:'):
-            units = line.split()[2:]
-
-    # Extract the data from the odt file.
-    data = []
-    for i, line in enumerate(lines[odt_section:]):
+                    if column in column_dict.keys():
+                        column = column_dict[column]
+                    else:
+                        column = column.split(':')[-1]
+                columns.append(column)
+            
         if not line.startswith("#"):
-            data.append([float(number) for number in line.split()])
+            data.append(map(float, line.split()))
 
-    df = pd.DataFrame(data, columns=columns)
-    # next line is required to allow adding list-like attribute to pandas DataFrame
-    # see https://github.com/pandas-dev/pandas/blob/2f9d4fbc7f289a48ed8b29f573675cd2e21b2c89/pandas/core/generic.py#L3631
-    df._metadata.append('units')
-    df.units = dict(zip(columns, units))
-    return df
+    return pd.DataFrame(data, columns=columns)
 
 
 def merge(files):
-
     frames = [read(file) for file in files]
     return pd.concat(frames, ignore_index=True)
