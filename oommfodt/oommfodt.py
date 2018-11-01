@@ -187,7 +187,8 @@ def read(filename, rename=True):
     <class 'pandas.core.frame.DataFrame'>
 
     """
-    return pd.DataFrame(data(filename), columns=columns(filename, rename=rename))
+    return pd.DataFrame(data(filename),
+                        columns=columns(filename, rename=rename))
 
 
 def merge(odtfiles):

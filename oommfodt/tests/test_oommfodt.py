@@ -51,17 +51,17 @@ def test_data():
         assert isinstance(data, list)
         assert all(isinstance(x, float) for x in itertools.chain(*data))
 
-        
+
 def test_read():
     for test_file in test_files:
         df = oo.read(test_file, rename=False)
         assert isinstance(df, pd.DataFrame)
-        
+
         df = oo.read(test_file, rename=True)
         assert isinstance(df, pd.DataFrame)
 
 
-def test_read_timedriver1():    
+def test_read_timedriver1():
     df = oo.read(test_file1)
     assert df.shape == (25, 18)
 
@@ -70,7 +70,7 @@ def test_read_timedriver1():
     assert abs(t[-1] - 25e-12) < tol
 
 
-def test_read_timedriver2():    
+def test_read_timedriver2():
     df = oo.read(test_file2)
     assert df.shape == (15, 18)
 
