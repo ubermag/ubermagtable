@@ -2,15 +2,9 @@ import re
 import pandas as pd
 import numpy as np
 
+
 columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
-               'RungeKuttaEvolve:evolver:Energycalccount': 'Ecount',
-               'RungeKuttaEvolve:evolver:Maxdm/dt': 'max_dm/dt',
-               'RungeKuttaEvolve:evolver:dE/dt': 'dE/dt',
-               'RungeKuttaEvolve:evolver:DeltaE': 'deltaE',
                'UniformExchange::Energy': 'E_Exchange',
-               'UniformExchange::MaxSpinAng': 'max_spin_angle',
-               'UniformExchange::StageMaxSpinAng': 'stage_max_spin_angle',
-               'UniformExchange::RunMaxSpinAng': 'run_max_spin_angle',
                'DMExchange6Ngbr::Energy': 'E_DMI',
                'DMI_Cnv::Energy': 'E_DMI_Cnv',
                'DMI_T::Energy': 'E_DMI_T',
@@ -18,44 +12,21 @@ columns_dic = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
                'Demag::Energy': 'E_Demag',
                'FixedZeeman::Energy': 'E_Zeeman',
                'UZeeman::Energy': 'E_UZeeman',
-               'UZeeman::B': 'B',
-               'UZeeman::Bx': 'Bx',
-               'UZeeman::By': 'By',
-               'UZeeman::Bz': 'Bz',
                'CubicAnisotropy::Energy': 'E_CubicAnisotropy',
-               'TimeDriver::Iteration': 'iteration',
-               'TimeDriver::Stageiteration': 'stage_iteration',
-               'TimeDriver::Stage': 'stage',
-               'TimeDriver::mx': 'mx',
-               'TimeDriver::my': 'my',
-               'TimeDriver::mz': 'mz',
-               'TimeDriver::Lasttimestep': 'last_time_step',
                'TimeDriver::Simulationtime': 't',
-               'CGEvolve::MaxmxHxm': 'max_mxHxm',
                'CGEvolve::Totalenergy': 'E',
-               'CGEvolve::DeltaE': 'delta_E',
-               'CGEvolve::Bracketcount': 'bracket_count',
-               'CGEvolve::Linemincount': 'line_min_count',
-               'CGEvolve::Conjugatecyclecount': 'conjugate_cycle_count',
-               'CGEvolve::Cyclecount': 'cycle_count',
-               'CGEvolve::Cyclesubcount': 'cycle_sub_count',
-               'CGEvolve::Energycalccount': 'energy_cal_count',
                'SpinTEvolve::Totalenergy': 'E',
-               'SpinTEvolve::Energycalccount': 'Ecount',
-               'SpinTEvolve::Maxdm/dt': 'max_dm/dt',
-               'SpinTEvolve::dE/dt': 'dE/dt',
-               'SpinTEvolve::DeltaE': 'deltaE',
-               'SpinTEvolve::averageu': 'average_u',
                'UniaxialAnisotropy::Energy': 'E_UniaxialAnisotropy',
                'UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy4',
                'Southampton_UniaxialAnisotropy4::Energy':
-               'E_UniaxialAnisotropy',
-               'MinDriver::Iteration': 'iteration',
-               'MinDriver::Stageiteration': 'stage_iteration',
-               'MinDriver::Stage': 'stage',
-               'MinDriver::mx': 'mx',
-               'MinDriver::my': 'my',
-               'MinDriver::mz': 'mz'}
+               'E_UniaxialAnisotropy'}
+
+
+def rename(column):
+    if column in column_dict:
+        return column_dict[column]
+    else:
+        return column.split(':')[-1]
 
 
 def read(filename, replace_columns=True):
