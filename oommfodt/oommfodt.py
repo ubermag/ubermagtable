@@ -23,9 +23,9 @@ column_dict = {'RungeKuttaEvolve:evolver:Totalenergy': 'E',
 def columns(filename, rename_columns=True):
     """Read column names from an OOMMF .odt file.
 
-    This function extracts the names of columns from an OOMMF odt file
-    and returns it as a list of strings. If rename_columns=True, the
-    column names will be renamed to their shorter versions.
+    This function extracts the names of columns from an OOMMF .odt
+    file and returns it as a list of strings. If rename_columns=True,
+    the column names will be renamed to their shorter versions.
 
     Parameters
     ----------
@@ -41,12 +41,12 @@ def columns(filename, rename_columns=True):
 
     Examples
     --------
-    Reading names of columns from an odt file.
+    Extracting names of columns from an .odt file.
 
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_odt_files', 'test_odt_file1.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file1.odt')
     >>> columns = oo.columns(odtfile)
     >>> type(columns)
     <class 'list'>
@@ -73,9 +73,32 @@ def columns(filename, rename_columns=True):
 
 
 def units(filename):
-    """Read units from an .odt file.
+    """Read units from an OOMMF .odt file.
 
-    This function extracts the units from an
+    This function extracts the units from an OOMMF .odt file and
+    returns it as a list of strings.
+
+    Parameters
+    ----------
+    filename : str
+        Name of an OOMMF .odt file
+
+    Returns
+    -------
+    list(str)
+
+    Examples
+    --------
+    Extracting units from an .odt file.
+
+    >>> import os
+    >>> import oommfodt as oo
+    ...
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file2.odt')
+    >>> units = oo.units(odtfile)
+    >>> type(units)
+    <class 'list'>
+
     """
     with open(filename) as f:
         lines = f.readlines()
@@ -90,6 +113,33 @@ def units(filename):
 
 
 def data(filename):
+    """Read data from an OOMMF .odt file.
+
+    This function reads data from an OOMMF .odt file and returns it as
+    a list of floats.
+
+    Parameters
+    ----------
+    filename : str
+        Name of an OOMMF .odt file
+
+    Returns
+    -------
+    list(float)
+
+    Examples
+    --------
+    Reading data from an .odt file.
+
+    >>> import os
+    >>> import oommfodt as oo
+    ...
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file3.odt')
+    >>> data = oo.data(odtfile)
+    >>> type(data)
+    <class 'list'>
+
+    """
     with open(filename) as f:
         lines = f.readlines()
 
@@ -130,7 +180,7 @@ def read(filename, rename_columns=True):
     >>> import os
     >>> import oommfodt
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_odt_files', 'test_odt_file1.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'odt-file1.odt')
     >>> df = read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
