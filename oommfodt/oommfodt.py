@@ -191,7 +191,7 @@ def read(filename, rename=True):
                         columns=columns(filename, rename=rename))
 
 
-def merge(odtfiles):
+def merge(odtfiles, timedriver=False):
     """Read multiple .odt files and merge them into a single pandas.DataFrame.
 
     This function takes an iterable of OOMMF .odt files, merges them,
@@ -226,5 +226,11 @@ def merge(odtfiles):
     <class 'pandas.core.frame.DataFrame'>
 
     """
-    dataframes = map(read, odtfiles)
-    return pd.concat(dataframes, ignore_index=True, sort=False)
+    dataframes = list(map(read, odtfiles))
+
+    if timedriver:
+        if not all(['t' in df.columns for df in dataframes]):
+            raise ValueError(f'Not all drives is TimeDriver.')
+        return pd.concat(dataframes, ignore_index=True, sort=False)
+    else:
+        return pd.concat(dataframes, ignore_index=True, sort=False)
