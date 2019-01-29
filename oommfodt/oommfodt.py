@@ -226,18 +226,23 @@ def merge(odtfiles, timedriver=False):
     <class 'pandas.core.frame.DataFrame'>
 
     """
-    dataframes = list(map(read, odtfiles))
-    if timedriver:
-        if not all(['t' in df.columns for df in dataframes]):
-            raise ValueError('Not all drives is TimeDriver.')
-
-        offset = 0.0
-        dfs = []
-        for df in dataframes:
-            df['tm'] = offset + df['t']
-            offset += df['t'].iloc[-1]
-            dfs.append(df)
-
-        return pd.concat(dfs, ignore_index=True, sort=False)
-    else:
+    if all([isinstance(f, str) for f in odtfiles]):
+        dataframes = list(map(read, odtfiles))
         return pd.concat(dataframes, ignore_index=True, sort=False)
+
+    elif all([isinstance(f, pd.DataFrame) for f in odtfiles]):
+        #dataframes = list(map(read, odtfiles))
+        if timedriver:
+            if not all(['t' in df.columns for df in odtfiles]):
+                raise ValueError('Not all drives is TimeDriver.')
+
+            offset = 0.0
+            dfs = []
+            for df in odtfiles:
+                df['tm'] = offset + df['t']
+                offset += df['t'].iloc[-1]
+                dfs.append(df)
+
+            return pd.concat(dfs, ignore_index=True, sort=False)
+    else:
+        raise TypeError('Not supported types')
