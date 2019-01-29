@@ -227,10 +227,17 @@ def merge(odtfiles, timedriver=False):
 
     """
     dataframes = list(map(read, odtfiles))
-
     if timedriver:
         if not all(['t' in df.columns for df in dataframes]):
-            raise ValueError(f'Not all drives is TimeDriver.')
-        return pd.concat(dataframes, ignore_index=True, sort=False)
+            raise ValueError('Not all drives is TimeDriver.')
+
+        offset = 0.0
+        dfs = []
+        for df in dataframes:
+            df['tm'] = offset + df['t']
+            offset += df['t'].iloc[-1]
+            dfs.append(df)
+
+        return pd.concat(dfs, ignore_index=True, sort=False)
     else:
         return pd.concat(dataframes, ignore_index=True, sort=False)
