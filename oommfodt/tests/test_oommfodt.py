@@ -4,15 +4,18 @@ import itertools
 import pandas as pd
 import oommfodt as oo
 
-
 tol = 1e-20
-test_file1 = os.path.join(os.path.dirname(__file__),
-                          'test_files', 'file1.odt')
-test_file2 = os.path.join(os.path.dirname(__file__),
-                          'test_files', 'file2.odt')
-test_file3 = os.path.join(os.path.dirname(__file__),
-                          'test_files', 'file3.odt')
-test_files = [test_file1, test_file2, test_file3]
+test_sample_dirname = os.path.join(os.path.dirname(__file__),
+                                   'test_sample')
+test_file1 = os.path.join(test_sample_dirname, 'file1.odt')
+test_file2 = os.path.join(test_sample_dirname, 'file2.odt')
+test_file3 = os.path.join(test_sample_dirname, 'file3.odt')
+test_file4 = os.path.join(test_sample_dirname, 'file4.odt')
+test_file5 = os.path.join(test_sample_dirname, 'file5.odt')
+test_file6 = os.path.join(test_sample_dirname, 'file6.odt')
+test_file7 = os.path.join(test_sample_dirname, 'file7.odt')
+test_files = [test_file1, test_file2, test_file3, test_file4,
+              test_file5, test_file6, test_file7]
 
 
 def test_columns():
@@ -85,6 +88,6 @@ def test_read_mindriver():
 
 
 def test_merge_files():
-    df = oo.merge(test_files)
+    df = oo.merge(test_files[:3])
     assert df.shape == (41, 24)
     assert any(math.isnan(x) for x in df['t'].values)

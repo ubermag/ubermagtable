@@ -21,7 +21,7 @@ column_dict = {'RungeKuttaEvolve::Totalenergy': 'E',
 
 
 def columns(filename, rename=True):
-    """Extract column names from an OOMMF .odt file.
+    """Extract the names of columns from an OOMMF `.odt` file.
 
     This function extracts the names of columns from an OOMMF .odt
     file and returns it as a list of strings. If rename=True, the
@@ -30,10 +30,10 @@ def columns(filename, rename=True):
     Parameters
     ----------
     filename : str
-        Name of an OOMMF .odt file
+        Name of an OOMMF `.odt` file
     rename : bool
-        Flag (the default is True) if column names should be renamed
-        with their shorter versions.
+        Flag (the default is `True`). If `rename=True`, the column
+        names are renamed with their shorter versions.
 
     Returns
     -------
@@ -41,12 +41,12 @@ def columns(filename, rename=True):
 
     Examples
     --------
-    Extracting names of columns from an .odt file.
+    1. Extracting the names of columns from an .odt file.
 
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file1.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file1.odt')
     >>> columns = oo.columns(odtfile)
     >>> type(columns)
     <class 'list'>
@@ -94,7 +94,7 @@ def units(filename, rename=False):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file2.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file2.odt')
     >>> units = oo.units(odtfile)
     >>> type(units)
     <class 'dict'>
@@ -135,7 +135,7 @@ def data(filename):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file3.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file3.odt')
     >>> data = oo.data(odtfile)
     >>> type(data)
     <class 'list'>
@@ -181,7 +181,7 @@ def read(filename, rename=True):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_files', 'file1.odt')
+    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file1.odt')
     >>> df = oo.read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
@@ -218,9 +218,9 @@ def merge(odtfiles, timedriver=False):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile1 = os.path.join('oommfodt', 'tests', 'test_files', 'file1.odt')
-    >>> odtfile2 = os.path.join('oommfodt', 'tests', 'test_files', 'file2.odt')
-    >>> odtfile3 = os.path.join('oommfodt', 'tests', 'test_files', 'file3.odt')
+    >>> odtfile1 = os.path.join('oommfodt', 'tests', 'test_sample', 'file1.odt')
+    >>> odtfile2 = os.path.join('oommfodt', 'tests', 'test_sample', 'file2.odt')
+    >>> odtfile3 = os.path.join('oommfodt', 'tests', 'test_sample', 'file3.odt')
     >>> df = oo.merge([odtfile1, odtfile2, odtfile3])
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
