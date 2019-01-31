@@ -1,5 +1,6 @@
 import os
 import math
+import pytest
 import itertools
 import pandas as pd
 import oommfodt as oo
@@ -14,8 +15,9 @@ test_file4 = os.path.join(test_sample_dirname, 'file4.odt')
 test_file5 = os.path.join(test_sample_dirname, 'file5.odt')
 test_file6 = os.path.join(test_sample_dirname, 'file6.odt')
 test_file7 = os.path.join(test_sample_dirname, 'file7.odt')
+test_file8 = os.path.join(test_sample_dirname, 'file8.odt')
 test_files = [test_file1, test_file2, test_file3, test_file4,
-              test_file5, test_file6, test_file7]
+              test_file5, test_file6, test_file7, test_file8]
 
 
 def test_columns():
@@ -88,6 +90,19 @@ def test_read_mindriver():
 
 
 def test_merge_files():
-    df = oo.merge(test_files[:3])
-    assert df.shape == (41, 24)
+    # Without time merge
+    df = oo.merge(test_files[3:])
+    assert df.shape == (56, 24)
     assert any(math.isnan(x) for x in df['t'].values)
+
+    # With time merge - exception should be raised because one of the
+    # files is from MinDriver.
+    with pytest.raises(ValueError):
+        df = oo.merge(test_files[3:], mergetime=True)
+
+    # With time merge
+    odtfiles = [test_file4, test_file5, test_file6, test_file8]
+    df = oo.merge(odtfiles, mergetime=True)
+    assert df.shape == (55, 19)
+    assert min(df['tm'].values) == 1e-12
+    assert max(df['tm'].values) == 50e-12
