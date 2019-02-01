@@ -196,18 +196,21 @@ def read(filename, rename=True):
 
 
 def merge(input_iterable, rename=True, mergetime=False):
-    """Read multiple `.odt` files or multiple `pandas.DataFrame` and merge
-    them into a single `pandas.DataFrame`.
+    """Read multiple `.odt` files or multiple `pandas.DataFrames` and
+    merge them into a single `pandas.DataFrame`.
 
-    This function takes an iterable of OOMMF `.odt` files or `pandas.DataFrames`, merges them,
-    and returns a single `pandas.DataFrame`. If there are non-matching
-    columns, the missing values will be `NaN`. If `rename=True`, the
-    column names will be renamed with their shorter versions.
+    This function takes an iterable of OOMMF `.odt` files or
+    `pandas.DataFrames`, merges them, and returns a single
+    `pandas.DataFrame`. If there are non-matching columns, the missing
+    values will be `NaN`. If `rename=True` and `.odt` filenames are
+    passed, the column names will be renamed with their shorter
+    versions.
 
     If `mergetime=True`, an additional column will be added to the
     resulting `pandas.DataFrame`. The column's name is `tm` and
     contains a successive array of time starting from 0. If there is
-    no time column in one of the `.odt` files, no mergeing is allowed.
+    no time column in one of the `.odt` files, no merging is allowed
+    and `ValueError` is raised.
 
     Parameters
     ----------
@@ -223,6 +226,12 @@ def merge(input_iterable, rename=True, mergetime=False):
     Returns
     -------
     pandas.DataFrame
+
+    Raises
+    ------
+    ValueError
+        If `mergetime=True` and one of the passed `pandas.DataFrames`
+        is missing `t` column.
 
     Examples
     --------
@@ -240,9 +249,13 @@ def merge(input_iterable, rename=True, mergetime=False):
     <class 'pandas.core.frame.DataFrame'>
 
     """
-    if all(isinstance(i, str) for i in input_iterable):
+    if all(isinstance(element, str) for element in input_iterable):
         # .odt filenames are passed
-        dfs = list(map(functools.partial(read, rename=True), input_iterable))
+        dfs = list(map(functools.partial(read, rename=rename),
+                       input_iterable))
+    else:
+        # pandas.DataFrames are passed
+        dfs = list(input_iterable)
 
     if mergetime:
         if not all('t' in df.columns for df in dfs):
@@ -255,7 +268,6 @@ def merge(input_iterable, rename=True, mergetime=False):
             df['tm'] = time_offset + df['t']
             time_offset += df['t'].iloc[-1]
             retimed_dfs.append(df)
+        dfs = retimed_dfs
 
-        return pd.concat(retimed_dfs, ignore_index=True, sort=False)
-    else:
-        return pd.concat(dfs, ignore_index=True, sort=False)
+    return pd.concat(dfs, ignore_index=True, sort=False)
