@@ -2,6 +2,7 @@ import os
 import math
 import pytest
 import itertools
+import numpy as np
 import pandas as pd
 import oommfodt as oo
 
@@ -106,3 +107,13 @@ def test_merge_files():
     assert df.shape == (55, 19)
     assert min(df['tm'].values) == 1e-12
     assert max(df['tm'].values) == 50e-12
+    assert not 0 in np.diff(df['tm'].values)  # monotonic
+
+    # With time merge, pandas.DataFrames are passed
+    df1 = oo.read(test_file4)
+    df2 = oo.read(test_file8)
+    df = oo.merge([df1, df2], mergetime=True)
+    assert df.shape == (30, 19)
+    assert min(df['tm'].values) == 1e-12
+    assert max(df['tm'].values) == 30e-12
+    assert not 0 in np.diff(df['tm'].values)  # monotonic
