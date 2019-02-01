@@ -27,58 +27,13 @@ Marijan Beg<sup>1,2</sup>, Sergii Mamedov<sup>1</sup>, Ryan A. Pepper<sup>2</sup
 
 It is available on all major operating systems (Windows, MacOS, Linux) and requires Python 3.6 or higher.
 
-## Installation
+## Installation, testing, and upgrade
 
-We recommend installing `oommfodt` by using either of the `pip` or `conda` package managers.
-
-#### Python requirements
-
-Before installing `oommfodt` via `pip`, please make sure you have Python 3.5 or higher on your system. You can check that by running
-
-    python3 --version
-
-If you are on Linux, it is likely that you already have Python installed. However, on MacOS and Windows, this is usually not the case. If you do not have Python 3.5 or higher on your machine, we strongly recommend installing the [Anaconda](https://www.anaconda.com/) Python distribution. [Download Anaconda](https://www.anaconda.com/download) for your operating system and follow instructions on the download page. Further information about installing Anaconda can be found [here](https://conda.io/docs/user-guide/install/download.html).
-
-#### `pip`
-
-After installing Anaconda on MacOS or Windows, `pip` will also be installed. However, on Linux, if you do not already have `pip`, you can install it with
-
-    sudo apt install python3-pip
-
-To install the `oommfodt` version currently in the Python Package Index repository [PyPI](https://pypi.org/project/oommfodt/) on all operating systems run:
-
-    python3 -m pip install oommfodt
-
-#### `conda`
-
-`oommfodt` is installed using `conda` by running
-
-    conda install --channel conda-forge oommfodt
-
-For further information on the `conda` package, dependency, and environment management, please have a look at its [documentation](https://conda.io/docs/). 
-
-## Updating
-
-If you used pip to install `oommfodt`, you can update to the latest released version in [PyPI](https://pypi.org/project/oommfodt/) by running
-
-    python3 -m pip install --upgrade oommfodt
-
-On the other hand, if you used `conda` for installation, update `oommfodt` with
-
-    conda upgrade oommfodt
-
-#### Development version
-
-The most recent development version of `oommfodt` that is not yet released can be installed/updated with
-
-    git clone https://github.com/joommf/oommfodt.git
-    python3 -m pip install --upgrade oommfodt
-
-**Note**: If you do not have `git` on your system, it can be installed by following the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+We support installation using `conda` and `pip` package managers. Instructions can be found [here](https://oommfodt.readthedocs.io/en/latest/ipynb/installation-testing-upgrade.html).
 
 ## Binder
 
-`oommfodt` can be used in the cloud via Binder. This does not require you to have anything installed and no files will be created on your machine. To use `oommfodt` in the cloud, follow this [link](https://mybinder.org/v2/gh/joommf/oommfodt/master?filepath=index.ipynb).
+`oommfodt` can be used in the cloud via Binder. This does not require you to have anything installed and no files will be created on your machine. To use `oommfodt` in the cloud, use this [link](https://mybinder.org/v2/gh/joommf/oommfodt/master?filepath=index.ipynb).
 
 ## Documentation
 
