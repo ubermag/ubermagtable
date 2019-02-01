@@ -5,8 +5,8 @@ with open('README.md', encoding='utf-8') as f:
 
 setuptools.setup(
     name='oommfodt',
-    version='0.8.3',
-    description='Python package for reading and analysis of OOMMF .odt files.',
+    version='0.8.4',
+    description='Python package for reading and merging of OOMMF .odt files.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://joommf.github.io',
