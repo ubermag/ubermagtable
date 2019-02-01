@@ -22,11 +22,10 @@ Marijan Beg<sup>1,2</sup>, Sergii Mamedov<sup>1</sup>, Ryan A. Pepper<sup>2</sup
 
 `oommfodt` is a Python package that provides:
 
-- Reading, analysis, and plotting of [OOMMF](https://math.nist.gov/oommf/) `.odt` files
+- Conversion of OOMMF `.odt` files to [pandas](https://pandas.pydata.org) DataFrames
+- Merging of multiple OOMMF `.odt` files into a single `pandas.DataFrame`
 
-- Conversion of OOMMF `.odt` files to [pandas](https://pandas.pydata.org) dataframes and saving to different file types, such as Excel spreadsheet `.xls`
-
-It is available on all major operating systems (Windows, MacOS, Linux) and requires Python 3.5 or higher.
+It is available on all major operating systems (Windows, MacOS, Linux) and requires Python 3.6 or higher.
 
 ## Installation
 
