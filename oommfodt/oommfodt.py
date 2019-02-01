@@ -56,6 +56,11 @@ def columns(filename, rename=True):
     >>> type(columns)
     <class 'list'>
 
+    .. note::
+
+           This function does not extract units for individual
+           columns. For that `oommfodt.units` can be used.
+
     """
     with open(filename) as f:
         lines = f.readlines()
@@ -198,6 +203,11 @@ def read(filename, rename=True):
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
+    .. note::
+
+           For more information on how the names of columns are
+           renamed, please see `oommfodt.columns`.
+
     """
     return pd.DataFrame(data(filename),
                         columns=columns(filename, rename=rename))
@@ -257,6 +267,11 @@ def merge(input_iterable, rename=True, mergetime=False):
     >>> df = oo.merge([odtfile1, odtfile2, odtfile3], mergetime=True)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
+
+    .. note::
+
+           For more information on how the names of columns are
+           renamed, please see `oommfodt.columns`.
 
     """
     if all(isinstance(element, str) for element in input_iterable):

@@ -6,4 +6,4 @@ Tutorials
    :numbered:
    :caption: Contents:
 
-   ipynb/test_notebook
+   ipynb/installation-testing-upgrade
