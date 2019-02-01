@@ -22,33 +22,39 @@ test_files = [test_file1, test_file2, test_file3, test_file4,
 
 
 def test_columns():
-    for test_file in test_files:
-        columns = oo.columns(test_file, rename=False)
+    def check(columns):
         assert isinstance(columns, list)
         assert all(isinstance(column, str) for column in columns)
+
+    for test_file in test_files:
+        # Without rename
+        columns = oo.columns(test_file, rename=False)
+        check(columns)
         assert all(':' in column for column in columns)
 
+        # With rename
         columns = oo.columns(test_file, rename=True)
-        assert isinstance(columns, list)
-        assert all(isinstance(column, str) for column in columns)
+        check(columns)
         assert all(':' not in column for column in columns)
 
 
 def test_units():
-    for test_file in test_files:
-        units = oo.units(test_file, rename=False)
+    def check(units):
         assert isinstance(units, dict)
         assert all(isinstance(unit, str) for unit in units.keys())
-        assert all(':' in unit for unit in units.keys())
+        assert all(isinstance(unit, str) for unit in units.values())
         assert 'J' in units.values()
         assert '' in units.values()
 
+    for test_file in test_files:
+        # Without rename
+        units = oo.units(test_file, rename=False)
+        check(units)
+        assert all(':' in unit for unit in units.keys())
+
+        # With rename
         units = oo.units(test_file, rename=True)
-        assert isinstance(units, dict)
-        assert all(isinstance(unit, str) for unit in units.keys())
         assert all(':' not in unit for unit in units.keys())
-        assert units['E'] == 'J'
-        assert '' in units.values()
 
 
 def test_data():
@@ -60,9 +66,11 @@ def test_data():
 
 def test_read():
     for test_file in test_files:
+        # Without rename
         df = oo.read(test_file, rename=False)
         assert isinstance(df, pd.DataFrame)
 
+        # With rename
         df = oo.read(test_file, rename=True)
         assert isinstance(df, pd.DataFrame)
 
@@ -107,7 +115,7 @@ def test_merge_files():
     assert df.shape == (55, 19)
     assert min(df['tm'].values) == 1e-12
     assert max(df['tm'].values) == 50e-12
-    assert not 0 in np.diff(df['tm'].values)  # monotonic
+    assert 0 not in np.diff(df['tm'].values)  # monotonic
 
     # With time merge, pandas.DataFrames are passed
     df1 = oo.read(test_file4)
@@ -116,4 +124,4 @@ def test_merge_files():
     assert df.shape == (30, 19)
     assert min(df['tm'].values) == 1e-12
     assert max(df['tm'].values) == 30e-12
-    assert not 0 in np.diff(df['tm'].values)  # monotonic
+    assert 0 not in np.diff(df['tm'].values)  # monotonic

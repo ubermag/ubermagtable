@@ -2,6 +2,9 @@ import re
 import functools
 import pandas as pd
 
+# When the column name is shortened, it is renamed with the portion of
+# the string after the last `:` character. If a different name is
+# required, it should be added to this dictionary.
 column_dict = {'RungeKuttaEvolve::Totalenergy': 'E',
                'UniformExchange::Energy': 'E_Exchange',
                'DMExchange6Ngbr::Energy': 'E_DMI',
@@ -24,9 +27,9 @@ column_dict = {'RungeKuttaEvolve::Totalenergy': 'E',
 def columns(filename, rename=True):
     """Extract the names of columns from an OOMMF `.odt` file.
 
-    This function extracts the names of columns from an OOMMF .odt
-    file and returns it as a list of strings. If rename=True, the
-    column names will be renamed to their shorter versions.
+    This function extracts the names of columns from an OOMMF `.odt`
+    file and returns a list of strings. If `rename=True`, the columns
+    will be renamed to shorter versions.
 
     Parameters
     ----------
@@ -42,12 +45,13 @@ def columns(filename, rename=True):
 
     Examples
     --------
-    1. Extracting the names of columns from an .odt file.
+    1. Extracting the names of columns from an OOMMF `.odt` file.
 
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file1.odt')
+    >>> odtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'file1.odt')
     >>> columns = oo.columns(odtfile)
     >>> type(columns)
     <class 'list'>
@@ -59,8 +63,8 @@ def columns(filename, rename=True):
     columns = []
     for line in lines:
         if line.startswith('# Columns:'):
-            line_split = re.split(r'Oxs_|Anv_|Southampton_', line)[1:]
-            for column in line_split:
+            splitted_line = re.split(r'Oxs_|Anv_|Southampton_', line)[1:]
+            for column in splitted_line:
                 column = re.sub(r'[{}\s]', '', column)
                 if rename:
                     if column in column_dict.keys():
@@ -99,7 +103,8 @@ def units(filename, rename=False):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file2.odt')
+    >>> odtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'file2.odt')
     >>> units = oo.units(odtfile)
     >>> type(units)
     <class 'dict'>
@@ -140,7 +145,8 @@ def data(filename):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file3.odt')
+    >>> odtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'file3.odt')
     >>> data = oo.data(odtfile)
     >>> type(data)
     <class 'list'>
@@ -163,8 +169,9 @@ def read(filename, rename=True):
     This function reads column names and data from an OOMMF `.odt`
     file and returns a `pandas.DataFrame`. Because there is no
     appropriate way of adding metadata to the `pandas.DataFrame`,
-    obtaining units from the `.odt` file is ignored. If `rename=True`,
-    the column names will be renamed to their shorter versions.
+    obtaining units from the `.odt` file is ignored and can be
+    extracted using `oommfodt.units` function. If `rename=True`, the
+    column names will be renamed to their shorter versions.
 
     Parameters
     ----------
@@ -185,7 +192,8 @@ def read(filename, rename=True):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join('oommfodt', 'tests', 'test_sample', 'file1.odt')
+    >>> odtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'file1.odt')
     >>> df = oo.read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
@@ -221,7 +229,8 @@ def merge(input_iterable, rename=True, mergetime=False):
         names are renamed with their shorter versions.
     mergetime : bool
         Flag (the default is `True`). If `mergetime=True`, a new `tm`
-        column is added with successive values of time.
+        column is added with successive values of time to the
+        resulting `pandas.dataFrame`.
 
     Returns
     -------
@@ -240,10 +249,11 @@ def merge(input_iterable, rename=True, mergetime=False):
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> test_files_dirname = os.path.join('oommfodt', 'tests', 'test_sample')
-    >>> odtfile1 = os.path.join(test_files_dirname, 'file4.odt')
-    >>> odtfile2 = os.path.join(test_files_dirname, 'file5.odt')
-    >>> odtfile3 = os.path.join(test_files_dirname, 'file6.odt')
+    >>> dirname = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample')
+    >>> odtfile1 = os.path.join(dirname, 'file4.odt')
+    >>> odtfile2 = os.path.join(dirname, 'file5.odt')
+    >>> odtfile3 = os.path.join(dirname, 'file6.odt')
     >>> df = oo.merge([odtfile1, odtfile2, odtfile3], mergetime=True)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
