@@ -82,7 +82,7 @@ def columns(filename, rename=True):
     return columns
 
 
-def units(filename, rename=False):
+def units(filename, rename=True):
     """Extract units for individual columns from an OOMMF `.odt` file.
 
     This function extracts the units for every column from an OOMMF
@@ -163,7 +163,7 @@ def data(filename):
     values = []
     for line in lines:
         if not line.startswith("#"):
-            values.append(map(float, line.split()))
+            values.append(list(map(float, line.split())))
 
     return values
 
