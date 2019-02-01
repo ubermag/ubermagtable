@@ -1,8 +1,8 @@
 # oommfodt
-Marijan Beg<sup>1,2</sup>, Ryan A. Pepper<sup>2</sup>, Thomas Kluyver<sup>1</sup>, and Hans Fangohr<sup>1,2</sup>
+Marijan Beg<sup>1,2</sup>, Sergii Mamedov<sup>1</sup>, Ryan A. Pepper<sup>2</sup>, Thomas Kluyver<sup>1</sup>, and Hans Fangohr<sup>1,2</sup>
 
 <sup>1</sup> *European XFEL GmbH, Holzkoppel 4, 22869 Schenefeld, Germany*  
-<sup>2</sup> *Faculty of Engineering and the Environment, University of Southampton, Southampton SO17 1BJ, United Kingdom*  
+<sup>2</sup> *Faculty of Engineering and Physical Sciences, University of Southampton, Southampton SO17 1BJ, United Kingdom*  
 
 | Description | Badge |
 | --- | --- |
@@ -12,8 +12,10 @@ Marijan Beg<sup>1,2</sup>, Ryan A. Pepper<sup>2</sup>, Thomas Kluyver<sup>1</sup
 |       |  [![Build status](https://ci.appveyor.com/api/projects/status/sr110qs3qj00yqib?svg=true)](https://ci.appveyor.com/project/marijanbeg/oommfodt) |
 | Coverage | [![codecov](https://codecov.io/gh/joommf/oommfodt/branch/master/graph/badge.svg)](https://codecov.io/gh/joommf/oommfodt) |
 | Documentation | [![Documentation Status](https://readthedocs.org/projects/oommfodt/badge/?version=latest)](http://oommfodt.readthedocs.io/en/latest/?badge=latest) |
-| Badge | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/joommf/oommfodt/master?filepath=index.ipynb) |
+| Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/joommf/oommfodt/master?filepath=index.ipynb) |
+| Platforms | [![Platforms](https://anaconda.org/conda-forge/oommfodt/badges/platforms.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | Dependecies | [![Requirements Status](https://requires.io/github/joommf/oommfodt/requirements.svg?branch=master)](https://requires.io/github/joommf/oommfodt/requirements/?branch=master) |
+| Downloads | [![Downloads](https://anaconda.org/conda-forge/oommfodt/badges/downloads.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
 
 ## About
