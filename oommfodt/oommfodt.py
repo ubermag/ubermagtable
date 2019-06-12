@@ -168,7 +168,7 @@ def oommf_data(filename):
     return values
 
 
-def read(filename, rename=True):
+def oommf_read(filename, rename=True):
     """Read an OOMMF `.odt` file and return it as `pandas.DataFrame`.
 
     This function reads column names and data from an OOMMF `.odt`
