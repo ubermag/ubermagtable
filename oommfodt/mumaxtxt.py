@@ -2,7 +2,7 @@ import re
 import functools
 import pandas as pd
 
-def columns(filename, rename=True):
+def mumax_columns(filename, rename=True):
     """Extract the names of columns from an OOMMF `.odt` file.
 
     This function extracts the names of columns from an OOMMF `.odt`
@@ -97,7 +97,7 @@ def units(filename, rename=True):
     return dict(zip(columns(filename, rename=rename), units))
 
 
-def data(filename):
+def mumax_data(filename):
     """Read numerical data from an OOMMF `.odt` file.
 
     This function reads data from an OOMMF `.odt` file and returns it

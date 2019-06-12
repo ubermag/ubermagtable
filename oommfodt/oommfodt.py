@@ -24,7 +24,7 @@ column_dict = {'RungeKuttaEvolve::Totalenergy': 'E',
                'E_UniaxialAnisotropy'}
 
 
-def columns(filename, rename=True):
+def oommf_columns(filename, rename=True):
     """Extract the names of columns from an OOMMF `.odt` file.
 
     This function extracts the names of columns from an OOMMF `.odt`
@@ -128,7 +128,7 @@ def units(filename, rename=True):
     return dict(zip(columns(filename, rename=rename), units))
 
 
-def data(filename):
+def oommf_data(filename):
     """Read numerical data from an OOMMF `.odt` file.
 
     This function reads data from an OOMMF `.odt` file and returns it
