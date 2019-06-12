@@ -125,7 +125,7 @@ def units(filename, rename=True):
             units = [re.sub(r'[{}]', '', unit) for unit in units]
             break
 
-    return dict(zip(columns(filename, rename=rename), units))
+    return dict(zip(oommf_columns(filename, rename=rename), units))
 
 
 def oommf_data(filename):
@@ -276,7 +276,7 @@ def merge(input_iterable, rename=True, mergetime=False):
     """
     if all(isinstance(element, str) for element in input_iterable):
         # .odt filenames are passed
-        dfs = list(map(functools.partial(read, rename=rename),
+        dfs = list(map(functools.partial(oommf_read, rename=rename),
                        input_iterable))
     else:
         # pandas.DataFrames are passed
