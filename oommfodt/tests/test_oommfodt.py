@@ -28,12 +28,12 @@ def test_columns():
 
     for test_file in test_files:
         # Without rename
-        columns = oo.columns(test_file, rename=False)
+        columns = oo.oommf_columns(test_file, rename=False)
         check(columns)
         assert all(':' in column for column in columns)
 
         # With rename
-        columns = oo.columns(test_file, rename=True)
+        columns = oo.oommf_columns(test_file, rename=True)
         check(columns)
         assert all(':' not in column for column in columns)
 
@@ -59,7 +59,7 @@ def test_units():
 
 def test_data():
     for test_file in test_files:
-        data = oo.data(test_file)
+        data = oo.oommf_data(test_file)
         assert isinstance(data, list)
         assert all(isinstance(x, float) for x in itertools.chain(*data))
 
@@ -67,16 +67,16 @@ def test_data():
 def test_read():
     for test_file in test_files:
         # Without rename
-        df = oo.read(test_file, rename=False)
+        df = oo.oommf_read(test_file, rename=False)
         assert isinstance(df, pd.DataFrame)
 
         # With rename
-        df = oo.read(test_file, rename=True)
+        df = oo.oommf_read(test_file, rename=True)
         assert isinstance(df, pd.DataFrame)
 
 
 def test_read_timedriver1():
-    df = oo.read(test_file1)
+    df = oo.oommf_read(test_file1)
     assert df.shape == (25, 18)
 
     t = df['t'].values
@@ -85,7 +85,7 @@ def test_read_timedriver1():
 
 
 def test_read_timedriver2():
-    df = oo.read(test_file2)
+    df = oo.oommf_read(test_file2)
     assert df.shape == (15, 18)
 
     t = df['t'].values
@@ -94,7 +94,7 @@ def test_read_timedriver2():
 
 
 def test_read_mindriver():
-    df = oo.read(test_file3)
+    df = oo.oommf_read(test_file3)
     assert df.shape == (1, 20)
 
 
@@ -118,8 +118,8 @@ def test_merge_files():
     assert 0 not in np.diff(df['tm'].values)  # monotonic
 
     # With time merge, pandas.DataFrames are passed
-    df1 = oo.read(test_file4)
-    df2 = oo.read(test_file8)
+    df1 = oo.oommf_read(test_file4)
+    df2 = oo.oommf_read(test_file8)
     df = oo.merge([df1, df2], mergetime=True)
     assert df.shape == (30, 19)
     assert min(df['tm'].values) == 1e-12
