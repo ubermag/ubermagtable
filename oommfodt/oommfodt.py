@@ -209,8 +209,8 @@ def read(filename, rename=True):
            renamed, please see `oommfodt.columns`.
 
     """
-    return pd.DataFrame(data(filename),
-                        columns=columns(filename, rename=rename))
+    return pd.DataFrame(oommf_data(filename),
+                        columns=oommf_columns(filename, rename=rename))
 
 
 def merge(input_iterable, rename=True, mergetime=False):

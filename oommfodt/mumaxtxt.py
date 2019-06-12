@@ -136,7 +136,7 @@ def mumax_data(filename):
 
     return values
 
-def read(filename, rename=True):
+def mumax_read(filename, rename=True):
     """Read an OOMMF `.odt` file and return it as `pandas.DataFrame`.
 
     This function reads column names and data from an OOMMF `.odt`
@@ -177,6 +177,6 @@ def read(filename, rename=True):
            renamed, please see `oommfodt.columns`.
 
     """
-    return pd.DataFrame(data(filename),
-                        columns=columns(filename, rename=rename))
+    return pd.DataFrame(mumax_data(filename),
+                        columns=mumax_columns(filename, rename=rename))
 
