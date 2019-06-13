@@ -51,8 +51,8 @@ def oommf_columns(filename, rename=True):
     >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file1.odt')
-    >>> columns = oo.columns(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_samples', 'file1.odt')
+    >>> columns = oo.oommf_columns(odtfile)
     >>> type(columns)
     <class 'list'>
 
@@ -109,7 +109,7 @@ def units(filename, rename=True):
     >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file2.odt')
+    ...                        'tests', 'test_sample', 'oommf_samples', 'file2.odt')
     >>> units = oo.units(odtfile)
     >>> type(units)
     <class 'dict'>
@@ -151,8 +151,8 @@ def oommf_data(filename):
     >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file3.odt')
-    >>> data = oo.data(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_samples', 'file3.odt')
+    >>> data = oo.oommf_data(odtfile)
     >>> type(data)
     <class 'list'>
 
@@ -198,8 +198,8 @@ def oommf_read(filename, rename=True):
     >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file1.odt')
-    >>> df = oo.read(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_samples', 'file1.odt')
+    >>> df = oo.oommf_read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
@@ -260,7 +260,7 @@ def merge(input_iterable, rename=True, mergetime=False):
     >>> import oommfodt as oo
     ...
     >>> dirname = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample')
+    ...                        'tests', 'test_sample', 'oommf_samples')
     >>> odtfile1 = os.path.join(dirname, 'file4.odt')
     >>> odtfile2 = os.path.join(dirname, 'file5.odt')
     >>> odtfile3 = os.path.join(dirname, 'file6.odt')

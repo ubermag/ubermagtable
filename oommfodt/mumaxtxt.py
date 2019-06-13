@@ -48,10 +48,10 @@ def mumax_columns(filename, rename=True):
     1. Extracting the names of columns from an mumax `.txt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import mumaxtxt as oo
     ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_samples', 'file1.txt')
+    >>> txtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'mumax_samples', 'table1.txt')
     >>> columns = oo.mumax_columns(txtfile)
     >>> type(columns)
     <class 'list'>
@@ -100,11 +100,11 @@ def mumax_data(filename):
     1. Reading data from an mumaxc `.txt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import mumaxtxt as oo
     ...
     >>> txtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_samples', 'table.txt')
-    >>> data = oo.data(odtfile)
+    ...                        'tests', 'test_sample', 'mumax_samples', 'table1.txt')
+    >>> data = oo.mumax_data(txtfile)
     >>> type(data)
     <class 'list'>
 
@@ -147,11 +147,11 @@ def mumax_read(filename, rename=True):
     1. Reading an mumax `.txt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import mumaxtxt as oo
     ...
     >>> txtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_samples', 'table.txt')
-    >>> df = oo.read(txtfile)
+    ...                        'tests', 'test_sample', 'mumax_samples', 'table1.txt')
+    >>> df = oo.mumax_read(txtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
