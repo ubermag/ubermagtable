@@ -8,7 +8,7 @@ import oommfodt as oo
 
 tol = 1e-20
 test_sample_dirname = os.path.join(os.path.dirname(__file__),
-                                   'test_sample')
+                                   'test_sample/oommf_samples')
 test_file1 = os.path.join(test_sample_dirname, 'file1.odt')
 test_file2 = os.path.join(test_sample_dirname, 'file2.odt')
 test_file3 = os.path.join(test_sample_dirname, 'file3.odt')
