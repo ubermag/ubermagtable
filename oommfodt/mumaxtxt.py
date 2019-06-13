@@ -2,17 +2,39 @@ import re
 import functools
 import pandas as pd
 
-def mumax_columns(filename, rename=True):
-    """Extract the names of columns from an OOMMF `.odt` file.
+# When the column name is shortened, it is renamed with the portion of
+# the string after the last `:` character. If a different name is
+# required, it should be added to this dictionary.
+column_dict = {'E_total': 'E',
+               'UniformExchange::Energy': 'E_Exchange',
+               'DMExchange6Ngbr::Energy': 'E_DMI',
+               'DMI_Cnv::Energy': 'E_DMI_Cnv',
+               'DMI_T::Energy': 'E_DMI_T',
+               'DMI_D2d::Energy': 'E_DMI_D2d',
+               'E_demag': 'E_Demag',
+               'FixedZeeman::Energy': 'E_Zeeman',
+               'UZeeman::Energy': 'E_UZeeman',
+               'CubicAnisotropy::Energy': 'E_CubicAnisotropy',
+               'TimeDriver::Simulationtime': 't',
+               'CGEvolve::Totalenergy': 'E',
+               'SpinTEvolve::Totalenergy': 'E',
+               'UniaxialAnisotropy::Energy': 'E_UniaxialAnisotropy',
+               'UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy4',
+               'Southampton_UniaxialAnisotropy4::Energy':
+               'E_UniaxialAnisotropy'}
+#['t', 'mx', 'my', 'mz', 'E_total', 'E_exch', 'E_demag', 'E_Zeeman', 'E_anis', 'dt', 'maxTorque']
 
-    This function extracts the names of columns from an OOMMF `.odt`
+def mumax_columns(filename, rename=True):
+    """Extract the names of columns from a mumax `.txt` file.
+
+    This function extracts the names of columns from an mumax `.txt`
     file and returns a list of strings. If `rename=True`, the columns
     will be renamed to shorter versions.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` file
+        Name of a mumax `.txt` file
     rename : bool
         Flag (the default is `True`). If `rename=True`, the column
         names are renamed with their shorter versions.
@@ -23,14 +45,14 @@ def mumax_columns(filename, rename=True):
 
     Examples
     --------
-    1. Extracting the names of columns from an OOMMF `.odt` file.
+    1. Extracting the names of columns from an mumax `.txt` file.
 
     >>> import os
     >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file1.odt')
-    >>> columns = oo.columns(odtfile)
+    ...                        'tests', 'test_sample', 'mumax_samples', 'file1.txt')
+    >>> columns = oo.mumax_columns(txtfile)
     >>> type(columns)
     <class 'list'>
 
@@ -47,66 +69,27 @@ def mumax_columns(filename, rename=True):
     splitted_line = lines[0][2:].rstrip().split("\t")
     for column in splitted_line:
         #print(re.sub(r'[(\w)]', '', column))
-        columns.append(column.split(" ")[0])
+        column = column.split(" ")[0]
+        if rename:
+            if column in column_dict.keys():
+                column = column_dict[column]
+                
+        columns.append(column)
+        
         
     return columns
 
-def units(filename, rename=True):
-    """Extract units for individual columns from an OOMMF `.odt` file.
-
-    This function extracts the units for every column from an OOMMF
-    `.odt` file and returns a dictionary.
-
-    Parameters
-    ----------
-    filename : str
-        Name of an OOMMF `.odt` file
-    rename : bool
-        Flag (the default is `True`). If `rename=True`, the column
-        names are renamed with their shorter versions.
-
-    Returns
-    -------
-    dict
-
-    Examples
-    --------
-    1. Extracting units for individual columns from an OOMMF `.odt`
-    file.
-
-    >>> import os
-    >>> import oommfodt as oo
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file2.odt')
-    >>> units = oo.units(odtfile)
-    >>> type(units)
-    <class 'dict'>
-
-    """
-    with open(filename) as f:
-        lines = f.readlines()
-
-    units = []
-    for line in lines:
-        if line.startswith('# Units:'):
-            units = line.split()[2:]
-            units = [re.sub(r'[{}]', '', unit) for unit in units]
-            break
-
-    return dict(zip(columns(filename, rename=rename), units))
-
 
 def mumax_data(filename):
-    """Read numerical data from an OOMMF `.odt` file.
+    """Read numerical data from a mumax `.txt` file.
 
-    This function reads data from an OOMMF `.odt` file and returns it
+    This function reads data from a mumax `.txt` file and returns it
     as a list of floats.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` file
+        Name of a mumax `.txt` file
 
     Returns
     -------
@@ -114,13 +97,13 @@ def mumax_data(filename):
 
     Examples
     --------
-    1. Reading data from an OOMMF `.odt` file.
+    1. Reading data from an mumaxc `.txt` file.
 
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file3.odt')
+    >>> txtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'mumax_samples', 'table.txt')
     >>> data = oo.data(odtfile)
     >>> type(data)
     <class 'list'>
@@ -136,20 +119,21 @@ def mumax_data(filename):
 
     return values
 
-def mumax_read(filename, rename=True):
-    """Read an OOMMF `.odt` file and return it as `pandas.DataFrame`.
 
-    This function reads column names and data from an OOMMF `.odt`
+def mumax_read(filename, rename=True):
+    """Read an mumax `.txt` file and return it as `pandas.DataFrame`.
+
+    This function reads column names and data from an mumax `.txt`
     file and returns a `pandas.DataFrame`. Because there is no
     appropriate way of adding metadata to the `pandas.DataFrame`,
-    obtaining units from the `.odt` file is ignored and can be
+    obtaining units from the `.txt` file is ignored and can be
     extracted using `oommfodt.units` function. If `rename=True`, the
     column names will be renamed to their shorter versions.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` file
+        Name of an mumax `.txt` file
     rename : bool
         Flag (the default is `True`). If `rename=True`, the column
         names are renamed with their shorter versions.
@@ -160,14 +144,14 @@ def mumax_read(filename, rename=True):
 
     Examples
     --------
-    1. Reading an OOMMF `.odt` file.
+    1. Reading an mumax `.txt` file.
 
     >>> import os
     >>> import oommfodt as oo
     ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'file1.odt')
-    >>> df = oo.read(odtfile)
+    >>> txtfile = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample', 'mumax_samples', 'table.txt')
+    >>> df = oo.read(txtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
