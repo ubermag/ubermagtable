@@ -2,27 +2,20 @@ import re
 import functools
 import pandas as pd
 
-# When the column name is shortened, it is renamed with the portion of
-# the string after the last `:` character. If a different name is
+# When the column name is shortened, it is renamed such that the portion of
+# the string after the `_` character is lower case. If a different name is
 # required, it should be added to this dictionary.
-column_dict = {'E_total': 'E',
-               'UniformExchange::Energy': 'E_Exchange',
-               'DMExchange6Ngbr::Energy': 'E_DMI',
-               'DMI_Cnv::Energy': 'E_DMI_Cnv',
-               'DMI_T::Energy': 'E_DMI_T',
-               'DMI_D2d::Energy': 'E_DMI_D2d',
-               'E_demag': 'E_Demag',
-               'FixedZeeman::Energy': 'E_Zeeman',
-               'UZeeman::Energy': 'E_UZeeman',
-               'CubicAnisotropy::Energy': 'E_CubicAnisotropy',
-               'TimeDriver::Simulationtime': 't',
-               'CGEvolve::Totalenergy': 'E',
-               'SpinTEvolve::Totalenergy': 'E',
-               'UniaxialAnisotropy::Energy': 'E_UniaxialAnisotropy',
-               'UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy4',
-               'Southampton_UniaxialAnisotropy4::Energy':
-               'E_UniaxialAnisotropy'}
-#['t', 'mx', 'my', 'mz', 'E_total', 'E_exch', 'E_demag', 'E_Zeeman', 'E_anis', 'dt', 'maxTorque']
+column_dict = {'t' : 't',
+               'mx' : 'mx',
+               'my' : 'my',
+               'mz' : 'mz',
+               'E_total': 'E',
+               'E_exch' : 'E_totalexchange',
+               'E_demag' : 'E_demag',
+               'E_Zeeman': 'E_zeeman',
+               'E_anis' : 'E_totalanisotropy',
+               'dt' : 'dt',
+               'maxTorque' : 'maxtorque'}
 
 def mumax_columns(filename, rename=True):
     """Extract the names of columns from a mumax `.txt` file.
@@ -68,7 +61,6 @@ def mumax_columns(filename, rename=True):
     columns = []
     splitted_line = lines[0][2:].rstrip().split("\t")
     for column in splitted_line:
-        #print(re.sub(r'[(\w)]', '', column))
         column = column.split(" ")[0]
         if rename:
             if column in column_dict.keys():

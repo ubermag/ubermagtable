@@ -6,22 +6,22 @@ import pandas as pd
 # the string after the last `:` character. If a different name is
 # required, it should be added to this dictionary.
 column_dict = {'RungeKuttaEvolve::Totalenergy': 'E',
-               'UniformExchange::Energy': 'E_Exchange',
-               'DMExchange6Ngbr::Energy': 'E_DMI',
-               'DMI_Cnv::Energy': 'E_DMI_Cnv',
-               'DMI_T::Energy': 'E_DMI_T',
-               'DMI_D2d::Energy': 'E_DMI_D2d',
-               'Demag::Energy': 'E_Demag',
-               'FixedZeeman::Energy': 'E_Zeeman',
-               'UZeeman::Energy': 'E_UZeeman',
-               'CubicAnisotropy::Energy': 'E_CubicAnisotropy',
+               'UniformExchange::Energy': 'E_exchange',
+               'DMExchange6Ngbr::Energy': 'E_dmi',
+               'DMI_Cnv::Energy': 'E_dmi_cnv',
+               'DMI_T::Energy': 'E_dmi_t',
+               'DMI_D2d::Energy': 'E_dmi_d2d',
+               'Demag::Energy': 'E_demag',
+               'FixedZeeman::Energy': 'E_zeeman',
+               'UZeeman::Energy': 'E_uzeeman',
+               'CubicAnisotropy::Energy': 'E_cubicanisotropy',
                'TimeDriver::Simulationtime': 't',
                'CGEvolve::Totalenergy': 'E',
                'SpinTEvolve::Totalenergy': 'E',
-               'UniaxialAnisotropy::Energy': 'E_UniaxialAnisotropy',
-               'UniaxialAnisotropy4::Energy': 'E_UniaxialAnisotropy4',
+               'UniaxialAnisotropy::Energy': 'E_uniaxialanisotropy',
+               'UniaxialAnisotropy4::Energy': 'E_uniaxialanisotropy4',
                'Southampton_UniaxialAnisotropy4::Energy':
-               'E_UniaxialAnisotropy'}
+               'E_uniaxialanisotropy'}
 
 
 def oommf_columns(filename, rename=True):
