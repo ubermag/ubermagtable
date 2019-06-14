@@ -8,13 +8,13 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 | --- | --- |
 | Latest release | [![PyPI version](https://badge.fury.io/py/oommfodt.svg)](https://badge.fury.io/py/oommfodt) |
 |                | [![Anaconda-Server Badge](https://anaconda.org/conda-forge/oommfodt/badges/version.svg)](https://anaconda.org/conda-forge/oommfodt) |
-| Build | [![Build Status](https://travis-ci.org/joommf/oommfodt.svg?branch=master)](https://travis-ci.org/joommf/oommfodt) |
-|       |  [![Build status](https://ci.appveyor.com/api/projects/status/sr110qs3qj00yqib?svg=true)](https://ci.appveyor.com/project/marijanbeg/oommfodt) |
-| Coverage | [![codecov](https://codecov.io/gh/joommf/oommfodt/branch/master/graph/badge.svg)](https://codecov.io/gh/joommf/oommfodt) |
+| Build | [![Build Status](https://travis-ci.org/ubermag/oommfodt.svg?branch=master)](https://travis-ci.org/ubermag/oommfodt) |
+|       |  [![Build status](https://ci.appveyor.com/api/projects/status/sr110qs3qj00yqib?svg=true)](https://ci.appveyor.com/project/ubermag/oommfodt) |
+| Coverage | [![codecov](https://codecov.io/gh/ubermag/oommfodt/branch/master/graph/badge.svg)](https://codecov.io/gh/ubermag/oommfodt) |
 | Documentation | [![Documentation Status](https://readthedocs.org/projects/oommfodt/badge/?version=latest)](http://oommfodt.readthedocs.io/en/latest/?badge=latest) |
-| Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/joommf/oommfodt/master?filepath=index.ipynb) |
+| Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/ubermag/oommfodt/master?filepath=index.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/oommfodt/badges/platforms.svg)](https://anaconda.org/conda-forge/oommfodt) |
-| Dependecies | [![Requirements Status](https://requires.io/github/joommf/oommfodt/requirements.svg?branch=master)](https://requires.io/github/joommf/oommfodt/requirements/?branch=master) |
+| Dependecies | [![Requirements Status](https://requires.io/github/ubermag/oommfodt/requirements.svg?branch=master)](https://requires.io/github/ubermag/oommfodt/requirements/?branch=master) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/oommfodt/badges/downloads.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
 
