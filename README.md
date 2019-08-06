@@ -12,7 +12,7 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 |       |  [![Build status](https://ci.appveyor.com/api/projects/status/sr110qs3qj00yqib?svg=true)](https://ci.appveyor.com/project/ubermag/oommfodt) |
 | Coverage | [![codecov](https://codecov.io/gh/ubermag/oommfodt/branch/master/graph/badge.svg)](https://codecov.io/gh/ubermag/oommfodt) |
 | Documentation | [![Documentation Status](https://readthedocs.org/projects/oommfodt/badge/?version=latest)](http://oommfodt.readthedocs.io/en/latest/?badge=latest) |
-| Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/ubermag/oommfodt/master?filepath=index.ipynb) |
+| Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?filepath=index.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/oommfodt/badges/platforms.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | Dependecies | [![Requirements Status](https://requires.io/github/ubermag/oommfodt/requirements.svg?branch=master)](https://requires.io/github/ubermag/oommfodt/requirements/?branch=master) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/oommfodt/badges/downloads.svg)](https://anaconda.org/conda-forge/oommfodt) |
