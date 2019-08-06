@@ -6,8 +6,8 @@ FROM ubuntu:18.04
 RUN apt-get update -y
 RUN apt-get install -y python3-pip
 
-COPY . /usr/local/oommfodt/
-WORKDIR /usr/local/oommfodt
+COPY . /usr/local/ubermagtable/
+WORKDIR /usr/local/ubermagtable
 RUN python3 -m pip install .
 
 # Commands to make Binder work.
@@ -24,5 +24,5 @@ RUN adduser --disabled-password \
 COPY . ${HOME}
 USER root
 RUN chown -R ${NB_UID} ${HOME}
-RUN chown -R ${NB_UID} /usr/local/oommfodt
+RUN chown -R ${NB_UID} /usr/local/ubermagtable
 USER ${NB_USER}

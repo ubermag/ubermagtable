@@ -1,4 +1,4 @@
-PROJECT=oommfodt
+PROJECT=ubermagtable
 IPYNBPATH=docs/ipynb/*.ipynb
 CODECOVTOKEN=dee03a75-54f6-4959-8fe3-0ccf993a8374
 PYTHON?=python3
