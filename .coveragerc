@@ -1,2 +1,2 @@
 [run]
-omit = oommfodt/tests/*
+omit = ubermagtable/tests/*
