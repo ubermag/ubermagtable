@@ -67,13 +67,13 @@ def columns(filename, rename=True):
     file.
 
     This function extracts the names of columns from an OOMMF `.odt`
-    or mumax3 `.txt` file and returns a list of strings. If
+    or a mumax3 `.txt` file and returns a list of strings. If
     `rename=True`, the columns will be renamed to shorter versions.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` or mumax3 `.txt` file
+        Name of an OOMMF `.odt` or a mumax3 `.txt` file
     rename : bool
         Flag (the default is `True`). If `rename=True`, the column
         names are renamed with their shorter versions.
@@ -87,22 +87,22 @@ def columns(filename, rename=True):
     1. Extracting the names of columns from an OOMMF `.odt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples', 'file1.odt')
-    >>> columns = oo.columns(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_file1.odt')
+    >>> columns = ut.columns(odtfile)
     >>> type(columns)
     <class 'list'>
 
     2. Extracting the names of columns from a mumax3 `.txt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_samples', 'table1.txt')
-    >>> columns = oo.columns(odtfile)
+    ...                        'tests', 'test_sample', 'mumax_file1.txt')
+    >>> columns = ut.columns(odtfile)
     >>> type(columns)
     <class 'list'>
 
@@ -161,11 +161,11 @@ def units(filename, rename=True):
     file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples', 'file2.odt')
-    >>> units = oo.units(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_file2.odt')
+    >>> units = ut.units(odtfile)
     >>> type(units)
     <class 'dict'>
 
@@ -173,11 +173,11 @@ def units(filename, rename=True):
     file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples', 'table1.odt')
-    >>> units = oo.units(odtfile)
+    ...                        'tests', 'test_sample', 'mumax_file1.txt')
+    >>> units = ut.units(odtfile)
     >>> type(units)
     <class 'dict'>
 
@@ -220,22 +220,22 @@ def data(filename):
     1. Reading data from an OOMMF `.odt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples', 'file3.odt')
-    >>> data = oo.data(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_file3.odt')
+    >>> data = ut.data(odtfile)
     >>> type(data)
     <class 'list'>
 
     2. Reading data from a mumax3 `.txt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples', 'table1.txt')
-    >>> data = oo.data(odtfile)
+    ...                        'tests', 'test_sample', 'mumax_file1.txt')
+    >>> data = ut.data(odtfile)
     >>> type(data)
     <class 'list'>
 
@@ -280,11 +280,11 @@ def read(filename, rename=True):
     1. Reading an OOMMF `.odt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples', 'file1.odt')
-    >>> df = oo.read(odtfile)
+    ...                        'tests', 'test_sample', 'oommf_file1.odt')
+    >>> df = ut.read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
@@ -294,8 +294,8 @@ def read(filename, rename=True):
     >>> import oommfodt as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_samples', 'table1.txt')
-    >>> df = oo.read(odtfile)
+    ...                        'tests', 'test_sample', 'mumax_file1.txt')
+    >>> df = ut.read(odtfile)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
@@ -355,14 +355,14 @@ def merge(input_iterable, rename=True, mergetime=False):
     1. Reading and merging `.odt` files.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import oommfodt as ut
     ...
     >>> dirname = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_samples')
-    >>> odtfile1 = os.path.join(dirname, 'file4.odt')
-    >>> odtfile2 = os.path.join(dirname, 'file5.odt')
-    >>> odtfile3 = os.path.join(dirname, 'file6.odt')
-    >>> df = oo.merge([odtfile1, odtfile2, odtfile3], mergetime=True)
+    ...                        'tests', 'test_sample')
+    >>> odtfile1 = os.path.join(dirname, 'oommf_file4.odt')
+    >>> odtfile2 = os.path.join(dirname, 'oommf_file5.odt')
+    >>> odtfile3 = os.path.join(dirname, 'oommf_file6.odt')
+    >>> df = ut.merge([odtfile1, odtfile2, odtfile3], mergetime=True)
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
