@@ -1,7 +1,6 @@
 import pytest
 import pkg_resources
-from .oommfodt import oommf_columns, units, oommf_data, oommf_read, merge
-from .mumaxtxt import mumax_columns, mumax_data, mumax_read
+from .oommfodt import columns, units, data, read, merge
 
 
 def test():
