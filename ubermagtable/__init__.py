@@ -4,7 +4,7 @@ from .ubermagtable import columns, units, data, read, merge
 
 
 def test():
-    return pytest.main(["-v", "--pyargs", "oommfodt"])  # pragma: no cover
+    return pytest.main(["-v", "--pyargs", "ubermagtable"])  # pragma: no cover
 
 
 __version__ = pkg_resources.get_distribution(__name__).version
