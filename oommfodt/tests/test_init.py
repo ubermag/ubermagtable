@@ -1,12 +1,12 @@
 import re
-import oommfodt as oo
+import oommfodt as ut
 
 
 def test_version():
-    assert isinstance(oo.__version__, str)
-    assert re.search(r'^\d+.\d+.?\d*$', oo.__version__)
+    assert isinstance(ut.__version__, str)
+    assert re.search(r'^\d+.\d+.?\d*$', ut.__version__)
 
 
 def test_dependencies():
-    assert isinstance(oo.__dependencies__, list)
-    assert len(oo.__dependencies__) > 0
+    assert isinstance(ut.__dependencies__, list)
+    assert len(ut.__dependencies__) > 0
