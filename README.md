@@ -9,9 +9,9 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 | Latest release | [![PyPI version](https://badge.fury.io/py/ubermagtable.svg)](https://badge.fury.io/py/ubermagtable) |
 |                | [![Anaconda-Server Badge](https://anaconda.org/conda-forge/ubermagtable/badges/version.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | Build | [![Build Status](https://travis-ci.org/ubermag/ubermagtable.svg?branch=master)](https://travis-ci.org/ubermag/ubermagtable) |
-|       |  [![Build status](https://ci.appveyor.com/api/projects/status/sr110qs3qj00yqib?svg=true)](https://ci.appveyor.com/project/ubermag/oommfodt) |
+|       | [![Build status](https://ci.appveyor.com/api/projects/status/kxo94xq58pdswunf?svg=true)](https://ci.appveyor.com/project/marijanbeg/ubermagtable) |
 | Coverage | [![codecov](https://codecov.io/gh/ubermag/oommfodt/branch/master/graph/badge.svg)](https://codecov.io/gh/ubermag/oommfodt) |
-| Documentation | [![Documentation Status](https://readthedocs.org/projects/oommfodt/badge/?version=latest)](http://oommfodt.readthedocs.io/en/latest/?badge=latest) |
+| Documentation | [![Documentation Status](https://readthedocs.org/projects/ubermagtable/badge/?version=latest)](https://ubermagtable.readthedocs.io/en/latest/?badge=latest) |
 | Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?filepath=index.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/oommfodt/badges/platforms.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | Dependecies | [![Requirements Status](https://requires.io/github/ubermag/oommfodt/requirements.svg?branch=master)](https://requires.io/github/ubermag/oommfodt/requirements/?branch=master) |
