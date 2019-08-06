@@ -1,12 +1,12 @@
 API Reference
 =============
 
-.. autofunction:: oommfodt.columns
+.. autofunction:: ubermagtable.columns
 
-.. autofunction:: oommfodt.units
+.. autofunction:: ubermagtable.units
 
-.. autofunction:: oommfodt.data
+.. autofunction:: ubermagtable.data
 
-.. autofunction:: oommfodt.read
+.. autofunction:: ubermagtable.read
 
-.. autofunction:: oommfodt.merge		  
+.. autofunction:: ubermagtable.merge		  
