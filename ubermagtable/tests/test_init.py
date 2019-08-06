@@ -1,5 +1,5 @@
 import re
-import oommfodt as ut
+import ubermagtable as ut
 
 
 def test_version():

@@ -87,7 +87,7 @@ def columns(filename, rename=True):
     1. Extracting the names of columns from an OOMMF `.odt` file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'oommf_file1.odt')
@@ -98,7 +98,7 @@ def columns(filename, rename=True):
     2. Extracting the names of columns from a mumax3 `.txt` file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'mumax_file1.txt')
@@ -109,7 +109,7 @@ def columns(filename, rename=True):
     .. note::
 
            This function does not extract units for individual
-           columns. For that `oommfodt.units` should be used.
+           columns. For that `ubermagtable.units` should be used.
 
     """
     with open(filename) as f:
@@ -161,7 +161,7 @@ def units(filename, rename=True):
     file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'oommf_file2.odt')
@@ -173,7 +173,7 @@ def units(filename, rename=True):
     file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'mumax_file1.txt')
@@ -220,7 +220,7 @@ def data(filename):
     1. Reading data from an OOMMF `.odt` file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'oommf_file3.odt')
@@ -231,7 +231,7 @@ def data(filename):
     2. Reading data from a mumax3 `.txt` file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'mumax_file1.txt')
@@ -259,7 +259,7 @@ def read(filename, rename=True):
     a mumax3 `.txt` file and returns a `pandas.DataFrame`. Because
     there is no appropriate way of adding metadata to the
     `pandas.DataFrame`, obtaining units from the `.odt` file is
-    ignored and can be extracted using `oommfodt.units` function. If
+    ignored and can be extracted using `ubermagtable.units` function. If
     `rename=True`, the column names will be renamed to their shorter
     versions.
 
@@ -280,7 +280,7 @@ def read(filename, rename=True):
     1. Reading an OOMMF `.odt` file.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'oommf_file1.odt')
@@ -291,7 +291,7 @@ def read(filename, rename=True):
     2. Reading a mumax3 `.txt` file.
 
     >>> import os
-    >>> import oommfodt as oo
+    >>> import ubermagtable as oo
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'mumax_file1.txt')
@@ -302,7 +302,7 @@ def read(filename, rename=True):
     .. note::
 
            For more information on how the names of columns are
-           renamed, please see `oommfodt.columns`.
+           renamed, please see `ubermagtable.columns`.
 
     """
     return pd.DataFrame(data(filename),
@@ -355,7 +355,7 @@ def merge(input_iterable, rename=True, mergetime=False):
     1. Reading and merging `.odt` files.
 
     >>> import os
-    >>> import oommfodt as ut
+    >>> import ubermagtable as ut
     ...
     >>> dirname = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample')
@@ -369,7 +369,7 @@ def merge(input_iterable, rename=True, mergetime=False):
     .. note::
 
            For more information on how the names of columns are
-           renamed, please see `oommfodt.columns`.
+           renamed, please see `ubermagtable.columns`.
 
     """
     if all(isinstance(element, str) for element in input_iterable):

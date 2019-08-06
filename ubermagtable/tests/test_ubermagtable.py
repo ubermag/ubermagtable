@@ -4,7 +4,7 @@ import pytest
 import itertools
 import numpy as np
 import pandas as pd
-import oommfodt as ut
+import ubermagtable as ut
 
 tol = 1e-20
 test_sample_dirname = os.path.join(os.path.dirname(__file__),
