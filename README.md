@@ -32,7 +32,7 @@ We support installation using `conda` and `pip` package managers. Instructions c
 
 ## Binder
 
-`ubermagtable` can be used in the cloud via Binder. This does not require you to have anything installed and no files will be created on your machine. To use `ubermagtable` in the cloud, use this [link](https://mybinder.org/v2/gh/joommf/ubermagtable/master?filepath=index.ipynb).
+`ubermagtable` can be used in the cloud via Binder. This does not require you to have anything installed and no files will be created on your machine. To use `ubermagtable` in the cloud, use this [link](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?filepath=index.ipynb).
 
 ## Documentation
 
