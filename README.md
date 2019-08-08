@@ -14,7 +14,6 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 | Documentation | [![Documentation Status](https://readthedocs.org/projects/ubermagtable/badge/?version=latest)](https://ubermagtable.readthedocs.io/en/latest/?badge=latest) |
 | Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?filepath=index.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/oommfodt/badges/platforms.svg)](https://anaconda.org/conda-forge/oommfodt) |
-| Dependecies | [![Requirements Status](https://requires.io/github/ubermag/oommfodt/requirements.svg?branch=master)](https://requires.io/github/ubermag/oommfodt/requirements/?branch=master) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/oommfodt/badges/downloads.svg)](https://anaconda.org/conda-forge/oommfodt) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
 
@@ -22,7 +21,7 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 
 `ubermagtable` is a Python package that provides:
 
-- Conversion of OOMMF `.odt` files to `pandas.DataFrames`
+- Conversion of scalar data files (OOMMF `.odt` and mumax3 `.txt`) to `pandas.DataFrames`
 - Merging of multiple OOMMF `.odt` files into a single `pandas.DataFrame`
 
 It is available on all major operating systems (Windows, MacOS, Linux) and requires Python 3.6 or higher.
