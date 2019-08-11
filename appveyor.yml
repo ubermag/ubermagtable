@@ -22,7 +22,3 @@ test_script:
   - python -c "import ubermagtable as ut; import sys; sys.exit(ut.test())"
   - python -m pytest --nbval docs\ipynb\
   - python -m pytest --doctest-modules --ignore=ubermagtable\tests ubermagtable
-  
-notifications:
-  - provider: Slack
-    incoming_webhook: https://hooks.slack.com/services/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
