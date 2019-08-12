@@ -12,7 +12,7 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 |       | [![Build status](https://ci.appveyor.com/api/projects/status/kxo94xq58pdswunf?svg=true)](https://ci.appveyor.com/project/marijanbeg/ubermagtable) |
 | Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg)](https://codecov.io/gh/ubermag/ubermagtable) |
 | Documentation | [![Documentation Status](https://readthedocs.org/projects/ubermagtable/badge/?version=latest)](https://ubermagtable.readthedocs.io/en/latest/?badge=latest) |
-| Binder | [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?filepath=index.ipynb) |
+| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?filepath=docs%2Fipynb%2Findex.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/ubermagtable/badges/platforms.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/ubermagtable/badges/downloads.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
