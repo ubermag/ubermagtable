@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setuptools.setup(
     name='ubermagtable',
-    version='0.1.2',
+    version='0.1.3',
     description=('Python package for reading and merging OOMMF .odt '
                  'and mumax3 .txt files.'),
     long_description=long_description,
