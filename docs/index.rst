@@ -10,5 +10,5 @@ ubermagtable
    :maxdepth: 2
    :caption: Contents:
 
-   api-reference
    tutorials
+   api-reference
