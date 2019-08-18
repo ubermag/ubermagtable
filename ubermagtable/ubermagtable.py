@@ -51,7 +51,15 @@ oommf_dict = {'RungeKuttaEvolve::Total energy': 'E',
               'UniaxialAnisotropy::Energy': 'E_uniaxialanisotropy',
               'UniaxialAnisotropy4::Energy': 'E_uniaxialanisotropy4',
               'Southampton_UniaxialAnisotropy4::Energy':
-              'E_uniaxialanisotropy'}
+              'E_uniaxialanisotropy',
+              'Exchange6Ngbr::Energy': 'E_exchange',
+              'Exchange6Ngbr::Max Spin Ang': 'max_spin_ang',
+              'Exchange6Ngbr::Stage Max Spin Ang': 'stage_max_spin_ang',
+              'Exchange6Ngbr::Run Max Spin Ang': 'run_max_spin_ang',
+              'ExchangePtwise::Energy': 'E_exchange',
+              'ExchangePtwise::Max Spin Ang': 'max_spin_ang',
+              'ExchangePtwise::Stage Max Spin Ang': 'stage_max_spin_ang',
+              'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang'}
 
 # The mumax3 columns are renamed according to this dictionary.
 mumax_dict = {'t' : 't',
