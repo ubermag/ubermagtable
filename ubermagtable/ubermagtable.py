@@ -66,7 +66,7 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'UZeeman::By': 'By',
               'UZeeman::Bz': 'Bz',
               'CubicAnisotropy::Energy': 'E_cubicanisotropy',
-              'SpinTEvolve::Total energy': 'E',
+              'SpinTEvolve:evolver:Total energy': 'E',
               'UniaxialAnisotropy::Energy': 'E_uniaxialanisotropy',
               'UniaxialAnisotropy4::Energy': 'E_uniaxialanisotropy4',
               'Southampton_UniaxialAnisotropy4::Energy':
