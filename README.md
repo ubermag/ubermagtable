@@ -16,6 +16,7 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>2</sup>, Sergii Mamedov<sup>1</su
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/ubermagtable/badges/platforms.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/ubermagtable/badges/downloads.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
+| DOI | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3539492.svg)](https://doi.org/10.5281/zenodo.3539492) |
 
 ## About
 
@@ -52,7 +53,7 @@ If you use this package in your research, please cite it as:
 
 1. M. Beg, R. A. Pepper, and H. Fangohr. User interfaces for computational science: A domain specific language for OOMMF embedded in Python. [AIP Advances, 7, 56025](http://aip.scitation.org/doi/10.1063/1.4977225) (2017).
 
-2. DOI will be available soon
+2. M. Beg, V. Nehruji, S. Mamedov, R. A. Pepper, T. Kluyver, and H. Fangohr. ubermag/ubermagtable: Python package for reading and merging OOMMF .odt and mumax3 .txt files. Zenodo. http://doi.org/10.5281/zenodo.3539492 (2019).
 
 ## Acknowledgements
 
