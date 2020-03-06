@@ -5,4 +5,4 @@ dependencies:
   - python==3.8
   - pip
   - pip:
-    - ubermagtable==0.2.4
+    - ubermagtable==0.1.6
