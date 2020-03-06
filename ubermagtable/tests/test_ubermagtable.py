@@ -19,12 +19,13 @@ oommf_file7 = os.path.join(test_sample_dirname, 'oommf_file7.odt')
 oommf_file8 = os.path.join(test_sample_dirname, 'oommf_file8.odt')
 
 oommf_files = [oommf_file1, oommf_file2, oommf_file3, oommf_file4,
-              oommf_file5, oommf_file6, oommf_file7, oommf_file8]
+               oommf_file5, oommf_file6, oommf_file7, oommf_file8]
 
 mumax_file1 = os.path.join(test_sample_dirname, 'mumax_file1.txt')
 mumax_files = [mumax_file1]
 
 all_files = oommf_files + mumax_files
+
 
 def test_columns():
     def check(columns):

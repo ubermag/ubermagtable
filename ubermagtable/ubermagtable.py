@@ -99,6 +99,7 @@ mumax_dict = {'t': 't',
               'dt': 'dt',
               'maxTorque': 'maxtorque'}
 
+
 def columns(filename, rename=True):
     """Extracts the names of columns from an OOMMF ``.odt`` or mumax3 ``.txt``
     file.
@@ -156,9 +157,11 @@ def columns(filename, rename=True):
     columns = []
     if lines[0].startswith('# ODT'):
         # OOMMF odt file
-        columns_line = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
+        columns_line = list(filter(lambda l: l.startswith('# Columns:'),
+                                   lines))[0]
         columns_line = re.split(r'Oxs_|Anv_|Southampton_', columns_line)[1:]
-        columns_line = list(map(lambda s: re.sub(r'[{}]', '', s), columns_line))
+        columns_line = list(map(lambda s: re.sub(r'[{}]', '', s),
+                                columns_line))
         columns_line = list(map(lambda s: s.strip(), columns_line))
         columns_dict = oommf_dict
     else:
