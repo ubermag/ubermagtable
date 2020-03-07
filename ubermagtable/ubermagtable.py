@@ -84,7 +84,9 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'ExchangePtwise::Energy': 'E_exchange',
               'ExchangePtwise::Max Spin Ang': 'max_spin_ang',
               'ExchangePtwise::Stage Max Spin Ang': 'stage_max_spin_ang',
-              'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang'}
+              'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang',
+              'CGEvolve:evolver:Energy calc count YY_FixedMEL::Energy':
+              'MEL_E'}
 
 # The mumax3 columns are renamed according to this dictionary.
 mumax_dict = {'t': 't',
@@ -347,8 +349,13 @@ def read(filename, rename=True):
            see ``ubermagtable.columns``.
 
     """
-    return pd.DataFrame(data(filename),
-                        columns=columns(filename, rename=rename))
+    # MagnetoElastic OOMMF extension adds energy twice in data. The following
+    # lines are just an attempt to fix that in the data.
+    cols = columns(filename, rename=rename)
+    if 'MEL_E' in cols:
+        cols.insert(cols.index('E'), 'E')
+
+    return pd.DataFrame(data(filename), columns=cols)
 
 
 def merge(input_iterable, rename=True, mergetime=False):

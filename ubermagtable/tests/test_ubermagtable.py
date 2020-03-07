@@ -26,6 +26,8 @@ mumax_files = [mumax_file1]
 
 all_files = oommf_files + mumax_files
 
+mel_oommf_file = os.path.join(test_sample_dirname, 'mel_oommf_file.odt')
+
 
 def test_columns():
     def check(columns):
@@ -137,3 +139,9 @@ def test_merge_files():
     assert min(df['tm'].values) == 1e-12
     assert max(df['tm'].values) == 30e-12
     assert 0 not in np.diff(df['tm'].values)  # monotonic
+
+
+def test_oommf_mel():
+    table = ut.read(mel_oommf_file, rename=True)
+    columns = table.columns.to_list()
+    assert len(columns) == 16
