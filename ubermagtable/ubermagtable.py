@@ -79,7 +79,7 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'SpinXferEvolve:evolver:dE/dt': 'dE/dt',
               'SpinXferEvolve:evolver:Delta E': 'delta_E',
               'SpinXferEvolve:evolver:average u': 'average_u',
-              'SpinXferEvolve:evolver:average J': 'average_J',              
+              'SpinXferEvolve:evolver:average J': 'average_J',
               'UniaxialAnisotropy::Energy': 'E_uniaxialanisotropy',
               'UniaxialAnisotropy4::Energy': 'E_uniaxialanisotropy4',
               'Southampton_UniaxialAnisotropy4::Energy':
