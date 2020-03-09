@@ -34,7 +34,8 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'CGEvolve:evolver:Delta E': 'delta_E',
               'CGEvolve:evolver:Bracket count': 'bracket_count',
               'CGEvolve:evolver:Line min count': 'line_min_count',
-              'CGEvolve:evolver:Conjugate cycle count': 'conjugate_cycle_count',
+              'CGEvolve:evolver:Conjugate cycle count':
+              'conjugate_cycle_count',
               'CGEvolve:evolver:Cycle count': 'cycle_count',
               'CGEvolve:evolver:Cycle sub count': 'cycle_sub_count',
               'CGEvolve:evolver:Energy calc count': 'energy_calc_count',
@@ -90,40 +91,44 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'ExchangePtwise::Energy': 'E_exchange',
               'ExchangePtwise::Max Spin Ang': 'max_spin_ang',
               'ExchangePtwise::Stage Max Spin Ang': 'stage_max_spin_ang',
-              'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang'}
+              'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang',
+              'CGEvolve:evolver:Energy calc count YY_FixedMEL::Energy':
+              'MEL_E'}
 
 # The mumax3 columns are renamed according to this dictionary.
-mumax_dict = {'t' : 't',
-              'mx' : 'mx',
-              'my' : 'my',
-              'mz' : 'mz',
+mumax_dict = {'t': 't',
+              'mx': 'mx',
+              'my': 'my',
+              'mz': 'mz',
               'E_total': 'E',
-              'E_exch' : 'E_totalexchange',
-              'E_demag' : 'E_demag',
+              'E_exch': 'E_totalexchange',
+              'E_demag': 'E_demag',
               'E_Zeeman': 'E_zeeman',
-              'E_anis' : 'E_totalanisotropy',
-              'dt' : 'dt',
-              'maxTorque' : 'maxtorque'}
+              'E_anis': 'E_totalanisotropy',
+              'dt': 'dt',
+              'maxTorque': 'maxtorque'}
+
 
 def columns(filename, rename=True):
-    """Extract the names of columns from an OOMMF `.odt` or mumax3 `.txt`
+    """Extracts the names of columns from an OOMMF ``.odt`` or mumax3 ``.txt``
     file.
-
-    This function extracts the names of columns from an OOMMF `.odt`
-    or a mumax3 `.txt` file and returns a list of strings. If
-    `rename=True`, the columns will be renamed to shorter versions.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` or a mumax3 `.txt` file
+
+        Name of an OOMMF ``.odt`` or a mumax3 ``.txt`` file.
+
     rename : bool
-        Flag (the default is `True`). If `rename=True`, the column
-        names are renamed with their shorter versions.
+
+        If ``rename=True``, the column names are renamed with their shorter
+        versions. Defaults to ``True``.
 
     Returns
     -------
     list(str)
+
+        List of column names.
 
     Examples
     --------
@@ -151,8 +156,8 @@ def columns(filename, rename=True):
 
     .. note::
 
-           This function does not extract units for individual
-           columns. For that `ubermagtable.units` should be used.
+           This function does not extract units for individual columns. For
+           that ``ubermagtable.units`` should be used.
 
     """
     with open(filename) as f:
@@ -161,9 +166,11 @@ def columns(filename, rename=True):
     columns = []
     if lines[0].startswith('# ODT'):
         # OOMMF odt file
-        columns_line = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
+        columns_line = list(filter(lambda l: l.startswith('# Columns:'),
+                                   lines))[0]
         columns_line = re.split(r'Oxs_|Anv_|Southampton_', columns_line)[1:]
-        columns_line = list(map(lambda s: re.sub(r'[{}]', '', s), columns_line))
+        columns_line = list(map(lambda s: re.sub(r'[{}]', '', s),
+                                columns_line))
         columns_line = list(map(lambda s: s.strip(), columns_line))
         columns_dict = oommf_dict
     else:
@@ -180,28 +187,29 @@ def columns(filename, rename=True):
 
 
 def units(filename, rename=True):
-    """Extract units for individual columns from an OOMMF `.odt` or mumax3
-    `.txt` file.
-
-    This function extracts the units for every column from an OOMMF
-    `.odt` or mumax3 `.txt` file and returns a dictionary.
+    """Extracts units for individual columns from an OOMMF ``.odt`` or mumax3
+    ``.txt`` file.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` or mumax3 `.txt` file
+
+        Name of an OOMMF ``.odt`` or mumax3 ``.txt`` file.
+
     rename : bool
-        Flag (the default is `True`). If `rename=True`, the column
-        names are renamed with their shorter versions.
+
+        If ``rename=True``, the column names are renamed with their shorter
+        versions. Defaults to ``True``.
 
     Returns
     -------
     dict
 
+        Dictionary of column names and units.
+
     Examples
     --------
-    1. Extracting units for individual columns from an OOMMF `.odt`
-    file.
+    1. Extracting units for individual columns from an OOMMF ``.odt`` file.
 
     >>> import os
     >>> import ubermagtable as ut
@@ -212,8 +220,7 @@ def units(filename, rename=True):
     >>> type(units)
     <class 'dict'>
 
-    1. Extracting units for individual columns from a mumax3 `.txt`
-    file.
+    2. Extracting units for individual columns from a mumax3 ``.txt`` file.
 
     >>> import os
     >>> import ubermagtable as ut
@@ -244,23 +251,23 @@ def units(filename, rename=True):
 
 
 def data(filename):
-    """Read numerical data from an OOMMF `.odt` or a mumax3 `.txt` file.
-
-    This function reads data from an OOMMF `.odt` or a mumax3 `.txt`
-    file and returns it as a list of floats.
+    """Read numerical data from an OOMMF ``.odt`` or a mumax3 ``.txt`` file.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` or a mumax3 `.txt` file
+
+        Name of an OOMMF ``.odt`` or mumax3 ``.txt`` file.
 
     Returns
     -------
     list(float)
 
+        List of numerical data.
+
     Examples
     --------
-    1. Reading data from an OOMMF `.odt` file.
+    1. Reading data from an OOMMF ``.odt`` file.
 
     >>> import os
     >>> import ubermagtable as ut
@@ -271,7 +278,7 @@ def data(filename):
     >>> type(data)
     <class 'list'>
 
-    2. Reading data from a mumax3 `.txt` file.
+    2. Reading data from a mumax3 ``.txt`` file.
 
     >>> import os
     >>> import ubermagtable as ut
@@ -295,32 +302,33 @@ def data(filename):
 
 
 def read(filename, rename=True):
-    """Read an OOMMF `.odt` or a mumax3 `.txt` file and return it as
-    `pandas.DataFrame`.
+    """Converts an OOMMF ``.odt`` or mumax3 ``.txt`` file and returna it as
+    ``pandas.DataFrame``.
 
-    This function reads column names and data from an OOMMF `.odt` or
-    a mumax3 `.txt` file and returns a `pandas.DataFrame`. Because
-    there is no appropriate way of adding metadata to the
-    `pandas.DataFrame`, obtaining units from the `.odt` file is
-    ignored and can be extracted using `ubermagtable.units` function. If
-    `rename=True`, the column names will be renamed to their shorter
-    versions.
+    Because there is no appropriate way of adding metadata to the
+    ``pandas.DataFrame``, obtaining units from the ``.odt`` file is ignored and
+    can be extracted using ``ubermagtable.units`` function.
 
     Parameters
     ----------
     filename : str
-        Name of an OOMMF `.odt` or a mumax3 `.txt` file
+
+        Name of an OOMMF ``.odt`` or mumax3 ``.txt`` file.
+
     rename : bool
-        Flag (the default is `True`). If `rename=True`, the column
-        names are renamed with their shorter versions.
+
+        If ``rename=True``, the column names are renamed with their shorter
+        versions. Defaults to ``True``.
 
     Returns
     -------
     pandas.DataFrame
 
+        Tabular data.
+
     Examples
     --------
-    1. Reading an OOMMF `.odt` file.
+    1. Reading an OOMMF ``.odt`` file.
 
     >>> import os
     >>> import ubermagtable as ut
@@ -331,7 +339,7 @@ def read(filename, rename=True):
     >>> type(df)
     <class 'pandas.core.frame.DataFrame'>
 
-    2. Reading a mumax3 `.txt` file.
+    2. Reading a mumax3 ``.txt`` file.
 
     >>> import os
     >>> import ubermagtable as oo
@@ -344,58 +352,64 @@ def read(filename, rename=True):
 
     .. note::
 
-           For more information on how the names of columns are
-           renamed, please see `ubermagtable.columns`.
+           For more information on how the names of columns are renamed, please
+           see ``ubermagtable.columns``.
 
     """
-    return pd.DataFrame(data(filename),
-                        columns=columns(filename, rename=rename))
+    # MagnetoElastic OOMMF extension adds energy twice in data. The following
+    # lines are just an attempt to fix that in the data.
+    cols = columns(filename, rename=rename)
+    if 'MEL_E' in cols:
+        cols.insert(cols.index('E'), 'E')
+
+    return pd.DataFrame(data(filename), columns=cols)
 
 
 def merge(input_iterable, rename=True, mergetime=False):
-    """Read multiple OOMMF `.odt` or mumax3 `.txt` files or multiple
-    `pandas.DataFrames` and merge them into a single
-    `pandas.DataFrame`.
+    """Read multiple OOMMF ``.odt`` or mumax3 ``.txt`` files or multiple
+    ``pandas.DataFrame`` and merge them into a single ``pandas.DataFrame``.
 
-    This function takes an iterable of OOMMF `.odt` files, mumax3
-    `.txt` files or `pandas.DataFrames`, merges them, and returns a
-    single `pandas.DataFrame`. If there are non-matching columns, the
-    missing values will be `NaN`. If `rename=True` and `.odt`
-    filenames are passed, the column names will be renamed with their
-    shorter versions.
+    If there are non-matching columns, the missing values will be ``NaN``.
 
-    If `mergetime=True`, an additional column will be added to the
-    resulting `pandas.DataFrame`. The column's name is `tm` and
-    contains a successive array of time starting from 0. If there is
-    no time column in one of the `.odt` files, no merging is allowed
-    and `ValueError` is raised.
+    If ``mergetime=True``, an additional column will be added to the resulting
+    ``pandas.DataFrame``. The column's name is ``tm`` and contains a successive
+    array of time starting from ``0``. If there is no time column in any of the
+    ``.odt`` files, no merging is allowed and ``ValueError`` is raised.
 
     Parameters
     ----------
     input_iterable : list(str), list(pandas.DataFrame)
-        An iterable with OOMMF `.odt` or mumax3 `.txt` filenames or
-        `pandas.DataFrames`.
+
+        An iterable with OOMMF ``.odt`` or mumax3 ``.txt`` filenames or
+        ``pandas.DataFrames``.
+
     rename : bool
-        Flag (the default is `True`). If `rename=True`, the column
-        names are renamed with their shorter versions.
+
+        If ``rename=True``, the column names are renamed with their shorter
+        versions. Defaults to ``True``.
+
     mergetime : bool
-        Flag (the default is `True`). If `mergetime=True`, a new `tm`
-        column is added with successive values of time to the
-        resulting `pandas.dataFrame`.
+
+        If ``mergetime=True``, a new ``tm`` column is added with successive
+        values of time to the resulting `pandas.dataFrame`. Defaults to
+        ``True``.
 
     Returns
     -------
     pandas.DataFrame
 
+        Resulting data.
+
     Raises
     ------
     ValueError
-        If `mergetime=True` and one of the passed `pandas.DataFrames`
-        is missing `t` column.
+
+        If ``mergetime=True`` and one of the passed ``pandas.DataFrames`` is
+        missing ``t`` column.
 
     Examples
     --------
-    1. Reading and merging `.odt` files.
+    1. Reading and merging ``.odt`` files.
 
     >>> import os
     >>> import ubermagtable as ut
@@ -411,8 +425,8 @@ def merge(input_iterable, rename=True, mergetime=False):
 
     .. note::
 
-           For more information on how the names of columns are
-           renamed, please see `ubermagtable.columns`.
+           For more information on how the names of columns are renamed, please
+           see ``ubermagtable.columns``.
 
     """
     if all(isinstance(element, str) for element in input_iterable):
@@ -425,8 +439,8 @@ def merge(input_iterable, rename=True, mergetime=False):
 
     if mergetime:
         if not all('t' in df.columns for df in dfs):
-            raise ValueError('Some of the data tables are '
-                             'missing the time column.')
+            msg = 'Some of the tables are missing the time column.'
+            raise ValueError(msg)
 
         time_offset = 0
         retimed_dfs = []
