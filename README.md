@@ -1,5 +1,5 @@
 # ubermagtable
-Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>1</sup>, Sergii Mamedov<sup>2</sup>, Ryan A. Pepper<sup>1</sup>, Thomas Kluyver<sup>2</sup>, and Hans Fangohr<sup>2,1</sup>
+Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>1</sup>, Sergii Mamedov<sup>2</sup>, Ryan A. Pepper<sup>1</sup>, Thomas Kluyver<sup>2</sup>, and Hans Fangohr<sup>1,2</sup>
 
 <sup>1</sup> *Faculty of Engineering and Physical Sciences, University of Southampton, Southampton SO17 1BJ, United Kingdom*  
 <sup>2</sup> *European XFEL GmbH, Holzkoppel 4, 22869 Schenefeld, Germany*  
@@ -22,24 +22,25 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>1</sup>, Sergii Mamedov<sup>2</su
 
 `ubermagtable` is a Python package that provides:
 
-- Conversion of scalar data files (OOMMF `.odt` and mumax3 `.txt`) to `pandas.DataFrames`
-- Merging of multiple OOMMF `.odt` files into a single `pandas.DataFrame`
+- Conversion of scalar data files (OOMMF `.odt` and mumax3 `.txt`) to `pandas.DataFrames`,
 
-It is available on all major operating systems (Windows, MacOS, Linux) and requires Python 3.6 or higher.
+- Merging of multiple table data files, and
 
-It is available on all major operating systems (Windows, MacOS, and Linux) and requires Python 3.6 or higher.
+- Visualisation of table data.
+
+It is available on Windows, MacOS, and Linux. It requires Python 3.6+.
 
 ## Documentation
 
-APIs and tutorials as Jupyter notebooks are available as a part of documentation.
+APIs and tutorials are available in documentation. To access them, use the documentation badge in the table above.
 
 ## Installation, testing, and upgrade
 
-We support installation using `conda` and `pip` package managers. Instructions can be found in the documentation.
+We recommend installation using `conda` package manager. Instructions can be found in the documentation.
 
 ## Binder
 
-This package can be used in the cloud via Binder. This does not require to have anything installed and no files will be created on your machine. To access Binder, use the Binder badge in the table above.
+This package can be used in the cloud via Binder. To access Binder, use the Binder badge in the table above.
 
 ## Support
 
@@ -58,8 +59,6 @@ If you use this package, please cite it as:
 2. M. Beg, V. Nehruji, S. Mamedov, R. A. Pepper, T. Kluyver, and H. Fangohr. ubermag/ubermagtable: Python package for manipulating tabular data. Zenodo. DOI: [10.5281/zenodo.3539492](http://doi.org/10.5281/zenodo.3539492) (2020).
 
 ## Acknowledgements
-
-Developed as a part of:
 
 - [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541)
 
