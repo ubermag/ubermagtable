@@ -1,4 +1,5 @@
 import os
+import pytest
 import numbers
 import tempfile
 import ipywidgets
@@ -68,6 +69,15 @@ class TestTable:
         assert table.time_column == 't'
         assert 'mx' in table.data_columns
 
+    def test_length(self):
+        table = ut.Table.fromfile(self.odtfiles[0])
+        assert abs(table.length - 25e-12) < 1e-15
+
+        # Exception
+        table = ut.Table.fromfile(self.odtfiles[2])
+        with pytest.raises(ValueError):
+            res = table.length
+
     def test_lshift(self):
         table1 = ut.Table.fromfile(self.odtfiles[0])
         table2 = ut.Table.fromfile(self.odtfiles[1])
@@ -77,6 +87,14 @@ class TestTable:
         assert res.length == table1.length + table2.length
         # Are all time values unique?
         assert len(set(res.data[res.time_column].to_numpy())) == 40
+
+        # Exception
+        table3 = ut.Table.fromfile(self.odtfiles[2])
+        with pytest.raises(ValueError):
+            res = table1 << table3
+
+        with pytest.raises(ValueError):
+            res = table3 << table1
 
     def test_mpl(self):
         table = ut.Table.fromfile(self.odtfiles[0])
@@ -110,7 +128,18 @@ class TestTable:
             tmpfilename = os.path.join(tmpdir, filename)
             table.mpl(filename=tmpfilename)
 
+        # Exception - no time column
+        table = ut.Table.fromfile(self.odtfiles[2])
+        with pytest.raises(ValueError):
+            table.mpl()
+
         plt.close('all')
+
+    def test_slider(self):
+        # Exception
+        table = ut.Table.fromfile(self.odtfiles[2])
+        with pytest.raises(ValueError):
+            slider = table.slider()
 
     def test_oommf_mel(self):
         table = ut.Table.fromfile(self.odtfiles[-1])

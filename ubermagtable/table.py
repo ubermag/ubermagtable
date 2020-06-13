@@ -188,6 +188,10 @@ class Table:
         24.999...
 
         """
+        if self.time_column is None:
+            msg = 'Cannot compute length for a table with no time column.'
+            raise ValueError(msg)
+
         return self.data[self.time_column].iloc[-1]
 
     def __repr__(self):
@@ -272,7 +276,7 @@ class Table:
                    f'{type(self)} and {type(other)}.')
             raise TypeError(msg)
 
-        if self.time_column is None:
+        if self.time_column is None or other.time_column is None:
             msg = 'Some of the tables are missing the time column.'
             raise ValueError(msg)
 
@@ -347,6 +351,10 @@ class Table:
         >>> table.mpl()
 
         """
+        if self.time_column is None:
+            msg = 'Cannot plot table data with no time column.'
+            raise ValueError(msg)
+
         if ax is None:
             fig = plt.figure(figsize=figsize)
             ax = fig.add_subplot(111)
