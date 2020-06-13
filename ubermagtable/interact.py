@@ -2,22 +2,26 @@ import ipywidgets
 
 
 def interact(**kwargs):
-    """Decorator for interactive plotting.
-    This is a wrapper around ``ipywidgets.interact``. For details, please refer
-    to ``interact`` function in ``ipywidgets`` package.
+    """Decorator for interactive plotting. This is a wrapper around
+    ``ipywidgets.interact``. For details, please refer to ``interact`` function
+    in ``ipywidgets`` package.
+
     Example
     -------
     1. Interactive plotting.
-    >>> import discretisedfield as df
+
+    >>> import os
+    >>> import ubermagtable as ut
     ...
-    >>> p1 = (-50e-9, -50e-9, -50e-9)
-    >>> p2 = (50e-9, 50e-9, 50e-9)
-    >>> n = (10, 10, 10)
-    >>> mesh = df.Mesh(region=df.Region(p1=p1, p2=p2), n=n)
-    >>> field = df.Field(mesh, dim=3, value=(1, 2, 0))
-    >>> @df.interact(x=field.mesh.slider('x'))
-    ... def myplot(x):
-    ...     field.plane(x=x).mpl()
+    >>> dirname = os.path.join(os.path.dirname(__file__),
+    ...                        'tests', 'test_sample')
+    >>> odtfile = os.path.join(dirname, 'oommf-file1.odt')
+    ...
+    >>> table = ut.Table.fromfile(odtfile)
+    >>> @ut.interact(xlim=table.slider())
+    ... def myplot(xlim):
+    ...     field.mpl(xlim=xlim)
     interactive(...)
+
     """
     return ipywidgets.interact(**kwargs)

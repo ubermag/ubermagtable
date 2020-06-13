@@ -1,12 +1,6 @@
-API Reference
-=============
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
 
-.. autofunction:: ubermagtable.columns
-
-.. autofunction:: ubermagtable.units
-
-.. autofunction:: ubermagtable.data
-
-.. autofunction:: ubermagtable.read
-
-.. autofunction:: ubermagtable.merge		  
+   table
+   interact
