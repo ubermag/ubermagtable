@@ -1,6 +1,4 @@
 import re
-import functools
-import pandas as pd
 
 # The OOMMF columns are renamed according to this dictionary.
 oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
@@ -96,28 +94,27 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'MEL_E'}
 
 # The mumax3 columns are renamed according to this dictionary.
-mumax_dict = {'t': 't',
-              'mx': 'mx',
-              'my': 'my',
-              'mz': 'mz',
-              'E_total': 'E',
-              'E_exch': 'E_totalexchange',
-              'E_demag': 'E_demag',
-              'E_Zeeman': 'E_zeeman',
-              'E_anis': 'E_totalanisotropy',
-              'dt': 'dt',
-              'maxTorque': 'maxtorque'}
+mumax3_dict = {'t': 't',
+               'mx': 'mx',
+               'my': 'my',
+               'mz': 'mz',
+               'E_total': 'E',
+               'E_exch': 'E_totalexchange',
+               'E_demag': 'E_demag',
+               'E_Zeeman': 'E_zeeman',
+               'E_anis': 'E_totalanisotropy',
+               'dt': 'dt',
+               'maxTorque': 'maxtorque'}
 
 
 def columns(filename, rename=True):
-    """Extracts the names of columns from an OOMMF ``.odt`` or mumax3 ``.txt``
-    file.
+    """Extracts column names from a table file.
 
     Parameters
     ----------
     filename : str
 
-        Name of an OOMMF ``.odt`` or a mumax3 ``.txt`` file.
+        OOMMF ``.odt`` or mumax3 ``.txt`` file.
 
     rename : bool
 
@@ -126,75 +123,62 @@ def columns(filename, rename=True):
 
     Returns
     -------
-    list(str)
+    list
 
         List of column names.
 
     Examples
     --------
-    1. Extracting the names of columns from an OOMMF `.odt` file.
+    1. Extracting the column names from an OOMMF `.odt` file.
 
     >>> import os
-    >>> import ubermagtable as ut
+    >>> import ubermagtable.util as uu
     ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_file1.odt')
-    >>> columns = ut.columns(odtfile)
-    >>> type(columns)
-    <class 'list'>
+    >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
+    ...                        'tests', 'test_sample', 'oommf-file1.odt')
+    >>> uu.columns(odtfile)
+    [...]
 
     2. Extracting the names of columns from a mumax3 `.txt` file.
 
-    >>> import os
-    >>> import ubermagtable as ut
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_file1.txt')
-    >>> columns = ut.columns(odtfile)
-    >>> type(columns)
-    <class 'list'>
-
-    .. note::
-
-           This function does not extract units for individual columns. For
-           that ``ubermagtable.units`` should be used.
+    >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
+    ...                        'tests', 'test_sample', 'mumax3-file1.txt')
+    >>> uu.columns(odtfile)
+    [...]
 
     """
     with open(filename) as f:
         lines = f.readlines()
 
     columns = []
-    if lines[0].startswith('# ODT'):
-        # OOMMF odt file
-        columns_line = list(filter(lambda l: l.startswith('# Columns:'),
-                                   lines))[0]
-        columns_line = re.split(r'Oxs_|Anv_|Southampton_', columns_line)[1:]
-        columns_line = list(map(lambda s: re.sub(r'[{}]', '', s),
-                                columns_line))
-        columns_line = list(map(lambda s: s.strip(), columns_line))
-        columns_dict = oommf_dict
-    else:
-        # mumax3 txt file
-        columns_line = lines[0][2:].rstrip().split('\t')
-        columns_line = list(map(lambda s: s.split(' ')[0], columns_line))
-        columns_dict = mumax_dict
+    if lines[0].startswith('# ODT'):  # OOMMF odt file
+        cline = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
+        cline = re.split(r'Oxs_|Anv_|Southampton_', cline)[1:]
+        cline = list(map(lambda col: re.sub(r'[{}]', '', col), cline))
+        cols = list(map(lambda s: s.strip(), cline))
+        cols_dict = oommf_dict
+    else:  # mumax3 txt file
+        cline = lines[0][2:].rstrip().split('\t')
+        cols = list(map(lambda s: s.split(' ')[0], cline))
+        cols_dict = mumax3_dict
 
-    columns = columns_line
     if rename:
-        columns = [columns_dict[c] for c in columns]
-
-    return columns
+        return [cols_dict[col] for col in cols]
+    else:
+        return cols
 
 
 def units(filename, rename=True):
-    """Extracts units for individual columns from an OOMMF ``.odt`` or mumax3
-    ``.txt`` file.
+    """Extracts units for individual columns from a table file.
+
+    This method extracts both column names and units and returns a dictionary,
+    where keys are column names and values are the units.
 
     Parameters
     ----------
     filename : str
 
-        Name of an OOMMF ``.odt`` or mumax3 ``.txt`` file.
+        OOMMF ``.odt`` or mumax3 ``.txt`` file.
 
     rename : bool
 
@@ -212,56 +196,48 @@ def units(filename, rename=True):
     1. Extracting units for individual columns from an OOMMF ``.odt`` file.
 
     >>> import os
-    >>> import ubermagtable as ut
+    >>> import ubermagtable.util as uu
     ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_file2.odt')
-    >>> units = ut.units(odtfile)
-    >>> type(units)
-    <class 'dict'>
+    >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
+    ...                        'tests', 'test_sample', 'oommf-file2.odt')
+    >>> uu.units(odtfile)
+    {...}
 
     2. Extracting units for individual columns from a mumax3 ``.txt`` file.
 
-    >>> import os
-    >>> import ubermagtable as ut
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_file1.txt')
-    >>> units = ut.units(odtfile)
-    >>> type(units)
-    <class 'dict'>
+    >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
+    ...                        'tests', 'test_sample', 'mumax3-file1.txt')
+    >>> uu.units(odtfile)
+    {...}
 
     """
     with open(filename) as f:
         lines = f.readlines()
 
-    units = []
-    if lines[0].startswith('# ODT'):
-        # OOMMF odt file
-        units_line = list(filter(lambda l: l.startswith('# Units:'), lines))[0]
-        units = units_line.split()[2:]
+    if lines[0].startswith('# ODT'):  # OOMMF odt file
+        uline = list(filter(lambda l: l.startswith('# Units:'), lines))[0]
+        units = uline.split()[2:]
         units = list(map(lambda s: re.sub(r'[{}]', '', s), units))
-    else:
-        # mumax3 txt file
-        units_line = lines[0][2:].rstrip().split('\t')
-        units = list(map(lambda s: s.split()[1], units_line))
+    else:  # mumax3 txt file
+        uline = lines[0][2:].rstrip().split('\t')
+        units = list(map(lambda s: s.split()[1], uline))
         units = list(map(lambda s: re.sub(r'[()]', '', s), units))
 
     return dict(zip(columns(filename, rename=rename), units))
 
 
 def data(filename):
-    """Read numerical data from an OOMMF ``.odt`` or a mumax3 ``.txt`` file.
+    """Extracts numerical data from a table file.
 
     Parameters
     ----------
     filename : str
 
-        Name of an OOMMF ``.odt`` or mumax3 ``.txt`` file.
+        OOMMF ``.odt`` or mumax3 ``.txt`` file.
 
     Returns
     -------
-    list(float)
+    list
 
         List of numerical data.
 
@@ -270,24 +246,19 @@ def data(filename):
     1. Reading data from an OOMMF ``.odt`` file.
 
     >>> import os
-    >>> import ubermagtable as ut
+    >>> import ubermagtable.util as uu
     ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_file3.odt')
-    >>> data = ut.data(odtfile)
-    >>> type(data)
-    <class 'list'>
+    >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
+    ...                        'tests', 'test_sample', 'oommf-file3.odt')
+    >>> uu.data(odtfile)
+    [...]
 
     2. Reading data from a mumax3 ``.txt`` file.
 
-    >>> import os
-    >>> import ubermagtable as ut
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_file1.txt')
-    >>> data = ut.data(odtfile)
-    >>> type(data)
-    <class 'list'>
+    >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
+    ...                        'tests', 'test_sample', 'mumax3-file1.txt')
+    >>> uu.data(odtfile)
+    [...]
 
     """
     with open(filename) as f:
@@ -295,159 +266,7 @@ def data(filename):
 
     values = []
     for line in lines:
-        if not line.startswith("#"):
+        if not line.startswith('#'):
             values.append(list(map(float, line.split())))
 
     return values
-
-
-def read(filename, rename=True):
-    """Converts an OOMMF ``.odt`` or mumax3 ``.txt`` file and returna it as
-    ``pandas.DataFrame``.
-
-    Because there is no appropriate way of adding metadata to the
-    ``pandas.DataFrame``, obtaining units from the ``.odt`` file is ignored and
-    can be extracted using ``ubermagtable.units`` function.
-
-    Parameters
-    ----------
-    filename : str
-
-        Name of an OOMMF ``.odt`` or mumax3 ``.txt`` file.
-
-    rename : bool
-
-        If ``rename=True``, the column names are renamed with their shorter
-        versions. Defaults to ``True``.
-
-    Returns
-    -------
-    pandas.DataFrame
-
-        Tabular data.
-
-    Examples
-    --------
-    1. Reading an OOMMF ``.odt`` file.
-
-    >>> import os
-    >>> import ubermagtable as ut
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf_file1.odt')
-    >>> df = ut.read(odtfile)
-    >>> type(df)
-    <class 'pandas.core.frame.DataFrame'>
-
-    2. Reading a mumax3 ``.txt`` file.
-
-    >>> import os
-    >>> import ubermagtable as oo
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'mumax_file1.txt')
-    >>> df = ut.read(odtfile)
-    >>> type(df)
-    <class 'pandas.core.frame.DataFrame'>
-
-    .. note::
-
-           For more information on how the names of columns are renamed, please
-           see ``ubermagtable.columns``.
-
-    """
-    # MagnetoElastic OOMMF extension adds energy twice in data. The following
-    # lines are just an attempt to fix that in the data.
-    cols = columns(filename, rename=rename)
-    if 'MEL_E' in cols:
-        cols.insert(cols.index('E'), 'E')
-
-    return pd.DataFrame(data(filename), columns=cols)
-
-
-def merge(input_iterable, rename=True, mergetime=False):
-    """Read multiple OOMMF ``.odt`` or mumax3 ``.txt`` files or multiple
-    ``pandas.DataFrame`` and merge them into a single ``pandas.DataFrame``.
-
-    If there are non-matching columns, the missing values will be ``NaN``.
-
-    If ``mergetime=True``, an additional column will be added to the resulting
-    ``pandas.DataFrame``. The column's name is ``tm`` and contains a successive
-    array of time starting from ``0``. If there is no time column in any of the
-    ``.odt`` files, no merging is allowed and ``ValueError`` is raised.
-
-    Parameters
-    ----------
-    input_iterable : list(str), list(pandas.DataFrame)
-
-        An iterable with OOMMF ``.odt`` or mumax3 ``.txt`` filenames or
-        ``pandas.DataFrames``.
-
-    rename : bool
-
-        If ``rename=True``, the column names are renamed with their shorter
-        versions. Defaults to ``True``.
-
-    mergetime : bool
-
-        If ``mergetime=True``, a new ``tm`` column is added with successive
-        values of time to the resulting `pandas.dataFrame`. Defaults to
-        ``True``.
-
-    Returns
-    -------
-    pandas.DataFrame
-
-        Resulting data.
-
-    Raises
-    ------
-    ValueError
-
-        If ``mergetime=True`` and one of the passed ``pandas.DataFrames`` is
-        missing ``t`` column.
-
-    Examples
-    --------
-    1. Reading and merging ``.odt`` files.
-
-    >>> import os
-    >>> import ubermagtable as ut
-    ...
-    >>> dirname = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample')
-    >>> odtfile1 = os.path.join(dirname, 'oommf_file4.odt')
-    >>> odtfile2 = os.path.join(dirname, 'oommf_file5.odt')
-    >>> odtfile3 = os.path.join(dirname, 'oommf_file6.odt')
-    >>> df = ut.merge([odtfile1, odtfile2, odtfile3], mergetime=True)
-    >>> type(df)
-    <class 'pandas.core.frame.DataFrame'>
-
-    .. note::
-
-           For more information on how the names of columns are renamed, please
-           see ``ubermagtable.columns``.
-
-    """
-    if all(isinstance(element, str) for element in input_iterable):
-        # .odt filenames are passed
-        dfs = list(map(functools.partial(read, rename=rename),
-                       input_iterable))
-    else:
-        # pandas.DataFrames are passed
-        dfs = list(input_iterable)
-
-    if mergetime:
-        if not all('t' in df.columns for df in dfs):
-            msg = 'Some of the tables are missing the time column.'
-            raise ValueError(msg)
-
-        time_offset = 0
-        retimed_dfs = []
-        for df in dfs:
-            df['tm'] = time_offset + df['t']
-            time_offset += df['t'].iloc[-1]
-            retimed_dfs.append(df)
-        dfs = retimed_dfs
-
-    return pd.concat(dfs, ignore_index=True, sort=False)
