@@ -96,6 +96,9 @@ class TestTable:
         with pytest.raises(ValueError):
             res = table3 << table1
 
+        with pytest.raises(TypeError):
+            res = table3 << 5
+
     def test_mpl(self):
         table = ut.Table.fromfile(self.odtfiles[0])
 
