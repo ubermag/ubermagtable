@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # Enable default plotting style.
 dirname = os.path.abspath(os.path.dirname(__file__))
-path = os.path.join(dirname, './util/plotting-style.mplstyle')
+path = os.path.join(dirname, 'util', 'plotting-style.mplstyle')
 plt.style.use(path)
 
 
