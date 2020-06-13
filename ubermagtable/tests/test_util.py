@@ -4,7 +4,7 @@ import pytest
 import itertools
 import numpy as np
 import pandas as pd
-import ubermagtable as ut
+import ubermagtable.util as uu
 
 tol = 1e-20
 test_sample_dirname = os.path.join(os.path.dirname(__file__),
@@ -36,11 +36,11 @@ def test_columns():
 
     for f in all_files:
         # Without rename
-        columns = ut.columns(f, rename=False)
+        columns = uu.columns(f, rename=False)
         check(columns)
 
         # With rename
-        columns = ut.columns(f, rename=True)
+        columns = uu.columns(f, rename=True)
         check(columns)
 
 
@@ -54,17 +54,17 @@ def test_units():
 
     for f in all_files:
         # Without rename
-        units = ut.units(f, rename=False)
+        units = uu.units(f, rename=False)
         check(units)
 
         # With rename
-        units = ut.units(f, rename=True)
+        units = uu.units(f, rename=True)
         check(units)
 
 
 def test_data():
     for f in all_files:
-        data = ut.data(f)
+        data = uu.data(f)
         assert isinstance(data, list)
         assert all(isinstance(x, float) for x in itertools.chain(*data))
 
@@ -72,16 +72,16 @@ def test_data():
 def test_read():
     for f in all_files:
         # Without rename
-        df = ut.read(f, rename=False)
+        df = uu.read(f, rename=False)
         assert isinstance(df, pd.DataFrame)
 
         # With rename
-        df = ut.read(f, rename=True)
+        df = uu.read(f, rename=True)
         assert isinstance(df, pd.DataFrame)
 
 
 def test_read_oommf_timedriver1():
-    df = ut.read(oommf_file1)
+    df = uu.read(oommf_file1)
     assert df.shape == (25, 18)
 
     t = df['t'].values
@@ -90,7 +90,7 @@ def test_read_oommf_timedriver1():
 
 
 def test_read_oommf_timedriver2():
-    df = ut.read(oommf_file2)
+    df = uu.read(oommf_file2)
     assert df.shape == (15, 18)
 
     t = df['t'].values
@@ -99,7 +99,7 @@ def test_read_oommf_timedriver2():
 
 
 def test_read_mumax_timedriver1():
-    df = ut.read(mumax_file1)
+    df = uu.read(mumax_file1)
     assert df.shape == (10, 11)
 
     t = df['t'].values
@@ -108,33 +108,33 @@ def test_read_mumax_timedriver1():
 
 
 def test_read_oommf_mindriver():
-    df = ut.read(oommf_file3)
+    df = uu.read(oommf_file3)
     assert df.shape == (1, 20)
 
 
 def test_merge_files():
     # Without time merge
-    df = ut.merge(oommf_files[3:])
+    df = uu.merge(oommf_files[3:])
     assert df.shape == (56, 25)
     assert any(math.isnan(x) for x in df['t'].values)
 
     # With time merge - exception should be raised because one of the
     # files is from MinDriver.
     with pytest.raises(ValueError):
-        df = ut.merge(oommf_files[3:], mergetime=True)
+        df = uu.merge(oommf_files[3:], mergetime=True)
 
     # With time merge
     odtfiles = [oommf_file4, oommf_file5, oommf_file6, oommf_file8]
-    df = ut.merge(odtfiles, mergetime=True)
+    df = uu.merge(odtfiles, mergetime=True)
     assert df.shape == (55, 19)
     assert min(df['tm'].values) == 1e-12
     assert max(df['tm'].values) == 50e-12
     assert 0 not in np.diff(df['tm'].values)  # monotonic
 
     # With time merge, pandas.DataFrames are passed
-    df1 = ut.read(oommf_file4)
-    df2 = ut.read(oommf_file8)
-    df = ut.merge([df1, df2], mergetime=True)
+    df1 = uu.read(oommf_file4)
+    df2 = uu.read(oommf_file8)
+    df = uu.merge([df1, df2], mergetime=True)
     assert df.shape == (30, 19)
     assert min(df['tm'].values) == 1e-12
     assert max(df['tm'].values) == 30e-12
@@ -142,6 +142,6 @@ def test_merge_files():
 
 
 def test_oommf_mel():
-    table = ut.read(mel_oommf_file, rename=True)
+    table = uu.read(mel_oommf_file, rename=True)
     columns = table.columns.to_list()
     assert len(columns) == 16

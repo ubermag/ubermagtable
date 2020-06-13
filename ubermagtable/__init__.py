@@ -1,6 +1,5 @@
 import pytest
 import pkg_resources
-from .ubermagtable import columns, units, data, read, merge
 
 
 def test():
