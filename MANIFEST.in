@@ -1,3 +1,4 @@
 include README.md
 include LICENSE
+include ubermagtable/util/plotting-style.mplstyle
 recursive-include ubermagtable/tests/test_sample *
