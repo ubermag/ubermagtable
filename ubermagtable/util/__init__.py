@@ -1,1 +1,1 @@
-from .ubermagtable import columns, units, data, read, merge
+from .util import columns, units, data, read, merge
