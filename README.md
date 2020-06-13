@@ -22,11 +22,11 @@ Marijan Beg<sup>1,2</sup>, Vanessa Nehruji<sup>1</sup>, Sergii Mamedov<sup>2</su
 
 `ubermagtable` is a Python package that provides:
 
-- Conversion of scalar data files (OOMMF `.odt` and mumax3 `.txt`) to `pandas.DataFrames`,
+- Reading of scalar data files (OOMMF `.odt` and mumax3 `.txt`),
 
-- Merging of multiple table data files, and
+- Merging of multiple tables, and
 
-- Visualisation of table data.
+- Visualisation of scalar table data.
 
 It is available on Windows, MacOS, and Linux. It requires Python 3.6+.
 
