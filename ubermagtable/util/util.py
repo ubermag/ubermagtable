@@ -90,6 +90,7 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'ExchangePtwise::Max Spin Ang': 'max_spin_ang',
               'ExchangePtwise::Stage Max Spin Ang': 'stage_max_spin_ang',
               'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang',
+              'TwoSurfaceExchange::Energy': 'E_rkky',
               'CGEvolve:evolver:Energy calc count YY_FixedMEL::Energy':
               'MEL_E'}
 
