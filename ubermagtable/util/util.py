@@ -16,9 +16,6 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'EulerEvolve:evolver:Max dm/dt': 'max_dmdt',
               'EulerEvolve:evolver:dE/dt': 'dE/dt',
               'EulerEvolve:evolver:Delta E': 'delta_E',
-              'UniformExchange::Max Spin Ang': 'max_spin_ang',
-              'UniformExchange::Stage Max Spin Ang': 'stage_max_spin_ang',
-              'UniformExchange::Run Max Spin Ang': 'run_max_spin_ang',
               'TimeDriver::Iteration': 'iteration',
               'TimeDriver::Stage iteration': 'stage_iteration',
               'TimeDriver::Stage': 'stage',
@@ -46,12 +43,30 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'CGEvolve::Cycle count': 'cycle_count',
               'CGEvolve::Cycle sub count': 'cycle_sub_count',
               'CGEvolve::Energy calc count': 'energy_calc_count',
+              'CGEvolve:evolver:Energy calc count YY_FixedMEL::Energy':
+              'MEL_E',
+              'SpinTEvolve:evolver:Total energy': 'E',
+              'SpinTEvolve:evolver:Energy calc count': 'E_calc_count',
+              'SpinTEvolve:evolver:Max dm/dt': 'max_dmdt',
+              'SpinTEvolve:evolver:dE/dt': 'dE/dt',
+              'SpinTEvolve:evolver:Delta E': 'delta_E',
+              'SpinTEvolve:evolver:average u': 'average_u',
+              'SpinXferEvolve:evolver:Total energy': 'E',
+              'SpinXferEvolve:evolver:Energy calc count': 'E_calc_count',
+              'SpinXferEvolve:evolver:Max dm/dt': 'max_dmdt',
+              'SpinXferEvolve:evolver:dE/dt': 'dE/dt',
+              'SpinXferEvolve:evolver:Delta E': 'delta_E',
+              'SpinXferEvolve:evolver:average u': 'average_u',
+              'SpinXferEvolve:evolver:average J': 'average_J',
               'MinDriver::Iteration': 'iteration',
               'MinDriver::Stage iteration': 'stage_iteration',
               'MinDriver::Stage': 'stage',
               'MinDriver::mx': 'mx',
               'MinDriver::my': 'my',
               'MinDriver::mz': 'mz',
+              'UniformExchange::Max Spin Ang': 'max_spin_ang',
+              'UniformExchange::Stage Max Spin Ang': 'stage_max_spin_ang',
+              'UniformExchange::Run Max Spin Ang': 'run_max_spin_ang',
               'UniformExchange::Energy': 'E_exchange',
               'DMExchange6Ngbr::Energy': 'E_dmi',
               'DMI_Cnv::Energy': 'E_dmi_cnv',
@@ -66,19 +81,6 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'UZeeman::Bz': 'Bz',
               'TransformZeeman::Energy': 'E_tzeeman',
               'CubicAnisotropy::Energy': 'E_cubicanisotropy',
-              'SpinTEvolve:evolver:Total energy': 'E',
-              'SpinTEvolve:evolver:Energy calc count': 'E_calc_count',
-              'SpinTEvolve:evolver:Max dm/dt': 'max_dmdt',
-              'SpinTEvolve:evolver:dE/dt': 'dE/dt',
-              'SpinTEvolve:evolver:Delta E': 'delta_E',
-              'SpinTEvolve:evolver:average u': 'average_u',
-              'SpinXferEvolve:evolver:Total energy': 'E',
-              'SpinXferEvolve:evolver:Energy calc count': 'E_calc_count',
-              'SpinXferEvolve:evolver:Max dm/dt': 'max_dmdt',
-              'SpinXferEvolve:evolver:dE/dt': 'dE/dt',
-              'SpinXferEvolve:evolver:Delta E': 'delta_E',
-              'SpinXferEvolve:evolver:average u': 'average_u',
-              'SpinXferEvolve:evolver:average J': 'average_J',
               'UniaxialAnisotropy::Energy': 'E_uniaxialanisotropy',
               'UniaxialAnisotropy4::Energy': 'E_uniaxialanisotropy4',
               'Southampton_UniaxialAnisotropy4::Energy':
@@ -91,9 +93,7 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'ExchangePtwise::Max Spin Ang': 'max_spin_ang',
               'ExchangePtwise::Stage Max Spin Ang': 'stage_max_spin_ang',
               'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang',
-              'TwoSurfaceExchange::Energy': 'E_rkky',
-              'CGEvolve:evolver:Energy calc count YY_FixedMEL::Energy':
-              'MEL_E'}
+              'TwoSurfaceExchange::Energy': 'E_rkky'}
 
 # The mumax3 columns are renamed according to this dictionary.
 mumax3_dict = {'t': 't',
@@ -108,6 +108,18 @@ mumax3_dict = {'t': 't',
                'dt': 'dt',
                'maxTorque': 'maxtorque'}
 
+def rename_column(name, cols_dict):
+    if name in cols_dict.keys():
+        return cols_dict[name]
+
+    for key in cols_dict.keys():
+        if len(key.split('::')) == 2:
+            start, end = key.split('::')
+            if name.startswith(start) and name.endswith(end):
+                term_name = name.split(':')[1]
+                return f'{cols_dict[key]}_{term_name}'
+    else:
+        return name  # name cannot be found in dictionary
 
 def columns(filename, rename=True):
     """Extracts column names from a table file.
@@ -165,7 +177,7 @@ def columns(filename, rename=True):
         cols_dict = mumax3_dict
 
     if rename:
-        return [cols_dict[col] for col in cols]
+        return [rename_column(col, cols_dict) for col in cols]
     else:
         return cols
 
