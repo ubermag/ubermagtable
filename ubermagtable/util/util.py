@@ -67,33 +67,32 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'UniformExchange::Max Spin Ang': 'max_spin_ang',
               'UniformExchange::Stage Max Spin Ang': 'stage_max_spin_ang',
               'UniformExchange::Run Max Spin Ang': 'run_max_spin_ang',
-              'UniformExchange::Energy': 'E_exchange',
-              'DMExchange6Ngbr::Energy': 'E_dmi',
-              'DMI_Cnv::Energy': 'E_dmi_cnv',
-              'DMI_T::Energy': 'E_dmi_t',
-              'DMI_D2d::Energy': 'E_dmi_d2d',
-              'Demag::Energy': 'E_demag',
-              'FixedZeeman::Energy': 'E_zeeman',
-              'UZeeman::Energy': 'E_uzeeman',
+              'UniformExchange::Energy': 'E',
+              'DMExchange6Ngbr::Energy': 'E',
+              'DMI_Cnv::Energy': 'E',
+              'DMI_T::Energy': 'E',
+              'DMI_D2d::Energy': 'E',
+              'Demag::Energy': 'E',
+              'FixedZeeman::Energy': 'E',
+              'UZeeman::Energy': 'E',
               'UZeeman::B': 'B',
               'UZeeman::Bx': 'Bx',
               'UZeeman::By': 'By',
               'UZeeman::Bz': 'Bz',
-              'TransformZeeman::Energy': 'E_tzeeman',
-              'CubicAnisotropy::Energy': 'E_cubicanisotropy',
-              'UniaxialAnisotropy::Energy': 'E_uniaxialanisotropy',
-              'UniaxialAnisotropy4::Energy': 'E_uniaxialanisotropy4',
-              'Southampton_UniaxialAnisotropy4::Energy':
-              'E_uniaxialanisotropy',
-              'Exchange6Ngbr::Energy': 'E_exchange',
+              'TransformZeeman::Energy': 'E',
+              'CubicAnisotropy::Energy': 'E',
+              'UniaxialAnisotropy::Energy': 'E',
+              'UniaxialAnisotropy4::Energy': 'E',
+              'Southampton_UniaxialAnisotropy4::Energy': 'E',
+              'Exchange6Ngbr::Energy': 'E',
               'Exchange6Ngbr::Max Spin Ang': 'max_spin_ang',
               'Exchange6Ngbr::Stage Max Spin Ang': 'stage_max_spin_ang',
               'Exchange6Ngbr::Run Max Spin Ang': 'run_max_spin_ang',
-              'ExchangePtwise::Energy': 'E_exchange',
+              'ExchangePtwise::Energy': 'E',
               'ExchangePtwise::Max Spin Ang': 'max_spin_ang',
               'ExchangePtwise::Stage Max Spin Ang': 'stage_max_spin_ang',
               'ExchangePtwise::Run Max Spin Ang': 'run_max_spin_ang',
-              'TwoSurfaceExchange::Energy': 'E_rkky'}
+              'TwoSurfaceExchange::Energy': 'E'}
 
 # The mumax3 columns are renamed according to this dictionary.
 mumax3_dict = {'t': 't',
@@ -108,6 +107,7 @@ mumax3_dict = {'t': 't',
                'dt': 'dt',
                'maxTorque': 'maxtorque'}
 
+
 def rename_column(name, cols_dict):
     if name in cols_dict.keys():
         return cols_dict[name]
@@ -120,6 +120,7 @@ def rename_column(name, cols_dict):
                 return f'{cols_dict[key]}_{term_name}'
     else:
         return name  # name cannot be found in dictionary
+
 
 def columns(filename, rename=True):
     """Extracts column names from a table file.
@@ -149,7 +150,7 @@ def columns(filename, rename=True):
     >>> import ubermagtable.util as uu
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
-    ...                        'tests', 'test_sample', 'oommf-file1.odt')
+    ...                        'tests', 'test_sample', 'oommf-new-file1.odt')
     >>> uu.columns(odtfile)
     [...]
 
@@ -213,7 +214,7 @@ def units(filename, rename=True):
     >>> import ubermagtable.util as uu
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
-    ...                        'tests', 'test_sample', 'oommf-file2.odt')
+    ...                        'tests', 'test_sample', 'oommf-new-file2.odt')
     >>> uu.units(odtfile)
     {...}
 
@@ -263,7 +264,7 @@ def data(filename):
     >>> import ubermagtable.util as uu
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__), '..',
-    ...                        'tests', 'test_sample', 'oommf-file3.odt')
+    ...                        'tests', 'test_sample', 'oommf-new-file3.odt')
     >>> uu.data(odtfile)
     [...]
 

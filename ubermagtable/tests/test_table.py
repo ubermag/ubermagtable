@@ -36,14 +36,19 @@ def check_table(table):
 class TestTable:
     def setup(self):
         dirname = os.path.join(os.path.dirname(__file__), 'test_sample/')
-        filenames = ['oommf-file1.odt',
-                     'oommf-file2.odt',
-                     'oommf-file3.odt',
-                     'oommf-file4.odt',
-                     'oommf-file5.odt',
-                     'oommf-file6.odt',
-                     'oommf-file7.odt',
-                     'oommf-file8.odt',
+        filenames = ['oommf-old-file1.odt',
+                     'oommf-old-file2.odt',
+                     'oommf-old-file3.odt',
+                     'oommf-old-file4.odt',
+                     'oommf-old-file5.odt',
+                     'oommf-old-file6.odt',
+                     'oommf-old-file7.odt',
+                     'oommf-old-file8.odt',
+                     'oommf-new-file1.odt',
+                     'oommf-new-file2.odt',
+                     'oommf-new-file3.odt',
+                     'oommf-new-file4.odt',
+                     'oommf-new-file5.odt',
                      'mumax3-file1.txt',
                      'oommf-mel-file.odt']
 

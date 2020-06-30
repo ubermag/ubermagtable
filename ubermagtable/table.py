@@ -40,7 +40,7 @@ class Table:
     >>> import ubermagtable as ut
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf-file1.odt')
+    ...                        'tests', 'test_sample', 'oommf-new-file1.odt')
     >>> table = ut.Table.fromfile(odtfile)
 
     """
@@ -78,7 +78,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file1.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-new-file1.odt')
         >>> table = ut.Table.fromfile(odtfile)
 
         2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
@@ -118,7 +119,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file5.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file5.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> table.data_columns
         [...]
@@ -148,7 +150,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file5.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file5.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> table.time_column
         't'
@@ -182,7 +185,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file1.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> table.length / 1e-12  # get the results in picoseconds
         24.999...
@@ -211,7 +215,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file3.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file3.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> repr(table)
         '...
@@ -256,8 +261,8 @@ class Table:
         ...
         >>> dirname = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample')
-        >>> odtfile1 = os.path.join(dirname, 'oommf-file1.odt')
-        >>> odtfile2 = os.path.join(dirname, 'oommf-file2.odt')
+        >>> odtfile1 = os.path.join(dirname, 'oommf-old-file1.odt')
+        >>> odtfile2 = os.path.join(dirname, 'oommf-old-file2.odt')
         ...
         >>> table1 = ut.Table.fromfile(odtfile1)
         >>> table2 = ut.Table.fromfile(odtfile2)
@@ -346,7 +351,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file1.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> table.mpl()
 
@@ -423,7 +429,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file1.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> table.slider()
         SelectionRangeSlider(...)
@@ -469,7 +476,8 @@ class Table:
         >>> import ubermagtable as ut
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'oommf-file1.odt')
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile)
         >>> table.selector()
         SelectMultiple(...)

@@ -15,7 +15,7 @@ def interact(**kwargs):
     ...
     >>> dirname = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample')
-    >>> odtfile = os.path.join(dirname, 'oommf-file1.odt')
+    >>> odtfile = os.path.join(dirname, 'oommf-old-file1.odt')
     ...
     >>> table = ut.Table.fromfile(odtfile)
     >>> @ut.interact(xlim=table.slider())
