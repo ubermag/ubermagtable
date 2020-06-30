@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setuptools.setup(
     name='ubermagtable',
-    version='0.1.11',
+    version='0.1.12',
     description=('Python package for manipulating '
                  'OOMMF and mumax3 tabular data.'),
     long_description=long_description,
