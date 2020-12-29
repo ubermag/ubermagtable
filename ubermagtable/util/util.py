@@ -120,7 +120,8 @@ def rename_column(name, cols_dict):
     for key in cols_dict.keys():
         if len(key.split('::')) == 2:
             start, end = key.split('::')
-            if name.startswith(start) and name.endswith(end):
+            name_split = name.split(':')
+            if name_split[0] == start and name_split[-1] == end:
                 term_name = name.split(':')[1]
                 return f'{cols_dict[key]}_{term_name}'
     else:
@@ -173,7 +174,7 @@ def columns(filename, rename=True):
     columns = []
     if lines[0].startswith('# ODT'):  # OOMMF odt file
         cline = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
-        cline = re.split(r'Oxs_|Anv_|Southampton_', cline)[1:]
+        cline = re.split(r'Oxs_|Anv_|Southampton_|My_', cline)[1:]
         cline = list(map(lambda col: re.sub(r'[{}]', '', col), cline))
         cols = list(map(lambda s: s.strip(), cline))
         cols_dict = oommf_dict

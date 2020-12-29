@@ -50,7 +50,8 @@ class TestTable:
                      'oommf-new-file4.odt',
                      'oommf-new-file5.odt',
                      'mumax3-file1.txt',
-                     'oommf-mel-file.odt']
+                     'oommf-mel-file.odt',
+                     'oommf-issue1.odt']
 
         self.odtfiles = [os.path.join(dirname, f) for f in filenames]
 
@@ -150,6 +151,11 @@ class TestTable:
             slider = table.slider()
 
     def test_oommf_mel(self):
-        table = ut.Table.fromfile(self.odtfiles[-1])
+        table = ut.Table.fromfile(self.odtfiles[-2])
         columns = table.data.columns.to_list()
         assert len(columns) == 16
+
+    def test_oommf_issue1(self):
+        table = ut.Table.fromfile(self.odtfiles[-1])
+        columns = table.data.columns.to_list()
+        assert len(columns) == 30
