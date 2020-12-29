@@ -1,26 +1,25 @@
 import setuptools
 
-with open('README.md', encoding='utf-8') as f:
+with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 setuptools.setup(
     name='ubermagtable',
     version='0.1.12',
-    description=('Python package for manipulating '
-                 'OOMMF and mumax3 tabular data.'),
+    description='Python package for manipulating tabular data.',
+    author=('Marijan Beg, Ryan A. Pepper, Martin Lang, '
+            'Thomas Kluyver, and Hans Fangohr'),
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://ubermag.github.io',
-    author=('Marijan Beg, Vanessa Nehruji, Sergii Mamedov, '
-            'Ryan A. Pepper, Thomas Kluyver, and Hans Fangohr'),
     packages=setuptools.find_packages(),
     include_package_data=True,
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=['ubermagutil==0.2.6',
-                      'matplotlib>=3.2',
-                      'pandas>=1.0',
-                      'jupyterlab>=2.1',
-                      'ipywidgets>=7.5'],
+                      'matplotlib>=3.3',
+                      'pandas>=1.2',
+                      'jupyterlab==2.2',
+                      'ipywidgets>=7.6'],
     classifiers=['Development Status :: 5 - Production/Stable',
                  'Intended Audience :: Education',
                  'Intended Audience :: Developers',
