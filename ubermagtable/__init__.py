@@ -1,3 +1,4 @@
+"""Main package."""
 import os
 import pytest
 import pkg_resources
@@ -10,10 +11,21 @@ dirname = os.path.abspath(os.path.dirname(__file__))
 path = os.path.join(dirname, 'util', 'plotting-style.mplstyle')
 plt.style.use(path)
 
-
-def test():
-    return pytest.main(['-v', '--pyargs', 'ubermagtable'])  # pragma: no cover
-
-
 __version__ = pkg_resources.get_distribution(__name__).version
 __dependencies__ = pkg_resources.require(__name__)
+
+
+def test():
+    """Run all package tests.
+
+    Examples
+    --------
+    1. Run all tests.
+
+    >>> import ubermagtable as ut
+    ...
+    >>> # ut.test()
+
+    """
+    return pytest.main(['-v', '--pyargs',
+                        'ubermagtable', '-l'])  # pragma: no cover
