@@ -7,12 +7,13 @@ Marijan Beg<sup>1,2</sup>, Ryan A. Pepper<sup>1</sup>, Martin Lang<sup>1</sup>, 
 
 | Description | Badge |
 | --- | --- |
-| Tests | [![Build Status](https://travis-ci.org/ubermag/ubermagtable.svg?branch=master)](https://travis-ci.org/ubermag/ubermagtable) |
+| Tests | [![workflow](https://github.com/ubermag/ubermagtable/workflows/workflow/badge.svg)](https://github.com/ubermag/ubermagtable/actions?query=workflow%3Aworkflow) |
 | Releases | [![PyPI version](https://badge.fury.io/py/ubermagtable.svg)](https://badge.fury.io/py/ubermagtable) |
 |          | [![Anaconda-Server Badge](https://anaconda.org/conda-forge/ubermagtable/badges/version.svg)](https://anaconda.org/conda-forge/ubermagtable) |
-| Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg)](https://codecov.io/gh/ubermag/ubermagtable) |
+| Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg?token=1jEP7FM6ht)](https://codecov.io/gh/ubermag/ubermagtable) |
 | Documentation | [![Documentation Status](https://readthedocs.org/projects/ubermagtable/badge/?version=latest)](https://ubermagtable.readthedocs.io/en/latest/?badge=latest) |
-| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/master?urlpath=lab/tree/docs/ipynb/index.ipynb) |
+| YouTube | [![YouTube](https://img.shields.io/badge/YouTube-ubermag-blue)](https://www.youtube.com/channel/UC7MSqVQSMFV42R1jAYmKGLg) |
+| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/HEAD?urlpath=lab/tree/docs/ipynb/index.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/ubermagtable/badges/platforms.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/ubermagtable/badges/downloads.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
