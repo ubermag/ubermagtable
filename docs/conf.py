@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'ubermagtable'
-copyright = '2020, Marijan Beg and Hans Fangohr'
+copyright = '2021, Marijan Beg and Hans Fangohr'
 author = ('Marijan Beg, Ryan A. Pepper, Martin Lang, '
           'Thomas Kluyver, and Hans Fangohr')
 
