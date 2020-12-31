@@ -32,9 +32,9 @@ class Table:
 
         Dictionary mapping units to columns.
 
-    x : str
+    x : str, optional
 
-        Independent variable column name.
+        Independent variable column name. Defaults to ``None``.
 
     Examples
     --------
@@ -228,7 +228,7 @@ class Table:
                               units=self.units, x=self.x)
 
     @classmethod
-    def fromfile(cls, filename, x=None, rename=True):
+    def fromfile(cls, filename, /, x=None, rename=True):
         """Reads an OOMMF ``.odt`` or mumax3 ``.txt`` scalar data file and
         returns a ``ubermagtable.Table`` object.
 
@@ -238,11 +238,11 @@ class Table:
 
             OOMMF ``.odt`` or mumax3 ``.txt`` file.
 
-        x : str
+        x : str, optional
 
             Independent variable name. Defaults to ``None``.
 
-        rename : bool
+        rename : bool, optional
 
             If ``rename=True``, the column names are renamed with their shorter
             versions. Defaults to ``True``.
@@ -318,13 +318,13 @@ class Table:
             The size of a created figure if ``ax`` is not passed. Defaults to
             ``None``.
 
-        x : str
+        x : str, optional
 
             Independent variable. Defaults to ``None``.
 
         y : list, optional
 
-            A list of variables to be plotted.
+            A list of variables to be plotted.  Defaults to ``None``.
 
         xlim : tuple
 
@@ -400,6 +400,10 @@ class Table:
 
         Parameters
         ----------
+        x : str, optional
+
+            Independent variable. Defaults to ``None``.
+
         multiplier : numbers.Real, optional
 
             ``multiplier`` can be passed as :math:`10^{n}`, where :math:`n` is
@@ -468,6 +472,12 @@ class Table:
         widget is returned for selecting the data columns to be plotted. This
         method is based on ``ipywidgets.SelectMultiple``, so any keyword
         argument accepted by it can be passed.
+
+        Parameters
+        ----------
+        x : str, optional
+
+            Independent variable. Defaults to ``None``.
 
         Returns
         -------
