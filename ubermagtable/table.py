@@ -32,6 +32,10 @@ class Table:
 
         Dictionary mapping units to columns.
 
+    x : str
+
+        Independent variable column name.
+
     Examples
     --------
     1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
@@ -41,75 +45,47 @@ class Table:
     ...
     >>> odtfile = os.path.join(os.path.dirname(__file__),
     ...                        'tests', 'test_sample', 'oommf-new-file1.odt')
-    >>> table = ut.Table.fromfile(odtfile)
+    >>> table = ut.Table.fromfile(odtfile, x='iteration')
 
     """
-    def __init__(self, data, units):
+    def __init__(self, data, units, x=None):
         self.data = data
         self.units = units
+        self.x = x
 
-    @classmethod
-    def fromfile(cls, filename, rename=True):
-        """Reads an OOMMF ``.odt`` or mumax3 ``.txt`` scalar data file and
-        returns a ``ubermagtable.Table`` object.
-
-        Parameters
-        ----------
-        filename : str
-
-            OOMMF ``.odt`` or mumax3 ``.txt`` file.
-
-        rename : bool
-
-            If ``rename=True``, the column names are renamed with their shorter
-            versions. Defaults to ``True``.
+    @property
+    def x(self):
+        """Independent variable.
 
         Returns
         -------
-        ubermagtable.Table
+        str
 
-            Table data object.
-
-        Examples
-        --------
-        1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-new-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile)
-
-        2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
-
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'mumax3-file1.txt')
-        >>> table = ut.Table.fromfile(odtfile)
+            Column name.
 
         """
-        # MagnetoElastic OOMMF extension adds energy twice to data. The
-        # following lines are just a way to fix that in the data.
-        cols = uu.columns(filename, rename=rename)
-        if 'MEL_E' in cols:
-            cols.insert(cols.index('E'), 'E')
+        return self._x
 
-        return cls(data=pd.DataFrame(uu.data(filename), columns=cols),
-                   units=uu.units(filename, rename=rename))
+    @x.setter
+    def x(self, value):
+        if value in self.data.columns or value is None:
+            self._x = value
+        else:
+            msg = f'Column {value} is not a column in data.'
+            raise ValueError(msg)
 
     @property
-    def data_columns(self):
-        """Data column names.
+    def y(self):
+        """Dependent variable(s).
 
-        This property returns all data column names. Data columns are
-        considered to be those that are a function of time.
+        This property returns all data column names that are not specified as
+        independent.
 
         Returns
         -------
         list
 
-            Data column names.
+            Independent variables.
 
         Examples
         --------
@@ -121,65 +97,26 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file5.odt')
-        >>> table = ut.Table.fromfile(odtfile)
-        >>> table.data_columns
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.y
         [...]
 
         """
-        return [col for col in self.data.columns
-                if (col != 't' and 'Simulation time' not in col)]
+        return [col for col in self.data.columns if col != self.x]
 
     @property
-    def time_column(self):
-        """Time column name.
-
-        This property returns the name of the column where time data is stored.
-        If no time column is present in the data, ``None`` is returned.
-
-        Returns
-        -------
-        str
-
-            Time column name.
-
-        Examples
-        --------
-        1. Getting time column name.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file5.odt')
-        >>> table = ut.Table.fromfile(odtfile)
-        >>> table.time_column
-        't'
-
-        """
-        time_columns = ['t', 'TimeDriver::Simulation time']
-        for name in time_columns:
-            if name in self.data.columns:
-                return name
-        else:
-            return None
-
-    @property
-    def length(self):
-        """Time length.
-
-        This method returns the time length over which the scalar data was
-        recorded.
+    def xmax(self):
+        """Maximum value of independent variable.
 
         Returns
         -------
         numbers.Real
 
-            Time length.
+            Independent variable range.
 
         Examples
         --------
-        1. Getting time length.
+        1. Getting independent variable range.
 
         >>> import os
         >>> import ubermagtable as ut
@@ -187,16 +124,12 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile)
-        >>> table.length / 1e-12  # get the results in picoseconds
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.xmax / 1e-12  # get the results in picoseconds
         24.999...
 
         """
-        if self.time_column is None:
-            msg = 'Cannot compute length for a table with no time column.'
-            raise ValueError(msg)
-
-        return self.data[self.time_column].iloc[-1]
+        return self.data[self.x].iloc[-1]
 
     def __repr__(self):
         """Representation string.
@@ -217,7 +150,7 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file3.odt')
-        >>> table = ut.Table.fromfile(odtfile)
+        >>> table = ut.Table.fromfile(odtfile, x='iteration')
         >>> repr(table)
         '...
 
@@ -227,12 +160,13 @@ class Table:
     def __lshift__(self, other):
         """Merges two tables into a single one.
 
-        Tables are merged in such a way that the second operand data is
-        concatenated to the first operand's data. Because time is unique and
-        always successive, the time length of the first operand is added to the
-        time column of the second. If there is no time column in any of the
-        ``.odt`` files, no merging is allowed and ``ValueError`` is raised. If
-        there are non-matching columns, the missing values will be ``NaN``.
+        Tables are merged in such a way that the second operand's data is
+        concatenated to the first operand's data. Because independent variable
+        is unique and always successive, the xmax of the first operand is
+        added to the independent variable of the second. If there is no
+        independent variable column in second operand's table, no merging is
+        allowed and ``ValueError`` is raised. If there are non-matching
+        columns, the missing values will be ``NaN``.
 
         Parameters
         ----------
@@ -250,7 +184,8 @@ class Table:
         ------
         ValueError
 
-            If one of the tables does not have time column.
+            If second operand's table does not have independent variable
+            column.
 
         Examples
         --------
@@ -264,46 +199,102 @@ class Table:
         >>> odtfile1 = os.path.join(dirname, 'oommf-old-file1.odt')
         >>> odtfile2 = os.path.join(dirname, 'oommf-old-file2.odt')
         ...
-        >>> table1 = ut.Table.fromfile(odtfile1)
-        >>> table2 = ut.Table.fromfile(odtfile2)
+        >>> table1 = ut.Table.fromfile(odtfile1, x='t')
+        >>> table2 = ut.Table.fromfile(odtfile2, x='t')
         >>> merged_table = table1 << table2
         ...
-        >>> table1.length / 1e-12  # in picoseconds
+        >>> table1.xmax / 1e-12  # in picoseconds
         24.999...
-        >>> table2.length / 1e-12  # in picoseconds
+        >>> table2.xmax / 1e-12  # in picoseconds
         15.0
-        >>> merged_table.length / 1e-12  # in picoseconds
+        >>> merged_table.xmax / 1e-12  # in picoseconds
         39.99...
 
         """
         if not isinstance(other, self.__class__):
             msg = (f'Unsupported operand type(s) for <<: '
-                   f'{type(self)} and {type(other)}.')
+                   f'{type(self)=} and {type(other)=}.')
             raise TypeError(msg)
 
-        if self.time_column is None or other.time_column is None:
-            msg = 'Some of the tables are missing the time column.'
+        if other.x != self.x:
+            msg = f'Independent variable {self.x=} mismatch.'
             raise ValueError(msg)
 
         other_df = other.data.copy()  # make a deep copy of dataframe
-        other_df[self.time_column] += self.data[self.time_column].iloc[-1]
+        other_df[self.x] += self.data[self.x].iloc[-1]
 
         return self.__class__(data=pd.concat([self.data, other_df],
                                              ignore_index=True),
-                              units=self.units)
+                              units=self.units, x=self.x)
 
-    def mpl(self, ax=None, figsize=None, yaxis=None, xlim=None,
+    @classmethod
+    def fromfile(cls, filename, x=None, rename=True):
+        """Reads an OOMMF ``.odt`` or mumax3 ``.txt`` scalar data file and
+        returns a ``ubermagtable.Table`` object.
+
+        Parameters
+        ----------
+        filename : str
+
+            OOMMF ``.odt`` or mumax3 ``.txt`` file.
+
+        x : str
+
+            Independent variable name. Defaults to ``None``.
+
+        rename : bool
+
+            If ``rename=True``, the column names are renamed with their shorter
+            versions. Defaults to ``True``.
+
+        Returns
+        -------
+        ubermagtable.Table
+
+            Table object.
+
+        Examples
+        --------
+        1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-hysteresis1.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='B')
+
+        2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
+
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample', 'mumax3-file1.txt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+
+        """
+        # MagnetoElastic OOMMF extension adds energy twice to data. The
+        # following lines are just a way to fix that in the data.
+        cols = uu.columns(filename, rename=rename)
+        if 'MEL_E' in cols:
+            cols.insert(cols.index('E'), 'E')
+
+        return cls(data=pd.DataFrame(uu.data(filename), columns=cols),
+                   units=uu.units(filename, rename=rename), x=x)
+
+    def mpl(self, ax=None, figsize=None, x=None, y=None, xlim=None,
             multiplier=None, filename=None, **kwargs):
         """Table data plot.
 
-        This method plots the scalar values as a function of time. ``mpl`` adds
-        the plot to ``matplotlib.axes.Axes`` passed via ``ax`` argument. If
-        ``ax`` is not passed, ``matplotlib.axes.Axes`` object is created
-        automatically and the size of a figure can be specified using
-        ``figsize``. To choose particular data columns to be plotted ``yaxis``
-        can be passed as a list of column names. The range of ``t`` values on
-        the horizontal axis can be defined by passing a lenth-2 tuple using
-        ``xlim``. It is often the case that the time length is small (e.g. on a
+        This method plots scalar values as a function of ``x``. If ``x`` is not
+        passed, ``self.x`` is used. ``mpl`` adds the plot to
+        ``matplotlib.axes.Axes`` passed via ``ax`` argument. If ``ax`` is not
+        passed, ``matplotlib.axes.Axes`` object is created automatically and
+        the size of a figure can be specified using ``figsize``. To choose
+        particular data columns to be plotted ``y`` can be passed as a list of
+        column names. The range of ``x`` values on the horizontal axis can be
+        defined by passing a length-2 tuple using ``xlim``.
+
+        It is often the case that the time length is small (e.g. on a
         nanosecond scale). Accordingly, ``multiplier`` can be passed as
         :math:`10^{n}`, where :math:`n` is a multiple of 3  (..., -6, -3, 0, 3,
         6,...). According to that value, the horizontal axis will be scaled and
@@ -327,9 +318,13 @@ class Table:
             The size of a created figure if ``ax`` is not passed. Defaults to
             ``None``.
 
-        yaxis : list, optional
+        x : str
 
-            A list of data columns to be plotted.
+            Independent variable. Defaults to ``None``.
+
+        y : list, optional
+
+            A list of variables to be plotted.
 
         xlim : tuple
 
@@ -353,12 +348,15 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile)
+        >>> table = ut.Table.fromfile(odtfile, x='t')
         >>> table.mpl()
 
         """
-        if self.time_column is None:
-            msg = 'Cannot plot table data with no time column.'
+        if x is None and self.x is not None:
+            x = self.x
+
+        if x not in self.data.columns:
+            msg = f'Independent variable {x=} is not in table.'
             raise ValueError(msg)
 
         if ax is None:
@@ -366,19 +364,20 @@ class Table:
             ax = fig.add_subplot(111)
 
         if multiplier is None:
-            multiplier = ubermagutil.units.si_multiplier(self.length)
+            multiplier = ubermagutil.units.si_multiplier(self.xmax)
 
-        if yaxis is None:
-            yaxis = self.data_columns
+        if y is None:
+            y = self.y
 
-        for i in yaxis:
-            ax.plot(np.divide(self.data[self.time_column].to_numpy(),
-                              multiplier),
-                    self.data[i],
-                    label=i,
-                    **kwargs)
+        for i in y:
+            ax.plot(np.divide(self.data[x].to_numpy(), multiplier),
+                    self.data[i], label=i, **kwargs)
 
-        ax.set_xlabel(f't ({ubermagutil.units.rsi_prefixes[multiplier]}s)')
+        if x == 't':
+            units = f' ({ubermagutil.units.rsi_prefixes[multiplier]}s)'
+        else:
+            units = ''
+        ax.set_xlabel(f'{x}{units}')
         ax.set_ylabel('value')
 
         ax.grid(True)  # grid is turned off by default for field plots
@@ -390,10 +389,10 @@ class Table:
         if filename is not None:
             plt.savefig(filename, bbox_inches='tight', pad_inches=0)
 
-    def slider(self, multiplier=None, description=None, **kwargs):
+    def slider(self, x=None, multiplier=None, description=None, **kwargs):
         """Slider for interactive plotting.
 
-        Based on the values in the time column,
+        Based on the values in the independent variable column,
         ``ipywidgets.SelectionRangeSlider`` is returned for navigating
         interactive plots. This method is based on
         ``ipywidgets.SelectionRangeSlider``, so any keyword argument accepted
@@ -419,11 +418,11 @@ class Table:
         -------
         ipywidgets.SelectionRangeSlider
 
-            Time range slider.
+            Independent variable slider.
 
         Example
         -------
-        1. Get the slider for the horizontal axis.
+        1. Get slider for the independent variable.
 
         >>> import os
         >>> import ubermagtable as ut
@@ -431,36 +430,44 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile)
+        >>> table = ut.Table.fromfile(odtfile, x='t')
         >>> table.slider()
         SelectionRangeSlider(...)
 
         """
-        if self.time_column is None:
-            msg = 'Cannot create slider if no time is present in data.'
+        if x is None and self.x is not None:
+            x = self.x
+
+        if x not in self.data.columns:
+            msg = f'Independent variable {x=} is not in table.'
             raise ValueError(msg)
 
         if multiplier is None:
-            multiplier = ubermagutil.units.si_multiplier(self.length)
+            multiplier = ubermagutil.units.si_multiplier(self.xmax)
 
-        values = self.data[self.time_column].to_numpy()
+        values = self.data[self.x].to_numpy()
         labels = np.around(values/multiplier, decimals=2)
         options = list(zip(labels, values))
+
+        if x == 't':
+            units = f' ({ubermagutil.units.rsi_prefixes[multiplier]}s)'
+        else:
+            units = ''
         if description is None:
-            description = f't ({ubermagutil.units.rsi_prefixes[multiplier]}s):'
+            description = f'{x}{units}:'
 
         return ipywidgets.SelectionRangeSlider(options=options,
                                                value=(values[0], values[-1]),
                                                description=description,
                                                **kwargs)
 
-    def selector(self, **kwargs):
+    def selector(self, x=None, **kwargs):
         """Selection list for interactive plotting.
 
-        Based on the data columns, ``ipywidgets.SelectMultiple`` widget is
-        returned for selecting the data columns to be plotted. This method is
-        based on ``ipywidgets.SelectMultiple``, so any keyword argument
-        accepted by it can be passed.
+        Based on the independent variables, ``ipywidgets.SelectMultiple``
+        widget is returned for selecting the data columns to be plotted. This
+        method is based on ``ipywidgets.SelectMultiple``, so any keyword
+        argument accepted by it can be passed.
 
         Returns
         -------
@@ -478,13 +485,22 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile)
+        >>> table = ut.Table.fromfile(odtfile, x='t')
         >>> table.selector()
         SelectMultiple(...)
 
         """
-        return ipywidgets.SelectMultiple(options=self.data_columns,
-                                         value=self.data_columns,
+        if x is None and self.x is not None:
+            x = self.x
+
+        if x not in self.data.columns:
+            msg = f'Independent variable {x=} is not in table.'
+            raise ValueError(msg)
+
+        options = [col for col in self.data.columns if col != x]
+
+        return ipywidgets.SelectMultiple(options=options,
+                                         value=options,
                                          rows=5,
                                          description='y-axis:',
                                          disabled=False,

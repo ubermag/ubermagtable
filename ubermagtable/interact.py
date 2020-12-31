@@ -17,7 +17,7 @@ def interact(**kwargs):
     ...                        'tests', 'test_sample')
     >>> odtfile = os.path.join(dirname, 'oommf-old-file1.odt')
     ...
-    >>> table = ut.Table.fromfile(odtfile)
+    >>> table = ut.Table.fromfile(odtfile, x='t')
     >>> @ut.interact(xlim=table.slider())
     ... def myplot(xlim):
     ...     field.mpl(xlim=xlim)

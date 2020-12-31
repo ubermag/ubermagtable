@@ -13,21 +13,21 @@ def check_table(table):
     assert isinstance(table.data, pd.DataFrame)
     assert isinstance(table.units, dict)
 
-    assert isinstance(table.data_columns, list)
-    assert all(isinstance(i, str) for i in table.data_columns)
+    assert isinstance(table.y, list)
+    assert all(isinstance(i, str) for i in table.y)
 
     assert isinstance(repr(table), str)
 
-    if table.time_column is not None:
-        assert isinstance(table.time_column, str)
-        assert table.time_column in ['t', 'TimeDriver::Simulation time']
+    if table.x is not None:
+        assert isinstance(table.x, str)
+        assert table.x in ['t', 'iteration', 'B', None]
 
-        assert isinstance(table.length, numbers.Real)
-        assert table.length > 0
+        assert isinstance(table.xmax, numbers.Real)
+        assert table.xmax > 0
 
         res = table << table
         assert isinstance(res, ut.Table)
-        assert res.length == 2 * table.length
+        assert res.xmax == 2 * table.xmax
 
         assert isinstance(table.slider(), ipywidgets.SelectionRangeSlider)
         assert isinstance(table.selector(), ipywidgets.SelectMultiple)
@@ -49,6 +49,8 @@ class TestTable:
                      'oommf-new-file3.odt',
                      'oommf-new-file4.odt',
                      'oommf-new-file5.odt',
+                     'oommf-hysteresis1.odt',
+                     'oommf-minsteps.odt',
                      'mumax3-file1.txt',
                      'oommf-mel-file.odt',
                      'oommf-issue1.odt']
@@ -66,36 +68,27 @@ class TestTable:
                 table = ut.Table.fromfile(odtfile)
                 check_table(table)
 
-    def test_time_data_columns(self):
-        table = ut.Table.fromfile(self.odtfiles[0], rename=False)
-        assert table.time_column == 'TimeDriver::Simulation time'
-        assert 'TimeDriver::mx' in table.data_columns
+    def test_xy(self):
+        table = ut.Table.fromfile(self.odtfiles[0], x='t')
+        assert table.x == 't'
+        assert 'mx' in table.y
 
-        table = ut.Table.fromfile(self.odtfiles[0], rename=True)
-        assert table.time_column == 't'
-        assert 'mx' in table.data_columns
-
-    def test_length(self):
-        table = ut.Table.fromfile(self.odtfiles[0])
-        assert abs(table.length - 25e-12) < 1e-15
-
-        # Exception
-        table = ut.Table.fromfile(self.odtfiles[2])
-        with pytest.raises(ValueError):
-            res = table.length
+    def test_xmax(self):
+        table = ut.Table.fromfile(self.odtfiles[0], x='t')
+        assert abs(table.xmax - 25e-12) < 1e-15
 
     def test_lshift(self):
-        table1 = ut.Table.fromfile(self.odtfiles[0])
-        table2 = ut.Table.fromfile(self.odtfiles[1])
+        table1 = ut.Table.fromfile(self.odtfiles[0], x='t')
+        table2 = ut.Table.fromfile(self.odtfiles[1], x='t')
 
         res = table1 << table2
 
-        assert res.length == table1.length + table2.length
+        assert res.xmax == table1.xmax + table2.xmax
         # Are all time values unique?
-        assert len(set(res.data[res.time_column].to_numpy())) == 40
+        assert len(set(res.data[res.x].to_numpy())) == 40
 
         # Exception
-        table3 = ut.Table.fromfile(self.odtfiles[2])
+        table3 = ut.Table.fromfile(self.odtfiles[2], x='iteration')
         with pytest.raises(ValueError):
             res = table1 << table3
 
@@ -106,7 +99,7 @@ class TestTable:
             res = table3 << 5
 
     def test_mpl(self):
-        table = ut.Table.fromfile(self.odtfiles[0])
+        table = ut.Table.fromfile(self.odtfiles[0], x='t')
 
         # No axis
         table.mpl()
@@ -119,11 +112,14 @@ class TestTable:
         # figsize
         table.mpl(figsize=(10, 5))
 
+        # x
+        table.mpl(x='mx')
+
         # multiplier
         table.mpl(multiplier=1e-6)
 
         # yaxis
-        table.mpl(yaxis=['E', 'mx'])
+        table.mpl(y=['E', 'mx'])
 
         # xlim
         table.mpl(xlim=(0, 20e-12))
@@ -140,7 +136,7 @@ class TestTable:
         # Exception - no time column
         table = ut.Table.fromfile(self.odtfiles[2])
         with pytest.raises(ValueError):
-            table.mpl()
+            table.mpl(x='t')
 
         plt.close('all')
 
@@ -148,7 +144,7 @@ class TestTable:
         # Exception
         table = ut.Table.fromfile(self.odtfiles[2])
         with pytest.raises(ValueError):
-            slider = table.slider()
+            slider = table.slider(x='wrong')
 
     def test_oommf_mel(self):
         table = ut.Table.fromfile(self.odtfiles[-2])
