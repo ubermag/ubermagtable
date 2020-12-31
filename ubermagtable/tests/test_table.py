@@ -73,6 +73,9 @@ class TestTable:
         assert table.x == 't'
         assert 'mx' in table.y
 
+        with pytest.raises(ValueError):
+            table = ut.Table.fromfile(self.odtfiles[0], x='wrong')
+
     def test_xmax(self):
         table = ut.Table.fromfile(self.odtfiles[0], x='t')
         assert abs(table.xmax - 25e-12) < 1e-15
@@ -138,13 +141,30 @@ class TestTable:
         with pytest.raises(ValueError):
             table.mpl(x='t')
 
+        # Hysteresis plot
+        table = ut.Table.fromfile(self.odtfiles[-5], x='B')
+        table.mpl()
+
         plt.close('all')
 
     def test_slider(self):
         # Exception
-        table = ut.Table.fromfile(self.odtfiles[2])
+        table = ut.Table.fromfile(self.odtfiles[0], x='t')
+        assert isinstance(table.slider(x='t'), ipywidgets.SelectionRangeSlider)
+        table = ut.Table.fromfile(self.odtfiles[-5], x='B')
+        assert isinstance(table.slider(x='B'), ipywidgets.SelectionRangeSlider)
         with pytest.raises(ValueError):
             slider = table.slider(x='wrong')
+
+    def test_selector(self):
+        table = ut.Table.fromfile(self.odtfiles[0], x='t')
+        assert isinstance(table.selector(x='t'), ipywidgets.SelectMultiple)
+        table = ut.Table.fromfile(self.odtfiles[-4], x='iteration')
+        assert isinstance(table.selector(), ipywidgets.SelectMultiple)
+        # Exception
+        with pytest.raises(ValueError):
+            selector = table.selector(x='wrong')
+
 
     def test_oommf_mel(self):
         table = ut.Table.fromfile(self.odtfiles[-2])
