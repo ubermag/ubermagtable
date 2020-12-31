@@ -165,7 +165,6 @@ class TestTable:
         with pytest.raises(ValueError):
             selector = table.selector(x='wrong')
 
-
     def test_oommf_mel(self):
         table = ut.Table.fromfile(self.odtfiles[-2])
         columns = table.data.columns.to_list()
