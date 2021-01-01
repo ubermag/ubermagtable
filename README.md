@@ -69,7 +69,7 @@ Licensed under the BSD 3-Clause "New" or "Revised" License. For details, please 
 
 1. M. Beg, R. A. Pepper, and H. Fangohr. User interfaces for computational science: A domain specific language for OOMMF embedded in Python. [*AIP Advances* **7**, 56025](http://aip.scitation.org/doi/10.1063/1.4977225) (2017).
 
-2. M. Beg, R. A. Pepper, M. Lang, T. Kluyver, and H. Fangohr. ubermagtable: Python package for manipulating tabular data. DOI: [10.5281/zenodo.3539492](http://doi.org/10.5281/zenodo.3539492) (2020).
+2. M. Beg, R. A. Pepper, M. Lang, T. Kluyver, and H. Fangohr. ubermagtable: Python package for manipulating tabular data. DOI: [10.5281/zenodo.3539492](http://doi.org/10.5281/zenodo.3539492) (2021).
 
 ## Acknowledgements
 
