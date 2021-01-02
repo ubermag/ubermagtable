@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setuptools.setup(
     name='ubermagtable',
-    version='0.5',
+    version='0.6',
     description='Python package for manipulating tabular data.',
     author=('Marijan Beg, Martin Lang, Ryan A. Pepper, '
             'Thomas Kluyver, and Hans Fangohr'),
@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     python_requires='>=3.8',
-    install_requires=['ubermagutil==0.3',
+    install_requires=['ubermagutil==0.4',
                       'pandas>=1.1',
                       'matplotlib>=3.3',
                       'jupyterlab==2.2',
