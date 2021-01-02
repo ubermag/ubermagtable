@@ -10,7 +10,7 @@ import ubermagutil.typesystem as ts
 @ts.typesystem(data=ts.Typed(expected_type=pd.DataFrame),
                units=ts.Typed(expected_type=dict))
 class Table:
-    """Scalar data table.
+    """Tabular data class.
 
     This class builds some functionality around `pandas.DataFrame` to make it
     convenient for the analysis and visualisation of time-dependent scalar
