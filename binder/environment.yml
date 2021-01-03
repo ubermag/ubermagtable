@@ -5,4 +5,4 @@ channels:
 
 dependencies:
   - python==3.8
-  - ubermagtable==0.4
+  - ubermagtable==0.6
