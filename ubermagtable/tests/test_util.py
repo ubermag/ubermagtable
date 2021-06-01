@@ -30,6 +30,7 @@ def test_columns():
 
             assert isinstance(columns, list)
             assert all(isinstance(column, str) for column in columns)
+            assert len(columns) == len(set(columns))  # unique column names
 
 
 def test_units():

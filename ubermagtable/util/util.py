@@ -67,14 +67,14 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'UniformExchange::Max Spin Ang': 'max_spin_ang',
               'UniformExchange::Stage Max Spin Ang': 'stage_max_spin_ang',
               'UniformExchange::Run Max Spin Ang': 'run_max_spin_ang',
-              'UniformExchange::Energy': 'E',
+              'UniformExchange::Energy': 'E_exchange',
               'DMExchange6Ngbr::Energy': 'E',
               'DMI_Cnv::Energy': 'E',
               'DMI_T::Energy': 'E',
               'DMI_D2d::Energy': 'E',
               'Demag::Energy': 'E',
-              'FixedZeeman::Energy': 'E',
-              'UZeeman::Energy': 'E',
+              'FixedZeeman::Energy': 'E_zeeman',
+              'UZeeman::Energy': 'E_zeeman',
               'UZeeman::B': 'B',
               'UZeeman::Bx': 'Bx',
               'UZeeman::By': 'By',
@@ -123,7 +123,11 @@ def rename_column(name, cols_dict):
             name_split = name.split(':')
             if name_split[0] == start and name_split[-1] == end:
                 term_name = name.split(':')[1]
-                return f'{cols_dict[key]}_{term_name}'
+                type_name = cols_dict[key]
+                # required for E_exchange in old and new OOMMF odt files
+                if not type_name.endswith(term_name):
+                    type_name = f'{type_name}_{term_name}'
+                return type_name
     else:
         return name  # name cannot be found in dictionary
 
@@ -171,7 +175,6 @@ def columns(filename, rename=True):
     with open(filename) as f:
         lines = f.readlines()
 
-    columns = []
     if lines[0].startswith('# ODT'):  # OOMMF odt file
         cline = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
         cline = re.split(r'Oxs_|Anv_|Southampton_|My_', cline)[1:]
