@@ -58,6 +58,12 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'SpinXferEvolve:evolver:Delta E': 'delta_E',
               'SpinXferEvolve:evolver:average u': 'average_u',
               'SpinXferEvolve:evolver:average J': 'average_J',
+              'ThetaEvolve:evolver:Total energy': 'E',
+              'ThetaEvolve:evolver: Energy calc count': 'E_calc_count',
+              'ThetaEvolve:evolver:Max dm/dt': 'max_dmdt',
+              'ThetaEvolve:evolver:dE/dt': 'dE/dt',
+              'ThetaEvolve:evolver:Delta E': 'delta_E',
+              'ThetaEvolve:evolver:Temperature': 'T',
               'MinDriver::Iteration': 'iteration',
               'MinDriver::Stage iteration': 'stage_iteration',
               'MinDriver::Stage': 'stage',
@@ -177,7 +183,7 @@ def columns(filename, rename=True):
 
     if lines[0].startswith('# ODT'):  # OOMMF odt file
         cline = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
-        cline = re.split(r'Oxs_|Anv_|Southampton_|My_', cline)[1:]
+        cline = re.split(r'Oxs_|Anv_|Southampton_|My_|UHH_', cline)[1:]
         cline = list(map(lambda col: re.sub(r'[{}]', '', col), cline))
         cols = list(map(lambda s: s.strip(), cline))
         cols_dict = oommf_dict
