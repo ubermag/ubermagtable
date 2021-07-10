@@ -43,8 +43,8 @@ oommf_dict = {'RungeKuttaEvolve:evolver:Total energy': 'E',
               'CGEvolve::Cycle count': 'cycle_count',
               'CGEvolve::Cycle sub count': 'cycle_sub_count',
               'CGEvolve::Energy calc count': 'energy_calc_count',
-              'CGEvolve:evolver:Energy calc count YY_FixedMEL::Energy':
-              'MEL_E',
+              'FixedMEL::Energy': 'MEL_E',
+              'FixedMEL:magnetoelastic:Energy': 'MEL_E',
               'SpinTEvolve:evolver:Total energy': 'E',
               'SpinTEvolve:evolver:Energy calc count': 'E_calc_count',
               'SpinTEvolve:evolver:Max dm/dt': 'max_dmdt',
@@ -195,7 +195,7 @@ def columns(filename, rename=True):
 
     if lines[0].startswith('# ODT'):  # OOMMF odt file
         cline = list(filter(lambda l: l.startswith('# Columns:'), lines))[0]
-        cline = re.split(r'Oxs_|Anv_|Southampton_|My_|UHH_|Xf_', cline)[1:]
+        cline = re.split(r'Oxs_|Anv_|Southampton_|My_|YY_|UHH_|Xf_', cline)[1:]
         cline = list(map(lambda col: re.sub(r'[{}]', '', col), cline))
         cols = list(map(lambda s: s.strip(), cline))
         cols_dict = oommf_dict
