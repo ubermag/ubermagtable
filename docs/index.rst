@@ -1,36 +1,14 @@
-.. mdinclude:: ../README.md
-    :start-line: 0
-    :end-line: 6
+NEW WEBSITE: https://ubermag.github.io
+======================================
 
-.. mdinclude:: ../README.md
-    :start-line: 22
-    :end-line: 33
+``Ubermagtable`` is part of the ``ubermag`` metapackage. Recently, the
+websites for the different subpackages have been centralised. Please use the new
+`documentation <https://ubermag.github.io/documentation/ubermagtable.html>`_
+and `API reference <https://ubermag.github.io/api/ubermagtable.html>`_ in
+the future. 
 
-.. toctree::
-    :maxdepth: 1
-    :caption: Tutorials
+You should be redirected in 5 seconds automatically.
 
-    ipynb/installation-testing-update
-    ipynb/table-basics
-    ipynb/table-merge
-    ipynb/table-visualisation
-    ipynb/table-widgets
-    ipynb/table-interactive-plot
-    ipynb/other
+.. raw:: html
 
-API Reference
--------------
-.. autosummary::
-    :nosignatures:
-    :toctree: _autosummary
-    :caption: API Reference
-    :template: module-template.rst
-    :recursive:
-
-    ubermagtable
-    ubermagtable.util
-
-Index
------
-
-- :ref:`genindex`
+     <meta http-equiv="Refresh" content="5; url=https://ubermag.github.io/documentation/ubermagtable.html" />
