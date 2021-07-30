@@ -60,6 +60,7 @@ All contributions are welcome, however small they are. If you would like to cont
 
 - Vanessa Nehruji ([@vanessanehruji](https://github.com/vanessanehruji)), University of Southampton, United Kingdom
 - Sergii Mamedov ([@sergii-mamedov](https://github.com/sergii-mamedov)), European XFEL, Germany
+- Stefan Tibus ([@stibus](https://github.com/stibus))
 
 ## License
 

@@ -272,11 +272,7 @@ class Table:
         >>> table = ut.Table.fromfile(odtfile, x='t')
 
         """
-        # MagnetoElastic OOMMF extension adds energy twice to data. The
-        # following lines are just a way to fix that in the data.
         cols = uu.columns(filename, rename=rename)
-        if 'MEL_E' in cols:
-            cols.insert(cols.index('E'), 'E')
 
         return cls(data=pd.DataFrame(uu.data(filename), columns=cols),
                    units=uu.units(filename, rename=rename), x=x)
