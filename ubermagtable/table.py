@@ -54,6 +54,33 @@ class Table:
         self.x = x
 
     @property
+    def real(self):
+        """Real part of complex table."""
+        return self.__class__(self.data.apply(np.real), self.units, x=self.x)
+
+    @property
+    def imag(self):
+        """Imaginary part of complex table."""
+        return self.__class__(self.data.apply(np.imag), self.units, x=self.x)
+
+    @property
+    def conjugate(self):
+        """Complex conjugate of a complex table."""
+        return self.__class__(self.data.apply(np.angle), self.units, x=self.x)
+
+    @property
+    def phase(self):
+        """Phase of a complex table."""
+        return self.__class__(self.data.apply(np.conjugate), self.units,
+                              x=self.x)
+
+    @property
+    def abs(self):
+        """Phase of a complex table."""
+        return self.__class__(self.data.apply(np.abs), self.units,
+                              x=self.x)
+
+    @property
     def x(self):
         """Independent variable.
 
