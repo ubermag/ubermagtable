@@ -396,10 +396,8 @@ class Table:
             ax.plot(np.divide(self.data[x].to_numpy(), multiplier),
                     self.data[i], label=i, **kwargs)
 
-        if x == 't':
-            units = f' ({ubermagutil.units.rsi_prefixes[multiplier]}s)'
-        else:
-            units = ''
+        units = (f'({ubermagutil.units.rsi_prefixes[multiplier]}'
+                 f'{self.units[x]})')
         ax.set_xlabel(f'{x}{units}')
         ax.set_ylabel('value')
 
