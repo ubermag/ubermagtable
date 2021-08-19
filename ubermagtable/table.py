@@ -48,37 +48,121 @@ class Table:
     >>> table = ut.Table.fromfile(odtfile, x='iteration')
 
     """
-    def __init__(self, data, units, x=None):
+    def __init__(self, data, units, x=None, attributes={}):
         self.data = data
         self.units = units
         self.x = x
+        self.attributes = attributes
+        if 'fourierspace' not in attributes.keys():
+            self.attributes['fourierspace'] = False
 
     @property
     def real(self):
-        """Real part of complex table."""
-        return self.__class__(self.data.apply(np.real), self.units, x=self.x)
+        """Real part of dependent variables in complex table."""
+        return self.__class__(self.data.apply(lambda x: np.real(x)
+                                              if x.name != self.x else x),
+                              self.units, x=self.x)
 
     @property
     def imag(self):
-        """Imaginary part of complex table."""
-        return self.__class__(self.data.apply(np.imag), self.units, x=self.x)
+        """Imaginary part of dependent variables in complex table."""
+        return self.__class__(self.data.apply(lambda x: np.imag(x)
+                                              if x.name != self.x else x),
+                              self.units, x=self.x)
 
     @property
     def conjugate(self):
-        """Complex conjugate of a complex table."""
-        return self.__class__(self.data.apply(np.angle), self.units, x=self.x)
+        """Complex conjugate of dependent variables in a complex table."""
+        return self.__class__(self.data.apply(lambda x: np.conjugate(x)
+                                              if x.name != self.x else x),
+                              self.units, x=self.x)
 
     @property
     def phase(self):
-        """Phase of a complex table."""
-        return self.__class__(self.data.apply(np.conjugate), self.units,
-                              x=self.x)
+        """Phase of dependent variables in a complex table."""
+        return self.__class__(self.data.apply(lambda x: np.angle(x)
+                                              if x.name != self.x else x),
+                              self.units, x=self.x)
 
     @property
     def abs(self):
-        """Phase of a complex table."""
-        return self.__class__(self.data.apply(np.abs), self.units,
-                              x=self.x)
+        """Absolute value of dependent variables in a complex table."""
+        return self.__class__(self.data.apply(lambda x: np.abs(x)
+                                              if x.name != self.x else x),
+                              self.units, x=self.x)
+
+    @property
+    def dx(self):
+        """Spacing of Independent variable."""
+        d = np.diff(self.data[self.x])
+        if np.isclose(np.max(d), np.min(d)):
+            return d[0]
+        else:
+            msg = f'Independent variable {self.x=} spacing is not even.'
+            raise ValueError(msg)
+
+    def rfft(self, x=None, y=None):
+        """Real Fast Fourier Transform"""
+
+        if x is None and self.x is not None:
+            x = self.x
+
+        if x not in self.data.columns:
+            msg = f'Independent variable {x=} is not in table.'
+            raise ValueError(msg)
+
+        freqs = np.fft.rfftfreq(self.data[x].size, self.dx)
+        cols = ['Frequency']
+        units = {'Frequency': 'Hz'}
+        data = pd.DataFrame(freqs, columns=cols)
+
+        if y is None:
+            y = self.y
+
+        for i in y:
+            cols.append('ft_' + i)
+            units['ft_' + i] = '(' + self.units[i] + ')^-1'
+            data[cols[-1]] = np.fft.rfft(self.data[i])
+
+        attributes = dict(self.attributes)  # to explicitly copy
+        attributes['realspace_x'] = [np.min(self.data[x]),  # Min
+                                     np.max(self.data[x]),  # Max
+                                     self.data[x].size]     # n
+        attributes['fourierspace'] = True
+        return self.__class__(data, units, x=cols[0], attributes=attributes)
+
+    def irfft(self, x=None, y=None):
+        """Real Inverse Fast Fourier Transform"""
+        if not self.attributes['fourierspace']:
+            msg = 'Cannot inverse Fourer transform a table which '
+            msg += 'has not already been Fourer transformed.'
+            raise RuntimeError(msg)
+        if x is None and self.x is not None:
+            x = self.x
+
+        if x not in self.data.columns:
+            msg = f'Independent variable {x=} is not in table.'
+            raise ValueError(msg)
+
+        t = np.linspace(self.attributes['realspace_x'][0],
+                        self.attributes['realspace_x'][1],
+                        self.attributes['realspace_x'][2])
+        cols = ['t']
+        units = {'t': 's'}
+        data = pd.DataFrame(t, columns=cols)
+
+        if y is None:
+            y = self.y
+
+        for i in y:
+            cols.append(i[3:])
+            units[i[3:]] = self.units[i][1:-4]
+            data[cols[-1]] = np.fft.irfft(self.data[i])
+
+        attributes = dict(self.attributes)  # to explicitly copy
+        attributes['realspace_x'] = None
+        attributes['fourierspace'] = False
+        return self.__class__(data, units, x=cols[0], attributes=attributes)
 
     @property
     def x(self):
