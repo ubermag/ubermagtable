@@ -118,7 +118,43 @@ class Table:
             raise ValueError(msg)
 
     def rfft(self, x=None, y=None):
-        """Real Fast Fourier Transform"""
+        """Real Fast Fourier Transform.
+
+        The real fast Fourier transform of columns :code:`y` with frequency
+        dependent on :code:`x`.
+
+        Parameters
+        ----------
+        x : list, optional
+
+            A list of independent variables to be Fourer transformed.
+            Defaults to ``None``.
+
+        y : list, optional
+
+            A list of dependent variables to be Fourer transformed.
+            Defaults to ``None``.
+
+        Returns
+        -------
+        ubermagtable.Table
+
+            Result of applying a real Fourier transform to selected columns in
+            the table.
+
+        Examples
+        --------
+        1. Applying Fourier transforms to the table.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.rfft()
+        """
 
         if x is None and self.x is not None:
             x = self.x
@@ -148,7 +184,43 @@ class Table:
         return self.__class__(data, units, x=cols[0], attributes=attributes)
 
     def irfft(self, x=None, y=None):
-        """Real Inverse Fast Fourier Transform"""
+        """Inverse Real Fast Fourier Transform.
+
+        The inverse real fast Fourier transform of columns :code:`y` with
+        frequency dependent on :code:`x`.
+
+        Parameters
+        ----------
+        x : list, optional
+
+            A list of independent variables to be inverse Fourer transformed.
+            Defaults to ``None``.
+
+        y : list, optional
+
+            A list of dependent variables to be inverse Fourer transformed.
+            Defaults to ``None``.
+
+        Returns
+        -------
+        ubermagtable.Table
+
+            Result of applying a inverse real Fourier transform to selected
+            columns in the table.
+
+        Examples
+        --------
+        1. Applying inverse Fourier transforms to the table.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.rfft().irfft()
+        """
         if not self.attributes['fourierspace']:
             msg = 'Cannot inverse Fourer transform a table which '
             msg += 'has not already been Fourer transformed.'
