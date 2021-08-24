@@ -57,7 +57,48 @@ class Table:
             self.attributes['fourierspace'] = False
 
     def apply(self, func, columns=None, args=(), **kwargs):
-        """TODO."""
+        r"""Apply function.
+
+        Apply a function to certain columns of the table object.
+        Based off of :code:`pandas.DataFrame.apply`.
+
+        Parameters
+        ----------
+        func : function
+
+            Funtion to apply to selected columns.
+
+        columns : list, optional
+
+            A list of variables to be plotted.  Defaults to ``None``.
+
+        args : turple
+
+            Positional arguments to pass to func in adition to the data.
+
+        **kwargs
+
+            Additional keyword arguments to pass as keywords arguments to func.
+
+        Returns
+        -------
+        ubermagtable.Table
+
+            Result of applying func to selected columns in the table.
+
+        Examples
+        --------
+        1. Applying absolute funtion to data.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.apply(np.abs)
+        """
 
         if columns is None:
             columns = self.y
