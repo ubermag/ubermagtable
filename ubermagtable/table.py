@@ -56,40 +56,15 @@ class Table:
         if 'fourierspace' not in attributes.keys():
             self.attributes['fourierspace'] = False
 
-    @property
-    def real(self):
-        """Real part of dependent variables in complex table."""
-        return self.__class__(self.data.apply(lambda x: np.real(x)
-                                              if x.name != self.x else x),
-                              self.units, x=self.x)
+    def apply(self, func, columns=None, args=(), **kwargs):
+        """TODO."""
 
-    @property
-    def imag(self):
-        """Imaginary part of dependent variables in complex table."""
-        return self.__class__(self.data.apply(lambda x: np.imag(x)
-                                              if x.name != self.x else x),
-                              self.units, x=self.x)
+        if columns is None:
+            columns = self.y
 
-    @property
-    def conjugate(self):
-        """Complex conjugate of dependent variables in a complex table."""
-        return self.__class__(self.data.apply(lambda x: np.conjugate(x)
-                                              if x.name != self.x else x),
-                              self.units, x=self.x)
-
-    @property
-    def phase(self):
-        """Phase of dependent variables in a complex table."""
-        return self.__class__(self.data.apply(lambda x: np.angle(x)
-                                              if x.name != self.x else x),
-                              self.units, x=self.x)
-
-    @property
-    def abs(self):
-        """Absolute value of dependent variables in a complex table."""
-        return self.__class__(self.data.apply(lambda x: np.abs(x)
-                                              if x.name != self.x else x),
-                              self.units, x=self.x)
+        return self.__class__(self.data.apply(
+            lambda x: func(x, *args, **kwargs) if x.name in columns else x),
+            self.units, x=self.x)
 
     @property
     def dx(self):
@@ -112,8 +87,8 @@ class Table:
             raise ValueError(msg)
 
         freqs = np.fft.rfftfreq(self.data[x].size, self.dx)
-        cols = ['Frequency']
-        units = {'Frequency': 'Hz'}
+        cols = ['f']
+        units = {'f': 'Hz'}
         data = pd.DataFrame(freqs, columns=cols)
 
         if y is None:
