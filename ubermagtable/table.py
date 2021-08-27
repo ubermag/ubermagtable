@@ -48,19 +48,19 @@ class Table:
     >>> table = ut.Table.fromfile(odtfile, x='iteration')
 
     """
-    def __init__(self, data, units, x=None, attributes={}):
+
+    def __init__(self, data, units, x=None, attributes=None):
         self.data = data
         self.units = units
         self.x = x
-        self.attributes = attributes
-        if 'fourierspace' not in attributes.keys():
-            self.attributes['fourierspace'] = False
+        self.attributes = attributes if attributes is not None else {}
+        self.attributes.setdefault('fourierspace', False)
 
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
 
         Apply a function to certain columns of the table object.
-        Based off of :code:`pandas.DataFrame.apply`.
+        Based off of ``pandas.DataFrame.apply``.
 
         Parameters
         ----------
@@ -98,18 +98,20 @@ class Table:
         ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile, x='t')
         >>> table.apply(np.abs)
-        """
 
+        """
         if columns is None:
             columns = self.y
 
-        return self.__class__(self.data.apply(
-            lambda x: func(x, *args, **kwargs) if x.name in columns else x),
+        # TODO can this be changed
+        return self.__class__(
+            self.data.apply(lambda x: func(x, *args, **kwargs)
+                            if x.name in columns else x),
             self.units, x=self.x)
 
     @property
     def dx(self):
-        """Spacing of Independent variable."""
+        """Spacing of independent variable."""
         d = np.diff(self.data[self.x])
         if np.isclose(np.max(d), np.min(d)):
             return d[0]
@@ -120,8 +122,8 @@ class Table:
     def rfft(self, x=None, y=None):
         """Real Fast Fourier Transform.
 
-        The real fast Fourier transform of columns :code:`y` with frequency
-        dependent on :code:`x`.
+        The real fast Fourier transform of columns ``y`` with frequency
+        dependent on ``x``.
 
         Parameters
         ----------
@@ -154,12 +156,14 @@ class Table:
         ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile, x='t')
         >>> table.rfft()
+        ...
+
         """
+        x = self.x if x is None else x
 
-        if x is None and self.x is not None:
-            x = self.x
-
-        if x not in self.data.columns:
+        if x is None:
+            raise ValueError('No independent variable specified.')
+        elif x not in self.data.columns:
             msg = f'Independent variable {x=} is not in table.'
             raise ValueError(msg)
 
@@ -172,8 +176,8 @@ class Table:
             y = self.y
 
         for i in y:
-            cols.append('ft_' + i)
-            units['ft_' + i] = '(' + self.units[i] + ')^-1'
+            cols.append(f'ft_{i}')
+            units['ft_' + i] = f'({self.units[i]})^-1'
             data[cols[-1]] = np.fft.rfft(self.data[i])
 
         attributes = dict(self.attributes)  # to explicitly copy
@@ -220,15 +224,19 @@ class Table:
         ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile, x='t')
         >>> table.rfft().irfft()
+        ...
+
         """
         if not self.attributes['fourierspace']:
-            msg = 'Cannot inverse Fourer transform a table which '
-            msg += 'has not already been Fourer transformed.'
+            msg = ('Cannot inverse Fourer transform a table which '
+                   'has not already been Fourer transformed.')
             raise RuntimeError(msg)
-        if x is None and self.x is not None:
-            x = self.x
 
-        if x not in self.data.columns:
+        x = self.x if x is None else x
+
+        if x is None:
+            raise ValueError('No independent variable specified.')
+        elif x not in self.data.columns:
             msg = f'Independent variable {x=} is not in table.'
             raise ValueError(msg)
 
