@@ -66,7 +66,7 @@ class Table:
         ----------
         func : function
 
-            Funtion to apply to selected columns.
+            Function to apply to selected columns.
 
         columns : list, optional
 
@@ -74,7 +74,7 @@ class Table:
 
         args : turple
 
-            Positional arguments to pass to func in adition to the data.
+            Positional arguments to pass to func in addition to the data.
 
         **kwargs
 
@@ -88,7 +88,7 @@ class Table:
 
         Examples
         --------
-        1. Applying absolute funtion to data.
+        1. Applying absolute function to data.
 
         >>> import os
         >>> import ubermagtable as ut
@@ -129,12 +129,12 @@ class Table:
         ----------
         x : list, optional
 
-            A list of independent variables to be Fourer transformed.
+            A list of independent variables to be Fourier transformed.
             Defaults to ``None``.
 
         y : list, optional
 
-            A list of dependent variables to be Fourer transformed.
+            A list of dependent variables to be Fourier transformed.
             Defaults to ``None``.
 
         Returns
@@ -197,12 +197,12 @@ class Table:
         ----------
         x : list, optional
 
-            A list of independent variables to be inverse Fourer transformed.
+            A list of independent variables to be inverse Fourier transformed.
             Defaults to ``None``.
 
         y : list, optional
 
-            A list of dependent variables to be inverse Fourer transformed.
+            A list of dependent variables to be inverse Fourier transformed.
             Defaults to ``None``.
 
         Returns
@@ -228,8 +228,8 @@ class Table:
 
         """
         if not self.attributes['fourierspace']:
-            msg = ('Cannot inverse Fourer transform a table which '
-                   'has not already been Fourer transformed.')
+            msg = ('Cannot inverse Fourier transform a table which '
+                   'has not already been Fourier transformed.')
             raise RuntimeError(msg)
 
         x = self.x if x is None else x
