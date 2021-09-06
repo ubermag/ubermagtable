@@ -97,7 +97,8 @@ class Table:
         ...                        'tests', 'test_sample',
         ...                        'oommf-old-file1.odt')
         >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> table.apply(np.abs)
+        >>> new_table = table.apply(np.abs)
+        ...
 
         """
         if columns is None:
@@ -153,9 +154,9 @@ class Table:
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
+        ...                        'oommf-new-file5.odt')
         >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> table.rfft()
+        >>> fft_table = table.rfft()
         ...
 
         """
@@ -221,9 +222,9 @@ class Table:
         ...
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
+        ...                        'oommf-new-file5.odt')
         >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> table.rfft().irfft()
+        >>> ifft_table = table.rfft().irfft()
         ...
 
         """
