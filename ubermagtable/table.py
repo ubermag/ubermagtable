@@ -59,8 +59,14 @@ class Table:
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
 
-        Apply a function to certain columns of the table object.
-        Based off of ``pandas.DataFrame.apply``.
+        ``apply`` takes a function and its arguments along with a list of
+        columns that the function should be applied to.
+        It uses the fuction on all of the values in the chosen columns and
+        returns an ``ubermagtable.Table`` object.
+        This function is based off of ``pandas.DataFrame.apply``.
+
+        If ``columns`` is not specified, by default the function will be
+        applied to all dependent variable columns i.e. ``Table.y``.
 
         Parameters
         ----------
@@ -104,11 +110,10 @@ class Table:
         if columns is None:
             columns = self.y
 
-        # TODO can this be changed
         return self.__class__(
             self.data.apply(lambda x: func(x, *args, **kwargs)
                             if x.name in columns else x),
-            self.units, x=self.x)
+            self.units, x=self.x, attributes=self.attributes)
 
     @property
     def dx(self):
@@ -128,9 +133,9 @@ class Table:
 
         Parameters
         ----------
-        x : list, optional
+        x : str, optional
 
-            A list of independent variables to be Fourier transformed.
+            The independent variable to be Fourier transformed.
             Defaults to ``None``.
 
         y : list, optional
@@ -196,9 +201,9 @@ class Table:
 
         Parameters
         ----------
-        x : list, optional
+        x : str, optional
 
-            A list of independent variables to be inverse Fourier transformed.
+            The independent variable to be inverse Fourier transformed.
             Defaults to ``None``.
 
         y : list, optional
@@ -433,7 +438,8 @@ class Table:
 
         return self.__class__(data=pd.concat([self.data, other_df],
                                              ignore_index=True),
-                              units=self.units, x=self.x)
+                              units=self.units, x=self.x,
+                              attributes=self.attributes)
 
     @classmethod
     def fromfile(cls, filename, /, x=None, rename=True):
