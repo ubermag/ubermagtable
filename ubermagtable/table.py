@@ -63,7 +63,8 @@ class Table:
         columns that the function should be applied to.
         It uses the fuction on all of the values in the chosen columns and
         returns an ``ubermagtable.Table`` object.
-        This function is based off of ``pandas.DataFrame.apply``.
+        This function is based off of `pandas.DataFrame.apply
+        <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.apply.html>`_.
 
         If ``columns`` is not specified, by default the function will be
         applied to all dependent variable columns i.e. ``Table.y``.
@@ -432,6 +433,10 @@ class Table:
         if other.x != self.x:
             msg = f'Independent variable {self.x=} mismatch.'
             raise ValueError(msg)
+
+        if self.attributes['fourierspace']:
+            msg = ('Fourier transformed table does not support operand <<.')
+            raise RuntimeError(msg)
 
         other_df = other.data.copy()  # make a deep copy of dataframe
         other_df[self.x] += self.data[self.x].iloc[-1]
