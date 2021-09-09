@@ -18,7 +18,7 @@ setuptools.setup(
     install_requires=['ubermagutil==0.4.1',
                       'pandas>=1.1',
                       'matplotlib>=3.3',
-                      'jupyterlab>=2.2.10,<3.2',
+                      'jupyterlab~=3',
                       'ipywidgets>=7.5'],
     classifiers=['Development Status :: 5 - Production/Stable',
                  'Intended Audience :: Education',
