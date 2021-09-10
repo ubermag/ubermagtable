@@ -136,12 +136,13 @@ class Table:
         ----------
         x : str, optional
 
-            The independent variable to be Fourier transformed.
-            Defaults to ``None``.
+            The independent variable to be Fourier transformed. If not
+            specified ``table.x`` is used. Defaults to ``None``.
 
         y : list, optional
 
-            A list of dependent variables to be Fourier transformed.
+            A list of dependent variables to be Fourier transformed. If not
+            specified all columns in ``table.y`` are Fourier transformed.
             Defaults to ``None``.
 
         Returns
@@ -204,12 +205,13 @@ class Table:
         ----------
         x : str, optional
 
-            The independent variable to be inverse Fourier transformed.
-            Defaults to ``None``.
+            The independent variable to be inverse Fourier transformed. If not
+            specified ``table.x`` is used. Defaults to ``None``.
 
         y : list, optional
 
-            A list of dependent variables to be inverse Fourier transformed.
+            A list of dependent variables to be inverse Fourier transformed. If
+            not specified all columns in ``table.y`` are Fourier transformed.
             Defaults to ``None``.
 
         Returns
@@ -247,9 +249,7 @@ class Table:
             msg = f'Independent variable {x=} is not in table.'
             raise ValueError(msg)
 
-        t = np.linspace(self.attributes['realspace_x'][0],
-                        self.attributes['realspace_x'][1],
-                        self.attributes['realspace_x'][2])
+        t = np.linspace(*self.attributes['realspace_x'])
         cols = ['t']
         units = {'t': 's'}
         data = pd.DataFrame(t, columns=cols)
@@ -258,8 +258,8 @@ class Table:
             y = self.y
 
         for i in y:
-            cols.append(i[3:])
-            units[i[3:]] = self.units[i][1:-4]
+            cols.append(i[3:])  # remove leading 'ft_'
+            units[i[3:]] = self.units[i][1:-4]  # remove '()^-1'
             data[cols[-1]] = np.fft.irfft(self.data[i])
 
         attributes = dict(self.attributes)  # to explicitly copy
@@ -381,6 +381,8 @@ class Table:
         independent variable column in second operand's table, no merging is
         allowed and ``ValueError`` is raised. If there are non-matching
         columns, the missing values will be ``NaN``.
+
+        Merging is not supported for Fourier transformed tables.
 
         Parameters
         ----------
