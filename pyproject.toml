@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ubermagtable"
+version = "0.6.1"
+description = "Python package for manipulating tabular data."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+
+authors = [
+  {name = "Marijan Beg"},
+  {name = "Martin Lang"},
+  {name = "Ryan A. Pepper"},
+  {name = "Thomas Kluyver"},
+  {name = "Samuel Holt"},
+  {name = "Hans Fangohr"}
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Visualization"
+]
+
+dependencies = [
+  "ubermagutil==0.4.1",
+  "pandas>=1.1",
+  "matplotlib>=3.3",
+  "jupyterlab~=3.0",
+  "ipywidgets>=7.5"
+]
+
+# [project.optional-dependencies]
+# test = [...]
+
+[project.urls]
+homepage = "https://ubermag.github.io"
+documentation = "https://ubermag.github.io/documentation/$package"
+repository = "https://github.com/ubermag/$package"
+
+# to define additional information we use a custom table
+# we need to own the entry for tool.NAME on PyPI
+# see: https://www.python.org/dev/peps/pep-0518/#tool-table
+[tool.ubermag]
+doi = "10.5281/zenodo.3539461"
+copyright_holder = "Marijan Beg and Hans Fangohr"
+contributors = [
+  "Vanessa Nehruji",
+  "Sergii Mamedov",
+  "Stefan Tibus"
+]
+about = """
+- reading scalar data files (OOMMF `.odt` and mumax3 `.txt`),
+
+- merging multiple tables, and
+
+- visualisation of scalar table data.
+"""
