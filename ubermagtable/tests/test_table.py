@@ -6,6 +6,7 @@ import ipywidgets
 import pandas as pd
 import ubermagtable as ut
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def check_table(table):
@@ -174,3 +175,21 @@ class TestTable:
         table = ut.Table.fromfile(self.odtfiles[-1])
         columns = table.data.columns.to_list()
         assert len(columns) == 30
+
+    def test_rfft(self):
+        table = ut.Table.fromfile(self.odtfiles[12], x='t')
+        fft_table = table.rfft()
+        fft_table.x = None
+        check_table(fft_table)
+
+    def test_irfft(self):
+        table = ut.Table.fromfile(self.odtfiles[12], x='t')
+        fft_table = table.rfft()
+        ifft_table = fft_table.irfft()
+        ifft_table.x = None
+        check_table(ifft_table)
+        assert np.allclose(ifft_table.data['t'].values,
+                           table.data['t'].values)
+        for y in ifft_table.y:
+            assert np.allclose(ifft_table.data[y].values,
+                               table.data[y].values)
