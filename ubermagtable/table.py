@@ -437,6 +437,8 @@ class Table:
             raise ValueError(msg)
 
         if self.attributes['fourierspace']:
+            # Concatenating frequency values as done for the independent
+            # variable generally does not make sense.
             msg = ('Fourier transformed table does not support operand <<.')
             raise RuntimeError(msg)
 
