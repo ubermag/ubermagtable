@@ -1,34 +1,39 @@
 # ubermagtable
-Marijan Beg<sup>1,2</sup>, Martin Lang<sup>1</sup>, Ryan A. Pepper<sup>1</sup>, Thomas Kluyver<sup>2</sup>, and Hans Fangohr<sup>1,2,3</sup>
+[Marijan Beg](https://github.com/marijanbeg)<sup>1,2</sup>, [Martin Lang](https://github.com/lang-m)<sup>2</sup>, [Ryan A. Pepper](https://github.com/rpep)<sup>3</sup>, [Thomas Kluyver](https://github.com/takluyver)<sup>4</sup>, [Samuel Holt](https://github.com/samjrholt)<sup>5</sup>, [Hans Fangohr](https://github.com/fangohr)<sup>2,6,7</sup>
 
-<sup>1</sup> *Faculty of Engineering and Physical Sciences, University of Southampton, Southampton SO17 1BJ, United Kingdom*  
-<sup>2</sup> *European XFEL GmbH, Holzkoppel 4, 22869 Schenefeld, Germany*  
-<sup>3</sup> *Max Planck Institute for the Structure and Dynamics of Matter, Luruper Chaussee 149, 22761 Hamburg, Germany*
+<sup>1</sup> *Department of Earth Science and Engineering, Imperial College London, London SW7 2AZ, UK*  
+<sup>2</sup> *Faculty of Engineering and Physical Sciences, University of Southampton, Southampton SO17 1BJ, UK*  
+<sup>3</sup> *Research Software Group, University of Birmingham, Birmingham B15 2TT, UK*  
+<sup>4</sup> *European XFEL GmbH, Holzkoppel 4, 22869 Schenefeld, Germany*  
+<sup>5</sup> *Department of Physics, University of Warwick, Coventry CV4 7AL, UK*  
+<sup>6</sup> *Max Planck Institute for the Structure and Dynamics of Matter, Luruper Chaussee 149, 22761 Hamburg, Germany*  
+<sup>7</sup> *Center for Free-Electron Laser Science, Luruper Chaussee 149, 22761 Hamburg, Germany*
 
 | Description | Badge |
 | --- | --- |
-| Tests | [![workflow](https://github.com/ubermag/ubermagtable/workflows/workflow/badge.svg)](https://github.com/ubermag/ubermagtable/actions?query=workflow%3Aworkflow) |
+| Tests | [![Build status](https://github.com/ubermag/ubermagtable/workflows/workflow/badge.svg)](https://github.com/ubermag/ubermagtable/actions?query=workflow%3Aworkflow) |
 |       | [![conda](https://github.com/ubermag/ubermagtable/workflows/conda/badge.svg)](https://github.com/ubermag/ubermagtable/actions?query=workflow%3Aconda) |
 | Releases | [![PyPI version](https://badge.fury.io/py/ubermagtable.svg)](https://badge.fury.io/py/ubermagtable) |
 |          | [![Anaconda-Server Badge](https://anaconda.org/conda-forge/ubermagtable/badges/version.svg)](https://anaconda.org/conda-forge/ubermagtable) |
-| Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg?token=1jEP7FM6ht)](https://codecov.io/gh/ubermag/ubermagtable) |
-| Documentation | [![Documentation Status](https://readthedocs.org/projects/ubermagtable/badge/?version=latest)](https://ubermagtable.readthedocs.io/en/latest/?badge=latest) |
+| Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg?token=hcK4fofmrL)](https://codecov.io/gh/ubermag/ubermagtable) |
+| Documentation | [![Documentation](https://img.shields.io/badge/Docs-ubermag.github.io-blue)](https://ubermag.github.io/documentation/ubermagtable.html) |
 | YouTube | [![YouTube](https://img.shields.io/badge/YouTube-ubermag-blue)](https://www.youtube.com/channel/UC7MSqVQSMFV42R1jAYmKGLg) |
-| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/HEAD?urlpath=lab/tree/docs/ipynb/index.ipynb) |
+| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/stable?filepath=docs%2Fipynb%2Findex.ipynb) |
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/ubermagtable/badges/platforms.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/ubermagtable/badges/downloads.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
-| DOI | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3539492.svg)](https://doi.org/10.5281/zenodo.3539492) |
+| DOI | [![DOI](https://zenodo.org/badge/67028400.svg)](https://zenodo.org/badge/latestdoi/67028400) |
 
 ## About
 
-`ubermagtable` is a Python package providing:
+`ubermagtable` is a Python package, integrated with Jupyter, providing:
 
 - reading scalar data files (OOMMF `.odt` and mumax3 `.txt`),
 
 - merging multiple tables, and
 
 - visualisation of scalar table data.
+
 
 It is available on Windows, MacOS, and Linux. It requires Python 3.8+.
 
@@ -58,9 +63,9 @@ All contributions are welcome, however small they are. If you would like to cont
 
 **Contributors**:
 
-- Vanessa Nehruji ([@vanessanehruji](https://github.com/vanessanehruji)), University of Southampton, United Kingdom
-- Sergii Mamedov ([@sergii-mamedov](https://github.com/sergii-mamedov)), European XFEL, Germany
-- Stefan Tibus ([@stibus](https://github.com/stibus))
+- [Vanessa Nehruji](https://github.com/vanessanehruji)
+- [Sergii Mamedov](https://github.com/sergii-mamedov)
+- [Stefan Tibus](https://github.com/stibus)
 
 ## License
 
@@ -68,12 +73,15 @@ Licensed under the BSD 3-Clause "New" or "Revised" License. For details, please 
 
 ## How to cite
 
-1. M. Beg, R. A. Pepper, and H. Fangohr. User interfaces for computational science: A domain specific language for OOMMF embedded in Python. [*AIP Advances* **7**, 56025](http://aip.scitation.org/doi/10.1063/1.4977225) (2017).
+1. M. Beg, M. Lang, and H. Fangohr. Ubermag: Towards more effective micromagnetic workflows. [*IEEE Transactions on Magnetics*](https://doi.org/10.1109/TMAG.2021.3078896) (2021).
 
-2. M. Beg, R. A. Pepper, M. Lang, T. Kluyver, and H. Fangohr. ubermagtable: Python package for manipulating tabular data. DOI: [10.5281/zenodo.3539492](http://doi.org/10.5281/zenodo.3539492) (2021).
+2. M. Beg, R. A. Pepper, and H. Fangohr. User interfaces for computational science: A domain specific language for OOMMF embedded in Python. [*AIP Advances* **7**, 56025](http://aip.scitation.org/doi/10.1063/1.4977225) (2017).
+
+3. Marijan Beg, Martin Lang, Ryan A. Pepper, Thomas Kluyver, Samuel Holt, Hans Fangohr. ubermagtable: Python package for manipulating tabular data. DOI: [10.5281/zenodo.3539461](http://doi.org/10.5281/zenodo.3539461) (2021).
 
 ## Acknowledgements
 
 - [OpenDreamKit](http://opendreamkit.org/) – Horizon 2020 European Research Infrastructure project (676541)
 
 - EPSRC Programme Grant on [Skyrmionics](http://www.skyrmions.ac.uk) (EP/N032128/1)
+
