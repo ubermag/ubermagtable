@@ -18,7 +18,7 @@
 | Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg?token=hcK4fofmrL)](https://codecov.io/gh/ubermag/ubermagtable) |
 | Documentation | [![Documentation](https://img.shields.io/badge/Docs-ubermag.github.io-blue)](https://ubermag.github.io/documentation/ubermagtable.html) |
 | YouTube | [![YouTube](https://img.shields.io/badge/YouTube-ubermag-blue)](https://www.youtube.com/channel/UC7MSqVQSMFV42R1jAYmKGLg) |
-| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/stable?filepath=docs%2Fipynb%2Findex.ipynb) |
+| Binder | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ubermag/ubermagtable/stable?urlpath=lab/tree/docs/ipynb/index.ipynb)|
 | Platforms | [![Platforms](https://anaconda.org/conda-forge/ubermagtable/badges/platforms.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | Downloads | [![Downloads](https://anaconda.org/conda-forge/ubermagtable/badges/downloads.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | License | [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) |
