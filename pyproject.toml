@@ -12,12 +12,12 @@ requires-python = ">=3.8"
 license = {file = "LICENSE"}
 
 authors = [
-  {name = "Marijan Beg"},
-  {name = "Martin Lang"},
-  {name = "Ryan A. Pepper"},
-  {name = "Thomas Kluyver"},
-  {name = "Samuel Holt"},
-  {name = "Hans Fangohr"}
+    {name = "Marijan Beg"},
+    {name = "Martin Lang"},
+    {name = "Ryan A. Pepper"},
+    {name = "Thomas Kluyver"},
+    {name = "Samuel Holt"},
+    {name = "Hans Fangohr"}
 ]
 
 classifiers = [
@@ -37,20 +37,31 @@ classifiers = [
 ]
 
 dependencies = [
-  "ubermagutil~=0.60.0",
-  "pandas>=1.1",
-  "matplotlib>=3.3",
-  "jupyterlab~=3.0",
-  "ipywidgets>=7.5"
+    "ubermagutil~=0.60.0",
+    "pandas>=1.1",
+    "matplotlib>=3.3",
+    "jupyterlab~=3.0",
+    "ipywidgets>=7.5"
 ]
 
-# [project.optional-dependencies]
-# test = [...]
+[project.optional-dependencies]
+dev = [
+    "build",
+    "pre-commit",
+    "twine"
+]
+test = [
+    "nbval",
+    "pytest",
+    "pytest-cov"
+]
 
 [project.urls]
 homepage = "https://ubermag.github.io"
 documentation = "https://ubermag.github.io/documentation/ubermagtable"
 repository = "https://github.com/ubermag/ubermagtable"
+
+
 
 # to define additional information we use a custom table
 # we need to own the entry for tool.NAME on PyPI
@@ -59,9 +70,9 @@ repository = "https://github.com/ubermag/ubermagtable"
 doi = "10.5281/zenodo.3539491"
 copyright_holder = "Marijan Beg and Hans Fangohr"
 contributors = [
-  "Vanessa Nehruji",
-  "Sergii Mamedov",
-  "Stefan Tibus"
+    "Vanessa Nehruji",
+    "Sergii Mamedov",
+    "Stefan Tibus"
 ]
 about = """
 - reading scalar data files (OOMMF `.odt` and mumax3 `.txt`),
