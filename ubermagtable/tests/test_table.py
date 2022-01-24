@@ -143,7 +143,7 @@ class TestTable:
             table.mpl(x='t')
 
         # Hysteresis plot
-        table = ut.Table.fromfile(self.odtfiles[-5], x='B')
+        table = ut.Table.fromfile(self.odtfiles[-5], x='B_hysteresis')
         table.mpl()
 
         plt.close('all')
@@ -152,8 +152,9 @@ class TestTable:
         # Exception
         table = ut.Table.fromfile(self.odtfiles[0], x='t')
         assert isinstance(table.slider(x='t'), ipywidgets.SelectionRangeSlider)
-        table = ut.Table.fromfile(self.odtfiles[-5], x='B')
-        assert isinstance(table.slider(x='B'), ipywidgets.SelectionRangeSlider)
+        table = ut.Table.fromfile(self.odtfiles[-5], x='B_hysteresis')
+        assert isinstance(table.slider(x='B_hysteresis'),
+                          ipywidgets.SelectionRangeSlider)
         with pytest.raises(ValueError):
             slider = table.slider(x='wrong')
 

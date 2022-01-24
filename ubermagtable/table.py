@@ -486,7 +486,7 @@ class Table:
         >>> odtfile = os.path.join(os.path.dirname(__file__),
         ...                        'tests', 'test_sample',
         ...                        'oommf-hysteresis1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='B')
+        >>> table = ut.Table.fromfile(odtfile, x='B_hysteresis')
 
         2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
 
