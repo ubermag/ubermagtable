@@ -84,3 +84,7 @@ about = """
 
 [tool.coverage.run]
 omit = ["ubermagtable/tests/*"]
+
+[tool.isort]
+skip_gitignore = true  # ignores files listed in .gitignore
+# known_first_party = [""]
