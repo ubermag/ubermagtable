@@ -15,6 +15,7 @@
 | --- | --- |
 | Tests | [![Build status](https://github.com/ubermag/ubermagtable/workflows/workflow/badge.svg)](https://github.com/ubermag/ubermagtable/actions?query=workflow%3Aworkflow) |
 |       | [![conda](https://github.com/ubermag/ubermagtable/workflows/conda/badge.svg)](https://github.com/ubermag/ubermagtable/actions?query=workflow%3Aconda) |
+| Linting | [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ubermag/ubermagtable/master.svg)](https://results.pre-commit.ci/latest/github/ubermag/ubermagtable/master)
 | Releases | [![PyPI version](https://badge.fury.io/py/ubermagtable.svg)](https://badge.fury.io/py/ubermagtable) |
 |          | [![Anaconda-Server Badge](https://anaconda.org/conda-forge/ubermagtable/badges/version.svg)](https://anaconda.org/conda-forge/ubermagtable) |
 | Coverage | [![codecov](https://codecov.io/gh/ubermag/ubermagtable/branch/master/graph/badge.svg?token=hcK4fofmrL)](https://codecov.io/gh/ubermag/ubermagtable) |
@@ -75,7 +76,7 @@ Licensed under the BSD 3-Clause "New" or "Revised" License. For details, please 
 
 ## How to cite
 
-1. M. Beg, M. Lang, and H. Fangohr. Ubermag: Towards more effective micromagnetic workflows. [*IEEE Transactions on Magnetics*](https://doi.org/10.1109/TMAG.2021.3078896) (2021).
+1. M. Beg, M. Lang, and H. Fangohr. Ubermag: Towards more effective micromagnetic workflows. [*IEEE Transactions on Magnetics* **58**, 7300205](https://doi.org/10.1109/TMAG.2021.3078896) (2022).
 
 2. M. Beg, R. A. Pepper, and H. Fangohr. User interfaces for computational science: A domain specific language for OOMMF embedded in Python. [*AIP Advances* **7**, 56025](http://aip.scitation.org/doi/10.1063/1.4977225) (2017).
 
