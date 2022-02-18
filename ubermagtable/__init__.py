@@ -1,4 +1,4 @@
-"""Main package."""
+"""Manipulation of tabular data."""
 import os
 import pytest
 import pkg_resources
