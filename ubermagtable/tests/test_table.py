@@ -1,12 +1,14 @@
-import os
-import pytest
 import numbers
+import os
 import tempfile
+
 import ipywidgets
-import pandas as pd
-import ubermagtable as ut
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import pytest
+
+import ubermagtable as ut
 
 
 def check_table(table):
@@ -156,7 +158,7 @@ class TestTable:
         assert isinstance(table.slider(x='B_hysteresis'),
                           ipywidgets.SelectionRangeSlider)
         with pytest.raises(ValueError):
-            slider = table.slider(x='wrong')
+            table.slider(x='wrong')
 
     def test_selector(self):
         table = ut.Table.fromfile(self.odtfiles[0], x='t')
@@ -165,7 +167,7 @@ class TestTable:
         assert isinstance(table.selector(), ipywidgets.SelectMultiple)
         # Exception
         with pytest.raises(ValueError):
-            selector = table.selector(x='wrong')
+            table.selector(x='wrong')
 
     def test_oommf_mel(self):
         table = ut.Table.fromfile(self.odtfiles[-2])

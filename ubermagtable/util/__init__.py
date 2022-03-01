@@ -1,2 +1,2 @@
 """Utility tools"""
-from .util import columns, units, data
+from .util import columns, data, units
