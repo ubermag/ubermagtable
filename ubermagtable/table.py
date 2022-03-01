@@ -1,10 +1,11 @@
 import ipywidgets
-import ubermagutil.units
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import ubermagtable.util as uu
-import matplotlib.pyplot as plt
 import ubermagutil.typesystem as ts
+import ubermagutil.units
+
+import ubermagtable.util as uu
 
 
 @ts.typesystem(data=ts.Typed(expected_type=pd.DataFrame),

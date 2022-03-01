@@ -1,10 +1,12 @@
 """Manipulation of tabular data."""
 import os
-import pytest
-import pkg_resources
-from .table import Table
-from .interact import interact
+
 import matplotlib.pyplot as plt
+import pkg_resources
+import pytest
+
+from .interact import interact
+from .table import Table
 
 # Enable default plotting style.
 dirname = os.path.abspath(os.path.dirname(__file__))

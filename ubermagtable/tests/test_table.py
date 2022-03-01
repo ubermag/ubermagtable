@@ -1,12 +1,14 @@
-import os
-import pytest
 import numbers
+import os
 import tempfile
+
 import ipywidgets
-import pandas as pd
-import ubermagtable as ut
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import pytest
+
+import ubermagtable as ut
 
 
 def check_table(table):

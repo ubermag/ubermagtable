@@ -1,8 +1,8 @@
-import os
-import numbers
 import itertools
-import ubermagtable.util as uu
+import numbers
+import os
 
+import ubermagtable.util as uu
 
 dirname = os.path.join(os.path.dirname(__file__), 'test_sample/')
 filenames = ['oommf-old-file1.odt',
