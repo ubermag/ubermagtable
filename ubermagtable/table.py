@@ -198,8 +198,8 @@ class Table:
         attributes["realspace_x"] = [
             np.min(self.data[x]),  # Min
             np.max(self.data[x]),  # Max
-            self.data[x].size,
-        ]  # n
+            self.data[x].size,  # n
+        ]
         attributes["fourierspace"] = True
         return self.__class__(data, units, x=cols[0], attributes=attributes)
 
