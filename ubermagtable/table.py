@@ -8,8 +8,9 @@ import ubermagutil.units
 import ubermagtable.util as uu
 
 
-@ts.typesystem(data=ts.Typed(expected_type=pd.DataFrame),
-               units=ts.Typed(expected_type=dict))
+@ts.typesystem(
+    data=ts.Typed(expected_type=pd.DataFrame), units=ts.Typed(expected_type=dict)
+)
 class Table:
     """Tabular data class.
 
@@ -55,7 +56,7 @@ class Table:
         self.units = units
         self.x = x
         self.attributes = attributes if attributes is not None else {}
-        self.attributes.setdefault('fourierspace', False)
+        self.attributes.setdefault("fourierspace", False)
 
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
@@ -113,9 +114,13 @@ class Table:
             columns = self.y
 
         return self.__class__(
-            self.data.apply(lambda x: func(x, *args, **kwargs)
-                            if x.name in columns else x),
-            self.units, x=self.x, attributes=self.attributes)
+            self.data.apply(
+                lambda x: func(x, *args, **kwargs) if x.name in columns else x
+            ),
+            self.units,
+            x=self.x,
+            attributes=self.attributes,
+        )
 
     @property
     def dx(self):
@@ -124,7 +129,7 @@ class Table:
         if np.isclose(np.max(d), np.min(d)):
             return d[0]
         else:
-            msg = f'Independent variable {self.x=} spacing is not even.'
+            msg = f"Independent variable {self.x=} spacing is not even."
             raise ValueError(msg)
 
     def rfft(self, x=None, y=None):
@@ -171,29 +176,31 @@ class Table:
         x = self.x if x is None else x
 
         if x is None:
-            raise ValueError('No independent variable specified.')
+            raise ValueError("No independent variable specified.")
         elif x not in self.data.columns:
-            msg = f'Independent variable {x=} is not in table.'
+            msg = f"Independent variable {x=} is not in table."
             raise ValueError(msg)
 
         freqs = np.fft.rfftfreq(self.data[x].size, self.dx)
-        cols = ['f']
-        units = {'f': 'Hz'}
+        cols = ["f"]
+        units = {"f": "Hz"}
         data = pd.DataFrame(freqs, columns=cols)
 
         if y is None:
             y = self.y
 
         for i in y:
-            cols.append(f'ft_{i}')
-            units['ft_' + i] = f'({self.units[i]})^-1'
+            cols.append(f"ft_{i}")
+            units["ft_" + i] = f"({self.units[i]})^-1"
             data[cols[-1]] = np.fft.rfft(self.data[i])
 
         attributes = dict(self.attributes)  # to explicitly copy
-        attributes['realspace_x'] = [np.min(self.data[x]),  # Min
-                                     np.max(self.data[x]),  # Max
-                                     self.data[x].size]     # n
-        attributes['fourierspace'] = True
+        attributes["realspace_x"] = [
+            np.min(self.data[x]),  # Min
+            np.max(self.data[x]),  # Max
+            self.data[x].size,  # n
+        ]
+        attributes["fourierspace"] = True
         return self.__class__(data, units, x=cols[0], attributes=attributes)
 
     def irfft(self, x=None, y=None):
@@ -237,22 +244,24 @@ class Table:
         ...
 
         """
-        if not self.attributes['fourierspace']:
-            msg = ('Cannot inverse Fourier transform a table which '
-                   'has not already been Fourier transformed.')
+        if not self.attributes["fourierspace"]:
+            msg = (
+                "Cannot inverse Fourier transform a table which "
+                "has not already been Fourier transformed."
+            )
             raise RuntimeError(msg)
 
         x = self.x if x is None else x
 
         if x is None:
-            raise ValueError('No independent variable specified.')
+            raise ValueError("No independent variable specified.")
         elif x not in self.data.columns:
-            msg = f'Independent variable {x=} is not in table.'
+            msg = f"Independent variable {x=} is not in table."
             raise ValueError(msg)
 
-        t = np.linspace(*self.attributes['realspace_x'])
-        cols = ['t']
-        units = {'t': 's'}
+        t = np.linspace(*self.attributes["realspace_x"])
+        cols = ["t"]
+        units = {"t": "s"}
         data = pd.DataFrame(t, columns=cols)
 
         if y is None:
@@ -264,8 +273,8 @@ class Table:
             data[cols[-1]] = np.fft.irfft(self.data[i])
 
         attributes = dict(self.attributes)  # to explicitly copy
-        attributes['realspace_x'] = None
-        attributes['fourierspace'] = False
+        attributes["realspace_x"] = None
+        attributes["fourierspace"] = False
         return self.__class__(data, units, x=cols[0], attributes=attributes)
 
     @property
@@ -286,7 +295,7 @@ class Table:
         if value in self.data.columns or value is None:
             self._x = value
         else:
-            msg = f'Column {value} is not a column in data.'
+            msg = f"Column {value} is not a column in data."
             raise ValueError(msg)
 
     @property
@@ -429,27 +438,30 @@ class Table:
 
         """
         if not isinstance(other, self.__class__):
-            msg = (f'Unsupported operand type(s) for <<: '
-                   f'{type(self)=} and {type(other)=}.')
+            msg = (
+                f"Unsupported operand type(s) for <<: {type(self)=} and {type(other)=}."
+            )
             raise TypeError(msg)
 
         if other.x != self.x:
-            msg = f'Independent variable {self.x=} mismatch.'
+            msg = f"Independent variable {self.x=} mismatch."
             raise ValueError(msg)
 
-        if self.attributes['fourierspace']:
+        if self.attributes["fourierspace"]:
             # Concatenating frequency values as done for the independent
             # variable generally does not make sense.
-            msg = ('Fourier transformed table does not support operand <<.')
+            msg = "Fourier transformed table does not support operand <<."
             raise RuntimeError(msg)
 
         other_df = other.data.copy()  # make a deep copy of dataframe
         other_df[self.x] += self.data[self.x].iloc[-1]
 
-        return self.__class__(data=pd.concat([self.data, other_df],
-                                             ignore_index=True),
-                              units=self.units, x=self.x,
-                              attributes=self.attributes)
+        return self.__class__(
+            data=pd.concat([self.data, other_df], ignore_index=True),
+            units=self.units,
+            x=self.x,
+            attributes=self.attributes,
+        )
 
     @classmethod
     def fromfile(cls, filename, /, x=None, rename=True):
@@ -498,11 +510,23 @@ class Table:
         """
         cols = uu.columns(filename, rename=rename)
 
-        return cls(data=pd.DataFrame(uu.data(filename), columns=cols),
-                   units=uu.units(filename, rename=rename), x=x)
+        return cls(
+            data=pd.DataFrame(uu.data(filename), columns=cols),
+            units=uu.units(filename, rename=rename),
+            x=x,
+        )
 
-    def mpl(self, ax=None, figsize=None, x=None, y=None, xlim=None,
-            multiplier=None, filename=None, **kwargs):
+    def mpl(
+        self,
+        ax=None,
+        figsize=None,
+        x=None,
+        y=None,
+        xlim=None,
+        multiplier=None,
+        filename=None,
+        **kwargs,
+    ):
         """Table data plot.
 
         This method plots scalar values as a function of ``x``. If ``x`` is not
@@ -576,7 +600,7 @@ class Table:
             x = self.x
 
         if x not in self.data.columns:
-            msg = f'Independent variable {x=} is not in table.'
+            msg = f"Independent variable {x=} is not in table."
             raise ValueError(msg)
 
         if ax is None:
@@ -590,13 +614,16 @@ class Table:
             y = self.y
 
         for i in y:
-            ax.plot(np.divide(self.data[x].to_numpy(), multiplier),
-                    self.data[i], label=i, **kwargs)
+            ax.plot(
+                np.divide(self.data[x].to_numpy(), multiplier),
+                self.data[i],
+                label=i,
+                **kwargs,
+            )
 
-        units = (f'({ubermagutil.units.rsi_prefixes[multiplier]}'
-                 f'{self.units[x]})')
-        ax.set_xlabel(f'{x}{units}')
-        ax.set_ylabel('value')
+        units = f"({ubermagutil.units.rsi_prefixes[multiplier]}{self.units[x]})"
+        ax.set_xlabel(f"{x}{units}")
+        ax.set_ylabel("value")
 
         ax.grid(True)  # grid is turned off by default for field plots
         ax.legend()
@@ -605,7 +632,7 @@ class Table:
             plt.xlim(*np.divide(xlim, multiplier))
 
         if filename is not None:
-            plt.savefig(filename, bbox_inches='tight', pad_inches=0)
+            plt.savefig(filename, bbox_inches="tight", pad_inches=0)
 
     def slider(self, x=None, multiplier=None, description=None, **kwargs):
         """Slider for interactive plotting.
@@ -661,27 +688,29 @@ class Table:
             x = self.x
 
         if x not in self.data.columns:
-            msg = f'Independent variable {x=} is not in table.'
+            msg = f"Independent variable {x=} is not in table."
             raise ValueError(msg)
 
         if multiplier is None:
             multiplier = ubermagutil.units.si_multiplier(self.xmax)
 
         values = self.data[self.x].to_numpy()
-        labels = np.around(values/multiplier, decimals=2)
+        labels = np.around(values / multiplier, decimals=2)
         options = list(zip(labels, values))
 
-        if x == 't':
-            units = f' ({ubermagutil.units.rsi_prefixes[multiplier]}s)'
+        if x == "t":
+            units = f" ({ubermagutil.units.rsi_prefixes[multiplier]}s)"
         else:
-            units = ''
+            units = ""
         if description is None:
-            description = f'{x}{units}:'
+            description = f"{x}{units}:"
 
-        return ipywidgets.SelectionRangeSlider(options=options,
-                                               value=(values[0], values[-1]),
-                                               description=description,
-                                               **kwargs)
+        return ipywidgets.SelectionRangeSlider(
+            options=options,
+            value=(values[0], values[-1]),
+            description=description,
+            **kwargs,
+        )
 
     def selector(self, x=None, **kwargs):
         """Selection list for interactive plotting.
@@ -722,14 +751,16 @@ class Table:
             x = self.x
 
         if x not in self.data.columns:
-            msg = f'Independent variable {x=} is not in table.'
+            msg = f"Independent variable {x=} is not in table."
             raise ValueError(msg)
 
         options = [col for col in self.data.columns if col != x]
 
-        return ipywidgets.SelectMultiple(options=options,
-                                         value=options,
-                                         rows=5,
-                                         description='y-axis:',
-                                         disabled=False,
-                                         **kwargs)
+        return ipywidgets.SelectMultiple(
+            options=options,
+            value=options,
+            rows=5,
+            description="y-axis:",
+            disabled=False,
+            **kwargs,
+        )
