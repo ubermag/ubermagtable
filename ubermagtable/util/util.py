@@ -197,7 +197,7 @@ def columns(filename, rename=True):
         lines = f.readlines()
 
     if lines[0].startswith("# ODT"):  # OOMMF odt file
-        cline = list(filter(lambda l: l.startswith("# Columns:"), lines))[0]
+        cline = list(filter(lambda line: line.startswith("# Columns:"), lines))[0]
         cline = re.split(r"Oxs_|Anv_|Southampton_|My_|YY_|UHH_|Xf_", cline)[1:]
         cline = list(map(lambda col: re.sub(r"[{}]", "", col), cline))
         cols = list(map(lambda s: s.strip(), cline))
@@ -260,7 +260,7 @@ def units(filename, rename=True):
         lines = f.readlines()
 
     if lines[0].startswith("# ODT"):  # OOMMF odt file
-        uline = list(filter(lambda l: l.startswith("# Units:"), lines))[0]
+        uline = list(filter(lambda line: line.startswith("# Units:"), lines))[0]
         units = uline.split()[2:]
         units = list(map(lambda s: re.sub(r"[{}]", "", s), units))
     else:  # mumax3 txt file
