@@ -2,15 +2,11 @@ import ipywidgets
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import ubermagutil.typesystem as ts
 import ubermagutil.units
 
 import ubermagtable.util as uu
 
 
-@ts.typesystem(
-    data=ts.Typed(expected_type=pd.DataFrame), units=ts.Typed(expected_type=dict)
-)
 class Table:
     """Tabular data class.
 
@@ -110,6 +106,40 @@ class Table:
             units=uu.units(filename, rename=rename),
             x=x,
         )
+
+    @property
+    def data(self):
+        """Scalar data of the drive.
+
+        Returns
+        -------
+        pd.DataFrame
+        """
+        return self._data
+
+    @data.setter
+    def data(self, data):
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError(f"Invalid {type(data)=}; expected 'pandas.DataFrame'.")
+        self._data = data
+
+    @property
+    def units(self):
+        """Units of the scalar data.
+
+        Returns
+        -------
+        dict
+
+            Keys are the columns in the ``data`` property, values the respective units.
+        """
+        return self._units
+
+    @units.setter
+    def units(self, units):
+        if not isinstance(units, dict):
+            raise TypeError(f"Invalid {type(units)=}; 'expected dict'.")
+        self._units = units
 
     @property
     def x(self):
