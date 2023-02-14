@@ -58,6 +58,147 @@ class Table:
         self.attributes = attributes if attributes is not None else {}
         self.attributes.setdefault("fourierspace", False)
 
+    @classmethod
+    def fromfile(cls, filename, /, x=None, rename=True):
+        """Reads an OOMMF ``.odt`` or mumax3 ``.txt`` scalar data file and
+        returns a ``ubermagtable.Table`` object.
+
+        Parameters
+        ----------
+        filename : str
+
+            OOMMF ``.odt`` or mumax3 ``.txt`` file.
+
+        x : str, optional
+
+            Independent variable name. Defaults to ``None``.
+
+        rename : bool, optional
+
+            If ``rename=True``, the column names are renamed with their shorter
+            versions. Defaults to ``True``.
+
+        Returns
+        -------
+        ubermagtable.Table
+
+            Table object.
+
+        Examples
+        --------
+        1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-hysteresis1.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='B_hysteresis')
+
+        2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
+
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample', 'mumax3-file1.txt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+
+        """
+        cols = uu.columns(filename, rename=rename)
+
+        return cls(
+            data=pd.DataFrame(uu.data(filename), columns=cols),
+            units=uu.units(filename, rename=rename),
+            x=x,
+        )
+
+    @property
+    def x(self):
+        """Independent variable.
+
+        Returns
+        -------
+        str
+
+            Column name.
+
+        """
+        return self._x
+
+    @x.setter
+    def x(self, value):
+        if value in self.data.columns or value is None:
+            self._x = value
+        else:
+            msg = f"Column {value} is not a column in data."
+            raise ValueError(msg)
+
+    @property
+    def y(self):
+        """Dependent variable(s).
+
+        This property returns all data column names that are not specified as
+        independent.
+
+        Returns
+        -------
+        list
+
+            Independent variables.
+
+        Examples
+        --------
+        1. Getting data columns.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file5.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.y
+        [...]
+
+        """
+        return [col for col in self.data.columns if col != self.x]
+
+    @property
+    def dx(self):
+        """Spacing of independent variable."""
+        d = np.diff(self.data[self.x])
+        if np.isclose(np.max(d), np.min(d)):
+            return d[0]
+        else:
+            msg = f"Independent variable {self.x=} spacing is not even."
+            raise ValueError(msg)
+
+    @property
+    def xmax(self):
+        """Maximum value of independent variable.
+
+        Returns
+        -------
+        numbers.Real
+
+            Independent variable range.
+
+        Examples
+        --------
+        1. Getting independent variable range.
+
+        >>> import os
+        >>> import ubermagtable as ut
+        ...
+        >>> odtfile = os.path.join(os.path.dirname(__file__),
+        ...                        'tests', 'test_sample',
+        ...                        'oommf-old-file1.odt')
+        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table.xmax / 1e-12  # get the results in picoseconds
+        24.999...
+
+        """
+        return self.data[self.x].iloc[-1]
+
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
 
@@ -121,16 +262,6 @@ class Table:
             x=self.x,
             attributes=self.attributes,
         )
-
-    @property
-    def dx(self):
-        """Spacing of independent variable."""
-        d = np.diff(self.data[self.x])
-        if np.isclose(np.max(d), np.min(d)):
-            return d[0]
-        else:
-            msg = f"Independent variable {self.x=} spacing is not even."
-            raise ValueError(msg)
 
     def rfft(self, x=None, y=None):
         """Real Fast Fourier Transform.
@@ -277,84 +408,6 @@ class Table:
         attributes["fourierspace"] = False
         return self.__class__(data, units, x=cols[0], attributes=attributes)
 
-    @property
-    def x(self):
-        """Independent variable.
-
-        Returns
-        -------
-        str
-
-            Column name.
-
-        """
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        if value in self.data.columns or value is None:
-            self._x = value
-        else:
-            msg = f"Column {value} is not a column in data."
-            raise ValueError(msg)
-
-    @property
-    def y(self):
-        """Dependent variable(s).
-
-        This property returns all data column names that are not specified as
-        independent.
-
-        Returns
-        -------
-        list
-
-            Independent variables.
-
-        Examples
-        --------
-        1. Getting data columns.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file5.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> table.y
-        [...]
-
-        """
-        return [col for col in self.data.columns if col != self.x]
-
-    @property
-    def xmax(self):
-        """Maximum value of independent variable.
-
-        Returns
-        -------
-        numbers.Real
-
-            Independent variable range.
-
-        Examples
-        --------
-        1. Getting independent variable range.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> table.xmax / 1e-12  # get the results in picoseconds
-        24.999...
-
-        """
-        return self.data[self.x].iloc[-1]
-
     def __repr__(self):
         """Representation string.
 
@@ -461,59 +514,6 @@ class Table:
             units=self.units,
             x=self.x,
             attributes=self.attributes,
-        )
-
-    @classmethod
-    def fromfile(cls, filename, /, x=None, rename=True):
-        """Reads an OOMMF ``.odt`` or mumax3 ``.txt`` scalar data file and
-        returns a ``ubermagtable.Table`` object.
-
-        Parameters
-        ----------
-        filename : str
-
-            OOMMF ``.odt`` or mumax3 ``.txt`` file.
-
-        x : str, optional
-
-            Independent variable name. Defaults to ``None``.
-
-        rename : bool, optional
-
-            If ``rename=True``, the column names are renamed with their shorter
-            versions. Defaults to ``True``.
-
-        Returns
-        -------
-        ubermagtable.Table
-
-            Table object.
-
-        Examples
-        --------
-        1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-hysteresis1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='B_hysteresis')
-
-        2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
-
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'mumax3-file1.txt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
-
-        """
-        cols = uu.columns(filename, rename=rename)
-
-        return cls(
-            data=pd.DataFrame(uu.data(filename), columns=cols),
-            units=uu.units(filename, rename=rename),
-            x=x,
         )
 
     def mpl(
