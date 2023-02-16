@@ -178,6 +178,11 @@ class TestTable:
         assert len(columns) == 16
 
     def test_oommf_issue1(self):
+        """The odt file contains columns ``Oxs_Exchange6Ngbr:...`` and
+        ``My_Exchange6Ngbr:...``. During processing we remove the ``Oxs_`` or ``My_``
+        prefix and subsequently loose the "duplicated" columns in the pandas dataframe.
+
+        """
         table = ut.Table.fromfile(self.odtfiles[-1])
         columns = table.data.columns.to_list()
         assert len(columns) == 30
