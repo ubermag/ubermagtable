@@ -1,10 +1,10 @@
+import re
+
 import ipywidgets
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import ubermagutil.units
-
-import ubermagtable.util as uu
 
 
 class Table:
@@ -46,6 +46,139 @@ class Table:
     >>> table = ut.Table.fromfile(odtfile, x='iteration')
 
     """
+
+    # The OOMMF columns are renamed according to this dictionary.
+    _OOMMF_DICT = {
+        "RungeKuttaEvolve:evolver:Total energy": "E",
+        "RungeKuttaEvolve:evolver:Energy calc count": "E_calc_count",
+        "RungeKuttaEvolve:evolver:Max dm/dt": "max_dm/dt",
+        "RungeKuttaEvolve:evolver:dE/dt": "dE/dt",
+        "RungeKuttaEvolve:evolver:Delta E": "delta_E",
+        "RungeKuttaEvolve::Total energy": "E",
+        "RungeKuttaEvolve::Energy calc count": "E_calc_count",
+        "RungeKuttaEvolve::Max dm/dt": "max_dm/dt",
+        "RungeKuttaEvolve::dE/dt": "dE/dt",
+        "RungeKuttaEvolve::Delta E": "delta_E",
+        "EulerEvolve:evolver:Total energy": "E",
+        "EulerEvolve:evolver:Energy calc count": "E_calc_count",
+        "EulerEvolve:evolver:Max dm/dt": "max_dmdt",
+        "EulerEvolve:evolver:dE/dt": "dE/dt",
+        "EulerEvolve:evolver:Delta E": "delta_E",
+        "TimeDriver::Iteration": "iteration",
+        "TimeDriver::Stage iteration": "stage_iteration",
+        "TimeDriver::Stage": "stage",
+        "TimeDriver::mx": "mx",
+        "TimeDriver::my": "my",
+        "TimeDriver::mz": "mz",
+        "TimeDriver::Last time step": "last_time_step",
+        "TimeDriver::Simulation time": "t",
+        "CGEvolve:evolver:Max mxHxm": "max_mxHxm",
+        "CGEvolve:evolver:Total energy": "E",
+        "CGEvolve:evolver:Delta E": "delta_E",
+        "CGEvolve:evolver:Bracket count": "bracket_count",
+        "CGEvolve:evolver:Line min count": "line_min_count",
+        "CGEvolve:evolver:Conjugate cycle count": "conjugate_cycle_count",
+        "CGEvolve:evolver:Cycle count": "cycle_count",
+        "CGEvolve:evolver:Cycle sub count": "cycle_sub_count",
+        "CGEvolve:evolver:Energy calc count": "energy_calc_count",
+        "CGEvolve::Max mxHxm": "max_mxHxm",
+        "CGEvolve::Total energy": "E",
+        "CGEvolve::Delta E": "delta_E",
+        "CGEvolve::Bracket count": "bracket_count",
+        "CGEvolve::Line min count": "line_min_count",
+        "CGEvolve::Conjugate cycle count": "conjugate_cycle_count",
+        "CGEvolve::Cycle count": "cycle_count",
+        "CGEvolve::Cycle sub count": "cycle_sub_count",
+        "CGEvolve::Energy calc count": "energy_calc_count",
+        "FixedMEL::Energy": "MEL_E",
+        "FixedMEL:magnetoelastic:Energy": "MEL_E",
+        "SpinTEvolve:evolver:Total energy": "E",
+        "SpinTEvolve:evolver:Energy calc count": "E_calc_count",
+        "SpinTEvolve:evolver:Max dm/dt": "max_dmdt",
+        "SpinTEvolve:evolver:dE/dt": "dE/dt",
+        "SpinTEvolve:evolver:Delta E": "delta_E",
+        "SpinTEvolve:evolver:average u": "average_u",
+        "SpinXferEvolve:evolver:Total energy": "E",
+        "SpinXferEvolve:evolver:Energy calc count": "E_calc_count",
+        "SpinXferEvolve:evolver:Max dm/dt": "max_dmdt",
+        "SpinXferEvolve:evolver:dE/dt": "dE/dt",
+        "SpinXferEvolve:evolver:Delta E": "delta_E",
+        "SpinXferEvolve:evolver:average u": "average_u",
+        "SpinXferEvolve:evolver:average J": "average_J",
+        "ThetaEvolve:evolver:Total energy": "E",
+        "ThetaEvolve:evolver:Energy calc count": "E_calc_count",
+        "ThetaEvolve:evolver:Max dm/dt": "max_dmdt",
+        "ThetaEvolve:evolver:dE/dt": "dE/dt",
+        "ThetaEvolve:evolver:Delta E": "delta_E",
+        "ThetaEvolve:evolver:Temperature": "T",
+        "ThermHeunEvolve:evolver:Total energy": "E",
+        "ThermHeunEvolve:evolver:Energy calc count": "E_calc_count",
+        "ThermHeunEvolve:evolver:Max dm/dt": "max_dmdt",
+        "ThermHeunEvolve:evolver:dE/dt": "dE/dt",
+        "ThermHeunEvolve:evolver:Delta E": "delta_E",
+        "ThermHeunEvolve:evolver:Temperature": "T",
+        "ThermSpinXferEvolve:evolver:Total energy": "E",
+        "ThermSpinXferEvolve:evolver:Energy calc count": "E_calc_count",
+        "ThermSpinXferEvolve:evolver:Max dm/dt": "max_dmdt",
+        "ThermSpinXferEvolve:evolver:dE/dt": "dE/dt",
+        "ThermSpinXferEvolve:evolver:Delta E": "delta_E",
+        "ThermSpinXferEvolve:evolver:Temperature": "T",
+        "MinDriver::Iteration": "iteration",
+        "MinDriver::Stage iteration": "stage_iteration",
+        "MinDriver::Stage": "stage",
+        "MinDriver::mx": "mx",
+        "MinDriver::my": "my",
+        "MinDriver::mz": "mz",
+        "UniformExchange::Max Spin Ang": "max_spin_ang",
+        "UniformExchange::Stage Max Spin Ang": "stage_max_spin_ang",
+        "UniformExchange::Run Max Spin Ang": "run_max_spin_ang",
+        "UniformExchange::Energy": "E_exchange",
+        "DMExchange6Ngbr::Energy": "E",
+        "DMI_Cnv::Energy": "E",
+        "DMI_T::Energy": "E",
+        "DMI_D2d::Energy": "E",
+        "Demag::Energy": "E",
+        "FixedZeeman::Energy": "E_zeeman",
+        "UZeeman::Energy": "E_zeeman",
+        "UZeeman::B": "B",
+        "UZeeman::Bx": "Bx",
+        "UZeeman::By": "By",
+        "UZeeman::Bz": "Bz",
+        "ScriptUZeeman::Energy": "E",
+        "ScriptUZeeman::B": "B",
+        "ScriptUZeeman::Bx": "Bx",
+        "ScriptUZeeman::By": "By",
+        "ScriptUZeeman::Bz": "Bz",
+        "TransformZeeman::Energy": "E",
+        "CubicAnisotropy::Energy": "E",
+        "UniaxialAnisotropy::Energy": "E",
+        "UniaxialAnisotropy4::Energy": "E",
+        "Southampton_UniaxialAnisotropy4::Energy": "E",
+        "Exchange6Ngbr::Energy": "E",
+        "Exchange6Ngbr::Max Spin Ang": "max_spin_ang",
+        "Exchange6Ngbr::Stage Max Spin Ang": "stage_max_spin_ang",
+        "Exchange6Ngbr::Run Max Spin Ang": "run_max_spin_ang",
+        "ExchangePtwise::Energy": "E",
+        "ExchangePtwise::Max Spin Ang": "max_spin_ang",
+        "ExchangePtwise::Stage Max Spin Ang": "stage_max_spin_ang",
+        "ExchangePtwise::Run Max Spin Ang": "run_max_spin_ang",
+        "TwoSurfaceExchange::Energy": "E",
+    }
+
+    # The mumax3 columns are renamed according to this dictionary.
+    _MUMAX3_DICT = {
+        "t": "t",
+        "mx": "mx",
+        "my": "my",
+        "mz": "mz",
+        "E_total": "E",
+        "E_exch": "E_totalexchange",
+        "E_demag": "E_demag",
+        "E_Zeeman": "E_zeeman",
+        "E_anis": "E_totalanisotropy",
+        "dt": "dt",
+        "maxTorque": "maxtorque",
+    }
 
     def __init__(self, data, units, x=None, attributes=None):
         self.data = data
@@ -99,13 +232,93 @@ class Table:
         >>> table = ut.Table.fromfile(odtfile, x='t')
 
         """
-        cols = uu.columns(filename, rename=rename)
-
-        return cls(
-            data=pd.DataFrame(uu.data(filename), columns=cols),
-            units=uu.units(filename, rename=rename),
-            x=x,
+        quantities = cls._read_header(filename, rename=rename)
+        data = pd.read_csv(
+            filename,
+            sep=r"\s+",
+            comment="#",
+            header=None,
+            names=list(quantities.keys()),
         )
+        return cls(data=data, units=quantities, x=x)
+
+    @classmethod
+    def _read_header(cls, filename, rename=True):
+        """Extracts quantities for individual columns from a table file.
+
+        This method extracts both column names and units and returns a dictionary,
+        where keys are column names and values are the units.
+
+        Parameters
+        ----------
+        filename : str
+
+            OOMMF ``.odt`` or mumax3 ``.txt`` file.
+
+        rename : bool
+
+            If ``rename=True``, the column names are renamed with their shorter
+            versions. Defaults to ``True``.
+
+        Returns
+        -------
+        dict
+
+            Dictionary of column names and units.
+        """
+
+        with open(filename) as f:
+            if (header_line_1 := f.readline()).startswith("# ODT"):  # OOMMF odt file
+                cols_dict = cls._OOMMF_DICT
+                # COLUMN NAMES
+                while not (cline := f.readline()).startswith("# Columns"):
+                    pass
+                columns = cline.lstrip("# Columns:").rstrip()
+                cols = [
+                    re.sub(r"Oxs_|Anv_|Southampton_|My_|YY_|UHH_|Xf_", "", col)
+                    for col in re.findall(r"(?<={)[^}]+|[^ {}]+", columns)
+                ]
+                # UNITS
+                uline = f.readline()
+                assert uline.startswith("# Units:")
+                units = uline.split()[2:]  # [2:] to remove ["#", "Units:"]
+                units = [re.sub(r"[{}]", "", unit) for unit in units]
+            else:  # mumax3 txt file
+                cols_dict = cls._MUMAX3_DICT
+                header_line_1 = header_line_1[len("# ") :].rstrip().split("\t")
+                # COLUMN NAMES
+                cols = [elem.split()[0] for elem in header_line_1]
+                # UNITS
+                units = [re.sub(r"[()]", "", elem.split()[1]) for elem in header_line_1]
+
+        if rename:
+            cols = [cls._rename_column(col, cols_dict) for col in cols]
+        print(len(cols))
+        print(len(set(cols)))
+
+        return dict(zip(cols, units))
+
+    @staticmethod
+    def _rename_column(name, cols_dict):
+        """Rename columns to get shorter names without spaces.
+
+        Renaming is based on _OOMMF_DICT or _MUMAX3_DICT.
+        """
+        if name in cols_dict:
+            return cols_dict[name]
+
+        for key in cols_dict:
+            if len(key.split("::")) == 2:
+                start, end = key.split("::")
+                name_split = name.split(":")
+                if name_split[0] == start and name_split[-1] == end:
+                    term_name = name_split[1]
+                    type_name = cols_dict[key]
+                    # required for E_exchange in old and new OOMMF odt files
+                    if not type_name.endswith(term_name):
+                        type_name = f"{type_name}_{term_name}"
+                    return type_name
+        return name  # name cannot be found in dictionary
 
     @property
     def data(self):
