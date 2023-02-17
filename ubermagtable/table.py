@@ -303,8 +303,6 @@ class Table:
 
         if rename:
             cols = [cls._rename_column(col, cols_dict) for col in cols]
-        print(len(cols))
-        print(len(set(cols)))
 
         return dict(zip(cols, units))
 
