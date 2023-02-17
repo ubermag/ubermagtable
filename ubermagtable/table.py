@@ -186,6 +186,16 @@ class Table:
         self.x = x
         self.attributes = attributes if attributes is not None else {}
         self.attributes.setdefault("fourierspace", False)
+        # Detect duplicated lines as a last step to make use of the checks when
+        # assigning 'x' as independent variable.
+        self._duplicated_lines = any(self.data.duplicated(subset=self.x, keep="last"))
+        if self._duplicated_lines:
+            self.data.drop_duplicates(
+                subset=self.x,
+                keep="last",
+                inplace=True,
+                ignore_index=True,  # reset the index to 0, 1, ..., n-1
+            )
 
     @classmethod
     def fromfile(cls, filename, /, x=None, rename=True):
@@ -441,6 +451,11 @@ class Table:
 
         """
         return self.data[self.x].iloc[-1]
+
+    @property
+    def deduplicated(self):
+        """Indicate if the table on disk contains duplicated steps."""
+        return self._duplicated_lines
 
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
