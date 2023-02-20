@@ -328,13 +328,15 @@ class Table:
             group = cols_dict[name_split[0]]
             if isinstance(group, str):  # Mumax3 keys
                 return group
-            quantity = group[name_split[-1]]
+            attribute = group[name_split[-1]]
             term_name = name_split[1]
-            if not quantity.endswith(term_name):
-                # unique names if the same quantity is present multiple times
-                # e.g. multiple Zeeman fields
-                quantity = f"{quantity}_{term_name}"
-            return quantity
+            if not attribute.endswith(term_name):
+                # - unique names if the same quantity is present multiple times
+                #   e.g. multiple Zeeman fields
+                # - also required for changes in the exchange field in "old" and "new"
+                #   OOMMF odt files
+                attribute = f"{attribute}_{term_name}"
+            return attribute
         except KeyError:
             return name
 
