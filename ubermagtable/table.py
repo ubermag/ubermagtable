@@ -49,119 +49,134 @@ class Table:
 
     # The OOMMF columns are renamed according to this dictionary.
     _OOMMF_DICT = {
-        "Oxs_RungeKuttaEvolve:evolver:Total energy": "E",
-        "Oxs_RungeKuttaEvolve:evolver:Energy calc count": "E_calc_count",
-        "Oxs_RungeKuttaEvolve:evolver:Max dm/dt": "max_dm/dt",
-        "Oxs_RungeKuttaEvolve:evolver:dE/dt": "dE/dt",
-        "Oxs_RungeKuttaEvolve:evolver:Delta E": "delta_E",
-        "Oxs_RungeKuttaEvolve::Total energy": "E",
-        "Oxs_RungeKuttaEvolve::Energy calc count": "E_calc_count",
-        "Oxs_RungeKuttaEvolve::Max dm/dt": "max_dm/dt",
-        "Oxs_RungeKuttaEvolve::dE/dt": "dE/dt",
-        "Oxs_RungeKuttaEvolve::Delta E": "delta_E",
-        "Oxs_EulerEvolve:evolver:Total energy": "E",
-        "Oxs_EulerEvolve:evolver:Energy calc count": "E_calc_count",
-        "Oxs_EulerEvolve:evolver:Max dm/dt": "max_dmdt",
-        "Oxs_EulerEvolve:evolver:dE/dt": "dE/dt",
-        "Oxs_EulerEvolve:evolver:Delta E": "delta_E",
-        "Oxs_TimeDriver::Iteration": "iteration",
-        "Oxs_TimeDriver::Stage iteration": "stage_iteration",
-        "Oxs_TimeDriver::Stage": "stage",
-        "Oxs_TimeDriver::mx": "mx",
-        "Oxs_TimeDriver::my": "my",
-        "Oxs_TimeDriver::mz": "mz",
-        "Oxs_TimeDriver::Last time step": "last_time_step",
-        "Oxs_TimeDriver::Simulation time": "t",
-        "Oxs_CGEvolve:evolver:Max mxHxm": "max_mxHxm",
-        "Oxs_CGEvolve:evolver:Total energy": "E",
-        "Oxs_CGEvolve:evolver:Delta E": "delta_E",
-        "Oxs_CGEvolve:evolver:Bracket count": "bracket_count",
-        "Oxs_CGEvolve:evolver:Line min count": "line_min_count",
-        "Oxs_CGEvolve:evolver:Conjugate cycle count": "conjugate_cycle_count",
-        "Oxs_CGEvolve:evolver:Cycle count": "cycle_count",
-        "Oxs_CGEvolve:evolver:Cycle sub count": "cycle_sub_count",
-        "Oxs_CGEvolve:evolver:Energy calc count": "energy_calc_count",
-        "Oxs_CGEvolve::Max mxHxm": "max_mxHxm",
-        "Oxs_CGEvolve::Total energy": "E",
-        "Oxs_CGEvolve::Delta E": "delta_E",
-        "Oxs_CGEvolve::Bracket count": "bracket_count",
-        "Oxs_CGEvolve::Line min count": "line_min_count",
-        "Oxs_CGEvolve::Conjugate cycle count": "conjugate_cycle_count",
-        "Oxs_CGEvolve::Cycle count": "cycle_count",
-        "Oxs_CGEvolve::Cycle sub count": "cycle_sub_count",
-        "Oxs_CGEvolve::Energy calc count": "energy_calc_count",
-        "YY_FixedMEL::Energy": "MEL_E",
-        "YY_FixedMEL:magnetoelastic:Energy": "MEL_E",  # NO SAMPLE, TODO DELETE?
-        "Anv_SpinTEvolve:evolver:Total energy": "E",
-        "Anv_SpinTEvolve:evolver:Energy calc count": "E_calc_count",
-        "Anv_SpinTEvolve:evolver:Max dm/dt": "max_dmdt",
-        "Anv_SpinTEvolve:evolver:dE/dt": "dE/dt",
-        "Anv_SpinTEvolve:evolver:Delta E": "delta_E",
-        "Anv_SpinTEvolve:evolver:average u": "average_u",
-        "Oxs_SpinXferEvolve:evolver:Total energy": "E",  # NO SAMPLE
-        "Oxs_SpinXferEvolve:evolver:Energy calc count": "E_calc_count",  # NO SAMPLE
-        "Oxs_SpinXferEvolve:evolver:Max dm/dt": "max_dmdt",  # NO SAMPLE
-        "Oxs_SpinXferEvolve:evolver:dE/dt": "dE/dt",  # NO SAMPLE
-        "Oxs_SpinXferEvolve:evolver:Delta E": "delta_E",  # NO SAMPLE
-        "Oxs_SpinXferEvolve:evolver:average u": "average_u",  # NO SAMPLE
-        "Oxs_SpinXferEvolve:evolver:average J": "average_J",  # NO SAMPLE
-        "UHH_ThetaEvolve:evolver:Total energy": "E",  # NO SAMPLE
-        "UHH_ThetaEvolve:evolver:Energy calc count": "E_calc_count",  # NO SAMPLE
-        "UHH_ThetaEvolve:evolver:Max dm/dt": "max_dmdt",  # NO SAMPLE
-        "UHH_ThetaEvolve:evolver:dE/dt": "dE/dt",  # NO SAMPLE
-        "UHH_ThetaEvolve:evolver:Delta E": "delta_E",  # NO SAMPLE
-        "UHH_ThetaEvolve:evolver:Temperature": "T",  # NO SAMPLE
-        "Xf_ThermHeunEvolve:evolver:Total energy": "E",  # NO SAMPLE
-        "Xf_ThermHeunEvolve:evolver:Energy calc count": "E_calc_count",  # NO SAMPLE
-        "Xf_ThermHeunEvolve:evolver:Max dm/dt": "max_dmdt",  # NO SAMPLE
-        "Xf_ThermHeunEvolve:evolver:dE/dt": "dE/dt",  # NO SAMPLE
-        "Xf_ThermHeunEvolve:evolver:Delta E": "delta_E",  # NO SAMPLE
-        "Xf_ThermHeunEvolve:evolver:Temperature": "T",  # NO SAMPLE
-        "Xf_ThermSpinXferEvolve:evolver:Total energy": "E",  # NO SAMPLE
-        "Xf_ThermSpinXferEvolve:evolver:Energy calc count": "E_calc_count",  # NO SAMPLE
-        "Xf_ThermSpinXferEvolve:evolver:Max dm/dt": "max_dmdt",  # NO SAMPLE
-        "Xf_ThermSpinXferEvolve:evolver:dE/dt": "dE/dt",  # NO SAMPLE
-        "Xf_ThermSpinXferEvolve:evolver:Delta E": "delta_E",  # NO SAMPLE
-        "Xf_ThermSpinXferEvolve:evolver:Temperature": "T",  # NO SAMPLE
-        "Oxs_MinDriver::Iteration": "iteration",
-        "Oxs_MinDriver::Stage iteration": "stage_iteration",
-        "Oxs_MinDriver::Stage": "stage",
-        "Oxs_MinDriver::mx": "mx",
-        "Oxs_MinDriver::my": "my",
-        "Oxs_MinDriver::mz": "mz",
-        "Oxs_UniformExchange::Max Spin Ang": "max_spin_ang",
-        "Oxs_UniformExchange::Stage Max Spin Ang": "stage_max_spin_ang",
-        "Oxs_UniformExchange::Run Max Spin Ang": "run_max_spin_ang",
-        "Oxs_UniformExchange::Energy": "E_exchange",
-        "Oxs_DMExchange6Ngbr::Energy": "E",  # NO SAMPLE
-        "Oxs_DMI_Cnv::Energy": "E",  # TODO: PREFIX
-        "Oxs_DMI_T::Energy": "E",  # NO SAMPLE,  TODO: PREFIX
-        "Oxs_DMI_D2d::Energy": "E",  # NO SAMPLE,  TODO: PREFIX
-        "Oxs_Demag::Energy": "E",
-        "Oxs_FixedZeeman::Energy": "E_zeeman",
-        "Oxs_UZeeman::Energy": "E_zeeman",
-        "Oxs_UZeeman::B": "B",
-        "Oxs_UZeeman::Bx": "Bx",
-        "Oxs_UZeeman::By": "By",
-        "Oxs_UZeeman::Bz": "Bz",
-        "Oxs_ScriptUZeeman::Energy": "E",  # NO SAMPLE
-        "Oxs_ScriptUZeeman::B": "B",  # NO SAMPLE
-        "Oxs_ScriptUZeeman::Bx": "Bx",  # NO SAMPLE
-        "Oxs_ScriptUZeeman::By": "By",  # NO SAMPLE
-        "Oxs_ScriptUZeeman::Bz": "Bz",  # NO SAMPLE
-        "Oxs_TransformZeeman::Energy": "E",  # NO SAMPLE
-        "Oxs_CubicAnisotropy::Energy": "E",
-        "Oxs_UniaxialAnisotropy::Energy": "E",
-        "Southampton_UniaxialAnisotropy4::Energy": "E",  # NO SAMPLE
-        "Oxs_Exchange6Ngbr::Energy": "E",
-        "Oxs_Exchange6Ngbr::Max Spin Ang": "max_spin_ang",
-        "Oxs_Exchange6Ngbr::Stage Max Spin Ang": "stage_max_spin_ang",
-        "Oxs_Exchange6Ngbr::Run Max Spin Ang": "run_max_spin_ang",
-        "Oxs_ExchangePtwise::Energy": "E",  # NO SAMPLE
-        "Oxs_ExchangePtwise::Max Spin Ang": "max_spin_ang",  # NO SAMPLE
-        "Oxs_ExchangePtwise::Stage Max Spin Ang": "stage_max_spin_ang",  # NO SAMPLE
-        "Oxs_ExchangePtwise::Run Max Spin Ang": "run_max_spin_ang",  # NO SAMPLE
-        "Oxs_TwoSurfaceExchange::Energy": "E",  # NO SAMPLE
+        "Oxs_RungeKuttaEvolve": {
+            "Total energy": "E",
+            "Energy calc count": "E_calc_count",
+            "Max dm/dt": "max_dm/dt",
+            "dE/dt": "dE/dt",
+            "Delta E": "delta_E",
+        },
+        "Oxs_EulerEvolve": {
+            "Total energy": "E",
+            "Energy calc count": "E_calc_count",
+            "Max dm/dt": "max_dmdt",
+            "dE/dt": "dE/dt",
+            "Delta E": "delta_E",
+        },
+        "Oxs_TimeDriver": {
+            "Iteration": "iteration",
+            "Stage iteration": "stage_iteration",
+            "Stage": "stage",
+            "mx": "mx",
+            "my": "my",
+            "mz": "mz",
+            "Last time step": "last_time_step",
+            "Simulation time": "t",
+        },
+        "Oxs_CGEvolve": {
+            "Max mxHxm": "max_mxHxm",
+            "Total energy": "E",
+            "Delta E": "delta_E",
+            "Bracket count": "bracket_count",
+            "Line min count": "line_min_count",
+            "Conjugate cycle count": "conjugate_cycle_count",
+            "Cycle count": "cycle_count",
+            "Cycle sub count": "cycle_sub_count",
+            "Energy calc count": "energy_calc_count",
+        },
+        "YY_FixedMEL": {"Energy": "MEL_E"},
+        "Anv_SpinTEvolve": {
+            "Total energy": "E",
+            "Energy calc count": "E_calc_count",
+            "Max dm/dt": "max_dmdt",
+            "dE/dt": "dE/dt",
+            "Delta E": "delta_E",
+            "average u": "average_u",
+        },
+        "Oxs_SpinXferEvolve": {
+            "Total energy": "E",  # NO SAMPLE
+            "Energy calc count": "E_calc_count",  # NO SAMPLE
+            "Max dm/dt": "max_dmdt",  # NO SAMPLE
+            "dE/dt": "dE/dt",  # NO SAMPLE
+            "Delta E": "delta_E",  # NO SAMPLE
+            "average u": "average_u",  # NO SAMPLE
+            "average J": "average_J",  # NO SAMPLE
+        },
+        "UHH_ThetaEvolve": {
+            "Total energy": "E",  # NO SAMPLE
+            "Energy calc count": "E_calc_count",  # NO SAMPLE
+            "Max dm/dt": "max_dmdt",  # NO SAMPLE
+            "dE/dt": "dE/dt",  # NO SAMPLE
+            "Delta E": "delta_E",  # NO SAMPLE
+            "Temperature": "T",  # NO SAMPLE
+        },
+        "Xf_ThermHeunEvolve": {
+            "Total energy": "E",  # NO SAMPLE
+            "Energy calc count": "E_calc_count",  # NO SAMPLE
+            "Max dm/dt": "max_dmdt",  # NO SAMPLE
+            "dE/dt": "dE/dt",  # NO SAMPLE
+            "Delta E": "delta_E",  # NO SAMPLE
+            "Temperature": "T",  # NO SAMPLE
+        },
+        "Xf_ThermSpinXferEvolve": {
+            "Total energy": "E",  # NO SAMPLE
+            "Energy calc count": "E_calc_count",  # NO SAMPLE
+            "Max dm/dt": "max_dmdt",  # NO SAMPLE
+            "dE/dt": "dE/dt",  # NO SAMPLE
+            "Delta E": "delta_E",  # NO SAMPLE
+            "Temperature": "T",  # NO SAMPLE
+        },
+        "Oxs_MinDriver": {
+            "Iteration": "iteration",
+            "Stage iteration": "stage_iteration",
+            "Stage": "stage",
+            "mx": "mx",
+            "my": "my",
+            "mz": "mz",
+        },
+        "Oxs_UniformExchange": {
+            "Max Spin Ang": "max_spin_ang",
+            "Stage Max Spin Ang": "stage_max_spin_ang",
+            "Run Max Spin Ang": "run_max_spin_ang",
+            "Energy": "E_exchange",
+        },
+        "Oxs_DMExchange6Ngbr": {"Energy": "E_DM_exchange6ngbr"},  # NO SAMPLE
+        "Oxs_DMI_Cnv": {"Energy": "E_DMI_Cnv"},  # TODO: PREFIX
+        "Oxs_DMI_T": {"Energy": "E_DMI_T"},  # NO SAMPLE,  TODO: PREFIX
+        "Oxs_DMI_D2d": {"Energy": "E_DMI_Dd"},  # NO SAMPLE,  TODO: PREFIX
+        "Oxs_Demag": {"Energy": "E_demag"},
+        "Oxs_FixedZeeman": {"Energy": "E_zeeman"},
+        "Oxs_UZeeman": {
+            "Energy": "E_zeeman",
+            "B": "B",
+            "Bx": "Bx",
+            "By": "By",
+            "Bz": "Bz",
+        },
+        "Oxs_ScriptUZeeman": {
+            "Energy": "E_zeeman",  # NO SAMPLE
+            "B": "B",  # NO SAMPLE
+            "Bx": "Bx",  # NO SAMPLE
+            "By": "By",  # NO SAMPLE
+            "Bz": "Bz",  # NO SAMPLE
+        },
+        "Oxs_TransformZeeman": {"Energy": "E_zeeman"},  # NO SAMPLE
+        "Oxs_CubicAnisotropy": {"Energy": "E_zeeman"},
+        "Oxs_UniaxialAnisotropy": {"Energy": "E_zeeman"},
+        "Southampton_UniaxialAnisotropy4": {"Energy": "E_zeeman"},  # NO SAMPLE
+        "Oxs_Exchange6Ngbr": {
+            "Energy": "E_exchange6ngbr",
+            "Max Spin Ang": "max_spin_ang",
+            "Stage Max Spin Ang": "stage_max_spin_ang",
+            "Run Max Spin Ang": "run_max_spin_ang",
+        },
+        "Oxs_ExchangePtwise": {
+            "Energy": "E_exchange_ptwise",  # NO SAMPLE
+            "Max Spin Ang": "max_spin_ang",  # NO SAMPLE
+            "Stage Max Spin Ang": "stage_max_spin_ang",  # NO SAMPLE
+            "Run Max Spin Ang": "run_max_spin_ang",  # NO SAMPLE
+        },
+        "Oxs_TwoSurfaceExchange": {"Energy": "E_two_surface_exchange"},  # NO SAMPLE
     }
 
     # The mumax3 columns are renamed according to this dictionary.
@@ -308,21 +323,20 @@ class Table:
 
         Renaming is based on _OOMMF_DICT or _MUMAX3_DICT.
         """
-        if name in cols_dict:
-            return cols_dict[name]
-
-        for key in cols_dict:
-            if len(key.split("::")) == 2:
-                start, end = key.split("::")
-                name_split = name.split(":")
-                if name_split[0] == start and name_split[-1] == end:
-                    term_name = name_split[1]
-                    type_name = cols_dict[key]
-                    # required for E_exchange in old and new OOMMF odt files
-                    if not type_name.endswith(term_name):
-                        type_name = f"{type_name}_{term_name}"
-                    return type_name
-        return name  # name cannot be found in dictionary
+        name_split = name.split(":")
+        try:
+            group = cols_dict[name_split[0]]
+            if isinstance(group, str):  # Mumax3 keys
+                return group
+            quantity = group[name_split[-1]]
+            term_name = name_split[1]
+            if not quantity.endswith(term_name):
+                # unique names if the same quantity is present multiple times
+                # e.g. multiple Zeeman fields
+                quantity = f"{quantity}_{term_name}"
+            return quantity
+        except KeyError:
+            return name
 
     @property
     def data(self):
