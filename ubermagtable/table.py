@@ -63,16 +63,6 @@ class Table:
             "dE/dt": "dE/dt",
             "Delta E": "delta_E",
         },
-        "Oxs_TimeDriver": {
-            "Iteration": "iteration",
-            "Stage iteration": "stage_iteration",
-            "Stage": "stage",
-            "mx": "mx",
-            "my": "my",
-            "mz": "mz",
-            "Last time step": "last_time_step",
-            "Simulation time": "t",
-        },
         "Oxs_CGEvolve": {
             "Max mxHxm": "max_mxHxm",
             "Total energy": "E",
@@ -84,7 +74,6 @@ class Table:
             "Cycle sub count": "cycle_sub_count",
             "Energy calc count": "energy_calc_count",
         },
-        "YY_FixedMEL": {"Energy": "MEL_E"},
         "Anv_SpinTEvolve": {
             "Total energy": "E",
             "Energy calc count": "E_calc_count",
@@ -134,17 +123,40 @@ class Table:
             "my": "my",
             "mz": "mz",
         },
+        "Oxs_TimeDriver": {
+            "Iteration": "iteration",
+            "Stage iteration": "stage_iteration",
+            "Stage": "stage",
+            "mx": "mx",
+            "my": "my",
+            "mz": "mz",
+            "Last time step": "last_time_step",
+            "Simulation time": "t",
+        },
         "Oxs_UniformExchange": {
             "Max Spin Ang": "max_spin_ang",
             "Stage Max Spin Ang": "stage_max_spin_ang",
             "Run Max Spin Ang": "run_max_spin_ang",
             "Energy": "E_exchange",
         },
+        "Oxs_Exchange6Ngbr": {
+            "Energy": "E_exchange6ngbr",
+            "Max Spin Ang": "max_spin_ang",
+            "Stage Max Spin Ang": "stage_max_spin_ang",
+            "Run Max Spin Ang": "run_max_spin_ang",
+        },
+        "Oxs_ExchangePtwise": {
+            "Energy": "E_exchange_ptwise",  # NO SAMPLE
+            "Max Spin Ang": "max_spin_ang",  # NO SAMPLE
+            "Stage Max Spin Ang": "stage_max_spin_ang",  # NO SAMPLE
+            "Run Max Spin Ang": "run_max_spin_ang",  # NO SAMPLE
+        },
+        "Oxs_TwoSurfaceExchange": {"Energy": "E_two_surface_exchange"},  # NO SAMPLE
+        "Oxs_Demag": {"Energy": "E_demag"},
         "Oxs_DMExchange6Ngbr": {"Energy": "E_DM_exchange6ngbr"},  # NO SAMPLE
         "Oxs_DMI_Cnv": {"Energy": "E_DMI_Cnv"},  # TODO: PREFIX
         "Oxs_DMI_T": {"Energy": "E_DMI_T"},  # NO SAMPLE,  TODO: PREFIX
         "Oxs_DMI_D2d": {"Energy": "E_DMI_Dd"},  # NO SAMPLE,  TODO: PREFIX
-        "Oxs_Demag": {"Energy": "E_demag"},
         "Oxs_FixedZeeman": {"Energy": "E_zeeman"},
         "Oxs_UZeeman": {
             "Energy": "E_zeeman",
@@ -164,19 +176,7 @@ class Table:
         "Oxs_CubicAnisotropy": {"Energy": "E_zeeman"},
         "Oxs_UniaxialAnisotropy": {"Energy": "E_zeeman"},
         "Southampton_UniaxialAnisotropy4": {"Energy": "E_zeeman"},  # NO SAMPLE
-        "Oxs_Exchange6Ngbr": {
-            "Energy": "E_exchange6ngbr",
-            "Max Spin Ang": "max_spin_ang",
-            "Stage Max Spin Ang": "stage_max_spin_ang",
-            "Run Max Spin Ang": "run_max_spin_ang",
-        },
-        "Oxs_ExchangePtwise": {
-            "Energy": "E_exchange_ptwise",  # NO SAMPLE
-            "Max Spin Ang": "max_spin_ang",  # NO SAMPLE
-            "Stage Max Spin Ang": "stage_max_spin_ang",  # NO SAMPLE
-            "Run Max Spin Ang": "run_max_spin_ang",  # NO SAMPLE
-        },
-        "Oxs_TwoSurfaceExchange": {"Energy": "E_two_surface_exchange"},  # NO SAMPLE
+        "YY_FixedMEL": {"Energy": "MEL_E"},
     }
 
     # The mumax3 columns are renamed according to this dictionary.
