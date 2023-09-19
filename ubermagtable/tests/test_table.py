@@ -37,7 +37,7 @@ def check_table(table):
 
 
 class TestTable:
-    def setup(self):
+    def setup_method(self):
         dirname = os.path.join(os.path.dirname(__file__), "test_sample/")
         filenames = [
             "oommf-old-file1.odt",
