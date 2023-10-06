@@ -40,7 +40,6 @@ dependencies = [
     "ubermagutil>=0.62.0",
     "pandas>=1.1",
     "matplotlib>=3.3",
-    "jupyterlab~=3.0",
     "ipywidgets>=7.5"
 ]
 
