@@ -1,8 +1,8 @@
 """Manipulation of tabular data."""
+import importlib.metadata
 import os
 
 import matplotlib.pyplot as plt
-import pkg_resources
 import pytest
 
 from .interact import interact
@@ -13,7 +13,7 @@ dirname = os.path.abspath(os.path.dirname(__file__))
 path = os.path.join(dirname, "util", "plotting-style.mplstyle")
 plt.style.use(path)
 
-__version__ = pkg_resources.get_distribution(__name__).version
+__version__ = importlib.metadata.version(__package__)
 
 
 def test():
