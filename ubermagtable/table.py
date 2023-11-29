@@ -2,15 +2,9 @@ import ipywidgets
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import ubermagutil.typesystem as ts
 import ubermagutil.units
 
-import ubermagtable.util as uu
 
-
-@ts.typesystem(
-    data=ts.Typed(expected_type=pd.DataFrame), units=ts.Typed(expected_type=dict)
-)
 class Table:
     """Tabular data class.
 
@@ -57,59 +51,50 @@ class Table:
         self.x = x
         self.attributes = attributes if attributes is not None else {}
         self.attributes.setdefault("fourierspace", False)
+        # Detect duplicated lines as a last step to make use of the checks when
+        # assigning 'x' as independent variable.
+        self._duplicated_lines = any(self.data.duplicated(subset=self.x, keep="last"))
+        if self._duplicated_lines:
+            self.data.drop_duplicates(
+                subset=self.x,
+                keep="last",
+                inplace=True,
+                ignore_index=True,  # reset the index to 0, 1, ..., n-1
+            )
 
-    @classmethod
-    def fromfile(cls, filename, /, x=None, rename=True):
-        """Reads an OOMMF ``.odt`` or mumax3 ``.txt`` scalar data file and
-        returns a ``ubermagtable.Table`` object.
-
-        Parameters
-        ----------
-        filename : str
-
-            OOMMF ``.odt`` or mumax3 ``.txt`` file.
-
-        x : str, optional
-
-            Independent variable name. Defaults to ``None``.
-
-        rename : bool, optional
-
-            If ``rename=True``, the column names are renamed with their shorter
-            versions. Defaults to ``True``.
+    @property
+    def data(self):
+        """Scalar data of the drive.
 
         Returns
         -------
-        ubermagtable.Table
-
-            Table object.
-
-        Examples
-        --------
-        1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-hysteresis1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='B_hysteresis')
-
-        2. Defining ``ubermagtable.Table`` by reading a mumax3 ``.txt`` file.
-
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample', 'mumax3-file1.txt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
-
+        pd.DataFrame
         """
-        cols = uu.columns(filename, rename=rename)
+        return self._data
 
-        return cls(
-            data=pd.DataFrame(uu.data(filename), columns=cols),
-            units=uu.units(filename, rename=rename),
-            x=x,
-        )
+    @data.setter
+    def data(self, data):
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError(f"Invalid {type(data)=}; expected 'pandas.DataFrame'.")
+        self._data = data
+
+    @property
+    def units(self):
+        """Units of the scalar data.
+
+        Returns
+        -------
+        dict
+
+            Keys are the columns in the ``data`` property, values the respective units.
+        """
+        return self._units
+
+    @units.setter
+    def units(self, units):
+        if not isinstance(units, dict):
+            raise TypeError(f"Invalid {type(units)=}; 'expected dict'.")
+        self._units = units
 
     @property
     def x(self):
@@ -198,6 +183,11 @@ class Table:
 
         """
         return self.data[self.x].iloc[-1]
+
+    @property
+    def deduplicated(self):
+        """Indicate if the table on disk contains duplicated steps."""
+        return self._duplicated_lines
 
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
