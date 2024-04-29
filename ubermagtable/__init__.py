@@ -1,4 +1,5 @@
 """Manipulation of tabular data."""
+
 import importlib.metadata
 import os
 
