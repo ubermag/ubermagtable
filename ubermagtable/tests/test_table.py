@@ -69,9 +69,33 @@ class TestTable:
 
     def test_fromfile(self):
         for odtfile in self.odtfiles:
+            table = ut.Table.fromfile(odtfile, rename=False)
+            check_table(table)
+
+            table_short_names = ut.Table.fromfile(odtfile, rename=True)
+            check_table(table_short_names)
+
+            assert len(table.data) == len(table_short_names.data)
+            assert len(table.data.columns) == len(table_short_names.data.columns)
+
+    def test_columns(self):
+        for odtfile in self.odtfiles:
             for rename in [True, False]:
-                table = ut.Table.fromfile(odtfile)
-                check_table(table)
+                table = ut.Table.fromfile(odtfile, rename=rename)
+                columns = table.data.columns
+                assert all(isinstance(column, str) for column in columns)
+                assert len(columns) == len(set(columns))  # unique column names
+
+    def test_units(self):
+        for odtfile in self.odtfiles:
+            for rename in [True, False]:
+                table = ut.Table.fromfile(odtfile, rename=rename)
+                units = table.units
+                assert isinstance(units, dict)
+                assert all(isinstance(unit, str) for unit in units.keys())
+                assert all(isinstance(unit, str) for unit in units.values())
+                assert "J" in units.values()  # Energy is always in
+                assert "" in units.values()  # Columns with no units are always in
 
     def test_xy(self):
         table = ut.Table.fromfile(self.odtfiles[0], x="t")
@@ -178,6 +202,11 @@ class TestTable:
         assert len(columns) == 16
 
     def test_oommf_issue1(self):
+        """The odt file contains columns ``Oxs_Exchange6Ngbr:...`` and
+        ``My_Exchange6Ngbr:...``. During processing we remove the ``Oxs_`` or ``My_``
+        prefix and subsequently loose the "duplicated" columns in the pandas dataframe.
+
+        """
         table = ut.Table.fromfile(self.odtfiles[-1])
         columns = table.data.columns.to_list()
         assert len(columns) == 30
