@@ -698,10 +698,7 @@ class Table:
         labels = np.around(values / multiplier, decimals=2)
         options = list(zip(labels, values))
 
-        if x == "t":
-            units = f" ({ubermagutil.units.rsi_prefixes[multiplier]}s)"
-        else:
-            units = ""
+        units = f" ({ubermagutil.units.rsi_prefixes[multiplier]}s)" if x == "t" else ""
         if description is None:
             description = f"{x}{units}:"
 
