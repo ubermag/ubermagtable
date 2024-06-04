@@ -6,8 +6,8 @@ import os
 import matplotlib.pyplot as plt
 import pytest
 
-from .interact import interact
-from .table import Table
+from .interact import interact as interact
+from .table import Table as Table
 
 # Enable default plotting style.
 dirname = os.path.abspath(os.path.dirname(__file__))
