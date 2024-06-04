@@ -69,7 +69,7 @@ class TestTable:
 
     def test_fromfile(self):
         for odtfile in self.odtfiles:
-            for rename in [True, False]:
+            for _rename in [True, False]:
                 table = ut.Table.fromfile(odtfile)
                 check_table(table)
 

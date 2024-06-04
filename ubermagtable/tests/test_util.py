@@ -41,7 +41,7 @@ def test_units():
             units = uu.units(odtfile, rename=rename)
 
             assert isinstance(units, dict)
-            assert all(isinstance(unit, str) for unit in units.keys())
+            assert all(isinstance(unit, str) for unit in units)
             assert all(isinstance(unit, str) for unit in units.values())
             assert "J" in units.values()  # Energy is always in
             assert "" in units.values()  # Columns with no units are always in

@@ -135,10 +135,10 @@ mumax3_dict = {
 
 
 def rename_column(name, cols_dict):
-    if name in cols_dict.keys():
+    if name in cols_dict:
         return cols_dict[name]
 
-    for key in cols_dict.keys():
+    for key in cols_dict:
         if len(key.split("::")) == 2:
             start, end = key.split("::")
             name_split = name.split(":")
