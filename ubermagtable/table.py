@@ -197,7 +197,7 @@ class Table:
         24.999...
 
         """
-        return self.data[self.x].iloc[-1]
+        return self.data[self.x].iloc[-1].item()
 
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
