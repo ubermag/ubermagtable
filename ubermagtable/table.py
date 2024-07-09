@@ -197,7 +197,7 @@ class Table:
         24.999...
 
         """
-        return self.data[self.x].iloc[-1]
+        return self.data[self.x].iloc[-1].item()
 
     def apply(self, func, columns=None, args=(), **kwargs):
         r"""Apply function.
@@ -695,7 +695,8 @@ class Table:
             multiplier = ubermagutil.units.si_multiplier(self.xmax)
 
         values = self.data[self.x].to_numpy()
-        labels = np.around(values / multiplier, decimals=2)
+        labels = np.around(values / multiplier, decimals=2).tolist()
+        values = values.tolist()
         options = list(zip(labels, values))
 
         units = f" ({ubermagutil.units.rsi_prefixes[multiplier]}s)" if x == "t" else ""
