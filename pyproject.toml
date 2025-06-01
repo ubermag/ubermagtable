@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ubermagtable"
-version = "0.61.4"
+version = "0.62.0"
 description = "Python package for manipulating tabular data."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -37,7 +37,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "ubermagutil>=0.63.4",
+    "ubermagutil>=0.64.0",
     "pandas>=1.1",
     "matplotlib>=3.3",
     "ipywidgets>=7.5"
