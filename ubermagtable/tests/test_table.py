@@ -41,54 +41,6 @@ def check_table(table):
         assert isinstance(table.selector(), ipywidgets.SelectMultiple)
 
 
-def _table_energy_minimisation_factory(*, table_kwargs=None, **kwargs):
-    """Create sample tables for energy minimisation.
-
-    Parameters
-    ----------
-    table_kwargs : dict
-        Keyword arguments passed to Table.__init__, e.g. to set Table.x
-    kwargs
-        Keyword arguments to control the table reading function in the adapter class,
-        e.g. to control column renaming. Passing keyword arguments has no effect in
-        this implementation.
-    """
-    if table_kwargs is None:
-        table_kwargs = {}
-    data = pd.DataFrame({"E": 1e-19, "mx": 0, "my": 0, "mz": 1}, index=[0])
-    units = {"E": "J", "mx": "", "my": "", "mz": ""}
-    return ut.Table(data, units, **table_kwargs)
-
-
-# TODO: setting tmin = 0 breaks some tests; is this a real problem or unrealistic data?
-def _table_llg_factory(*, table_kwargs=None, **kwargs):
-    if table_kwargs is None:
-        table_kwargs = {}
-    n = 20
-    ts = np.linspace(1e-9 / 20, 1e-9, n)
-    data = pd.DataFrame(
-        {
-            "t": ts,
-            "E": np.linspace(-2e-18, -3e-18, n),
-            "mx": np.sin(ts),
-            "my": np.cos(ts),
-            "mz": np.zeros_like(ts),
-        }
-    )
-    units = {"t": "s", "E": "J", "mx": "", "my": "", "mz": ""}
-    return ut.Table(data, units, **table_kwargs)
-
-
-@pytest.fixture
-def table_llg_factory():
-    return _table_llg_factory
-
-
-@pytest.fixture(params=[_table_energy_minimisation_factory, _table_llg_factory])
-def table_factory(request):
-    return request.param
-
-
 def test_table_init():
     """Basic check creating an empty Table."""
     table = ut.Table(pd.DataFrame(), units={})
@@ -122,10 +74,10 @@ def test_table_columns(table_factory, rename):
 def test_table_units(table_factory, rename):
     units = table_factory(rename=rename).units
     assert isinstance(units, dict)
-    assert all(isinstance(unit, str) for unit in units.keys())
+    assert all(isinstance(unit, str) for unit in units)
     assert all(isinstance(unit, str) for unit in units.values())
-    assert "J" in units.values()  # Energy is always in
-    assert "" in units.values()  # Columns with no units are always in
+    assert "J" in units.values()  # Energy is always present
+    assert "" in units.values()  # Columns with no units are always present
 
 
 def test_table_xy(table_llg_factory):
@@ -139,11 +91,8 @@ def test_table_xy(table_llg_factory):
         table = table_llg_factory(table_kwargs={"x": "wrong"})
 
 
-# TODO: how do we best generalise this test?
-@pytest.mark.skip
-def test_table_xmax(self):
-    table = ut.Table.fromfile(self.odtfiles[0], x="t")
-    assert abs(table.xmax - 25e-12) < 1e-15
+def test_table_xmax(table_llg_25ps):
+    assert abs(table_llg_25ps.xmax - 25e-12) < 1e-15
 
 
 def test_table_lshift(table_llg_factory):
