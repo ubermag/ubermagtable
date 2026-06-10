@@ -34,14 +34,21 @@ class Table:
 
     Examples
     --------
-    1. Defining ``ubermagtable.Table`` by reading an OOMMF ``.odt`` file.
+    1. Defining ``ubermagtable.Table`` from pandas dataframe
 
-    >>> import os
     >>> import ubermagtable as ut
-    ...
-    >>> odtfile = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample', 'oommf-new-file1.odt')
-    >>> table = ut.Table.fromfile(odtfile, x='iteration')
+    >>> import pandas as pd
+    >>> table = ut.Table(
+    ...     data=pd.DataFrame({'t': [1, 2, 3], 'mx': [0, 0.5, 1]}),
+    ...     units={'t': 'ns', 'mx': ''},
+    ...     x='t',
+    ... )
+    >>> table
+       t   mx
+    0  1  0.0
+    1  2  0.5
+    2  3  1.0
+
 
     """
 
@@ -134,15 +141,10 @@ class Table:
         --------
         1. Getting data columns.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file5.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table = ut.sample_data()
         >>> table.y
-        [...]
+        ['mx', 'my', 'mz']
 
         """
         return [col for col in self.data.columns if col != self.x]
@@ -171,15 +173,10 @@ class Table:
         --------
         1. Getting independent variable range.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> table.xmax / 1e-12  # get the results in picoseconds
-        24.999...
+        >>> table = ut.sample_data()
+        >>> table.xmax
+        3e-09
 
         """
         return self.data[self.x].iloc[-1].item()
@@ -230,16 +227,14 @@ class Table:
         --------
         1. Applying absolute function to data.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
-        >>> new_table = table.apply(np.abs)
-        ...
-
+        >>> table = ut.sample_data()
+        >>> new_table = table.apply(lambda x: -x)
+        >>> new_table
+                      t  mx  my  mz
+        0  1.000000e-09  -1   0   0
+        1  2.000000e-09   0  -1   0
+        2  3.000000e-09   0   0  -1
         """
         if columns is None:
             columns = self.y
@@ -283,13 +278,8 @@ class Table:
         --------
         1. Applying Fourier transforms to the table.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-new-file5.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table = ut.sample_data()
         >>> fft_table = table.rfft()
         ...
 
@@ -354,13 +344,8 @@ class Table:
         --------
         1. Applying inverse Fourier transforms to the table.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-new-file5.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table = ut.sample_data()
         >>> ifft_table = table.rfft().irfft()
         ...
 
@@ -405,22 +390,7 @@ class Table:
         -------
         str
 
-            Representation string.
-
-        Example
-        -------
-        1. Getting representation string.
-
-        >>> import os
-        >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file3.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='iteration')
-        >>> repr(table)
-        '...
-
+            Representation string of the underlying pandas dataframe.
         """
         return repr(self.data)
 
@@ -460,25 +430,24 @@ class Table:
         --------
         1. Merging two tables.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> dirname = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample')
-        >>> odtfile1 = os.path.join(dirname, 'oommf-old-file1.odt')
-        >>> odtfile2 = os.path.join(dirname, 'oommf-old-file2.odt')
-        ...
-        >>> table1 = ut.Table.fromfile(odtfile1, x='t')
-        >>> table2 = ut.Table.fromfile(odtfile2, x='t')
+        >>> table1 = ut.sample_data()
+        >>> table2 = ut.sample_data()
         >>> merged_table = table1 << table2
-        ...
-        >>> table1.xmax / 1e-12  # in picoseconds
-        24.999...
-        >>> table2.xmax / 1e-12  # in picoseconds
-        15.0
-        >>> merged_table.xmax / 1e-12  # in picoseconds
-        39.99...
-
+        >>> table1.xmax
+        3e-09
+        >>> table2.xmax
+        3e-09
+        >>> merged_table.xmax
+        6e-09
+        >>> merged_table
+                      t  mx  my  mz
+        0  1.000000e-09   1   0   0
+        1  2.000000e-09   0   1   0
+        2  3.000000e-09   0   0   1
+        3  4.000000e-09   1   0   0
+        4  5.000000e-09   0   1   0
+        5  6.000000e-09   0   0   1
         """
         if not isinstance(other, self.__class__):
             msg = (
@@ -576,13 +545,8 @@ class Table:
         --------
         1. Visualising time-dependent data.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table = ut.sample_data()
         >>> table.mpl()
 
         """
@@ -663,13 +627,8 @@ class Table:
         -------
         1. Get slider for the independent variable.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table = ut.sample_data()
         >>> table.slider()
         SelectionRangeSlider(...)
 
@@ -724,13 +683,8 @@ class Table:
         -------
         1. Get the widget for selecting data columns.
 
-        >>> import os
         >>> import ubermagtable as ut
-        ...
-        >>> odtfile = os.path.join(os.path.dirname(__file__),
-        ...                        'tests', 'test_sample',
-        ...                        'oommf-old-file1.odt')
-        >>> table = ut.Table.fromfile(odtfile, x='t')
+        >>> table = ut.sample_data()
         >>> table.selector()
         SelectMultiple(...)
 
@@ -752,3 +706,34 @@ class Table:
             disabled=False,
             **kwargs,
         )
+
+
+def sample_data():
+    """Table with sample data.
+
+    Returns
+    -------
+    ubermagtable.Table
+
+        A Table object with sample data with no physical meaning.
+
+    Example
+    -------
+
+    >>> import ubermagtable as ut
+    >>> ut.sample_data()
+                  t  mx  my  mz
+    0  1.000000e-09   1   0   0
+    1  2.000000e-09   0   1   0
+    2  3.000000e-09   0   0   1
+    """
+    data = pd.DataFrame(
+        {
+            "t": [1e-9, 2e-9, 3e-9],
+            "mx": [1, 0, 0],
+            "my": [0, 1, 0],
+            "mz": [0, 0, 1],
+        }
+    )
+    units = {"t": "s", "mx": "", "my": "", "mz": ""}
+    return Table(data, units, x="t")
