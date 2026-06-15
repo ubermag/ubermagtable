@@ -361,7 +361,7 @@ class Table:
         for i in y:
             cols.append(i[3:])  # remove leading 'ft_'
             units[i[3:]] = self.units[i][1:-4]  # remove '()^-1'
-            data[cols[-1]] = np.fft.irfft(self.data[i])
+            data[cols[-1]] = np.fft.irfft(self.data[i], n=self.attributes["realspace_x"][2])
 
         attributes = dict(self.attributes)  # to explicitly copy
         attributes["realspace_x"] = None
