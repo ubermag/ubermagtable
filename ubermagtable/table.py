@@ -331,7 +331,7 @@ class Table:
 
         >>> import ubermagtable as ut
         >>> table = ut.sample_data()
-        >>> ifft_table = table.rfft().irfft()  # doctest: +SKIP
+        >>> ifft_table = table.rfft().irfft()
         ...
 
         """
