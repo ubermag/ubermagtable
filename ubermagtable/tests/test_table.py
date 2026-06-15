@@ -82,13 +82,13 @@ def test_table_units(table_factory, rename):
 
 def test_table_xy(table_llg_factory):
     """Test setting table.x and automatic table.y generation."""
-    table = table_llg_factory(table_kwargs={"x": "t"})
+    table = table_llg_factory(x="t")
     assert table.x == "t"
     assert "mx" in table.y
     assert "t" not in table.y
 
     with pytest.raises(ValueError):
-        table = table_llg_factory(table_kwargs={"x": "wrong"})
+        table = table_llg_factory(x="wrong")
 
 
 def test_table_xmax(table_llg_25ps):
@@ -96,8 +96,8 @@ def test_table_xmax(table_llg_25ps):
 
 
 def test_table_lshift(table_llg_factory):
-    table1 = table_llg_factory(table_kwargs={"x": "t"})
-    table2 = table_llg_factory(table_kwargs={"x": "t"})
+    table1 = table_llg_factory(x="t")
+    table2 = table_llg_factory(x="t")
 
     res = table1 << table2
 
@@ -106,7 +106,7 @@ def test_table_lshift(table_llg_factory):
     assert len(set(res.data[res.x].to_numpy())) == len(table1.data) + len(table2.data)
 
     # Concatenating tables with different independent variables "x" is not possible
-    table3 = table_llg_factory(table_kwargs={"x": "mx"})
+    table3 = table_llg_factory(x="mx")
     with pytest.raises(ValueError):
         res = table1 << table3
 
@@ -165,7 +165,7 @@ def test_table_mpl(table_factory):
 
 
 def test_table_rfft(table_llg_factory):
-    table = table_llg_factory(table_kwargs={"x": "t"})
+    table = table_llg_factory(x="t")
     fft_table = table.rfft()
     fft_table.x = None
     check_table(fft_table)
@@ -173,7 +173,7 @@ def test_table_rfft(table_llg_factory):
 
 # TODO
 def test_table_irfft(table_llg_factory):
-    table = table_llg_factory(table_kwargs={"x": "t"})
+    table = table_llg_factory(x="t")
     fft_table = table.rfft()
     ifft_table = fft_table.irfft()
     ifft_table.x = None  # TODO ASK SAM WHY THIS IS SET TO NONE
