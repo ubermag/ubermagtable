@@ -1,207 +1,107 @@
-import numbers
-import os
-import tempfile
-
-import ipywidgets
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
 
 import ubermagtable as ut
+from ubermagtable.testing.table import *  # noqa: F403
 
-# TODO This file still contains a few assumptions about how data will look like,
-# e.g. we use the strings "t", "mx", "iteration", etc.
-# Think about how to generalise this/move it to some fixtures so that adapters
-# can overwrite it
+# === helper functions for fixtures ===
 
 
-def check_table(table):
-    assert isinstance(table, ut.Table)
-    assert isinstance(table.data, pd.DataFrame)
-    assert isinstance(table.units, dict)
+def _table_energy_minimisation_factory(**kwargs):
+    """Create sample tables for energy minimisation.
 
-    assert isinstance(table.y, list)
-    assert all(isinstance(i, str) for i in table.y)
-
-    assert isinstance(repr(table), str)
-
-    if table.x is not None:
-        assert isinstance(table.x, str)
-        assert table.x in ["t", "iteration", "B"]
-
-        assert isinstance(table.xmax, numbers.Real)
-        assert table.xmax > 0
-
-        res = table << table
-        assert isinstance(res, ut.Table)
-        assert res.xmax == 2 * table.xmax
-
-        assert isinstance(table.slider(), ipywidgets.SelectionRangeSlider)
-        assert isinstance(table.selector(), ipywidgets.SelectMultiple)
-
-
-def test_table_init():
-    """Basic check creating an empty Table."""
-    table = ut.Table(pd.DataFrame(), units={})
-    assert isinstance(table, ut.Table)
-    assert isinstance(table.data, pd.DataFrame)
-
-
-def test_table_attributes(table_factory):
-    """Check conversion of different samples into Table objects.
-
-    Adapter modules should overwrite table_factory to provide real samples.
+    Parameters
+    ----------
+    kwargs
+        Keyword arguments to control the table reading function in the adapter class,
+        e.g. to control column renaming.
     """
-    table = table_factory(rename=False)
-    check_table(table)
 
-    table_short_names = table_factory(rename=True)
-    check_table(table_short_names)
+    def table_from_file(filename, /, x=None, rename=True):
+        # micromagneticdata.plugins.read_table function that adapters need to provide
+        # `rename` has no effect in this implementation
+        data = pd.DataFrame(
+            {"E": 1e-19, "mx": 0, "my": 0, "mz": 1, "iteration": 1}, index=[0]
+        )
+        units = {"E": "J", "mx": "", "my": "", "mz": "", "iteration": ""}
+        if "rename" in kwargs:
+            kwargs.pop("rename")
+        return ut.Table(data, units, x=x)
 
-    assert len(table.data) == len(table_short_names.data)
-    assert len(table.data.columns) == len(table_short_names.data.columns)
-
-
-@pytest.mark.parametrize("rename", [True, False])
-def test_table_columns(table_factory, rename):
-    columns = table_factory(rename=rename).data.columns
-    assert all(isinstance(column, str) for column in columns)
-    assert len(columns) == len(set(columns))  # unique column names
+    return table_from_file("", **kwargs)
 
 
-@pytest.mark.parametrize("rename", [True, False])
-def test_table_units(table_factory, rename):
-    units = table_factory(rename=rename).units
-    assert isinstance(units, dict)
-    assert all(isinstance(unit, str) for unit in units)
-    assert all(isinstance(unit, str) for unit in units.values())
-    assert "J" in units.values()  # Energy is always present
-    assert "" in units.values()  # Columns with no units are always present
+# TODO: setting tmin = 0 breaks the lshift test; is this a real problem or unrealistic
+# data?
+def _table_llg_factory(**kwargs):
+    """Create sample tables for time integration.
+
+    Parameters
+    ----------
+    kwargs
+        Keyword arguments to control the table reading function in the adapter class,
+        e.g. to control column renaming.
+    """
+
+    def table_from_file(filename, /, x=None, rename=True):
+        # micromagneticdata.plugins.read_table function that adapters need to provide
+        # `rename` has no effect in this implementation
+        n = 20
+        ts = np.linspace(1e-9 / n, 1e-9, n)
+        data = pd.DataFrame(
+            {
+                "t": ts,
+                "E": np.linspace(-2e-18, -3e-18, n),
+                "mx": np.sin(ts),
+                "my": np.cos(ts),
+                "mz": np.zeros_like(ts),
+            }
+        )
+        units = {"t": "s", "E": "J", "mx": "", "my": "", "mz": ""}
+        if "rename" in kwargs:
+            kwargs.pop("rename")
+        return ut.Table(data, units, x=x)
+
+    return table_from_file("", **kwargs)
 
 
-def test_table_xy(table_llg_factory):
-    """Test setting table.x and automatic table.y generation."""
-    table = table_llg_factory(x="t")
-    assert table.x == "t"
-    assert "mx" in table.y
-    assert "t" not in table.y
-
-    with pytest.raises(ValueError):
-        table = table_llg_factory(x="wrong")
+# === fixtures for testing.table ===
+#
+# Adapter modules must implement the same set of fixtures. Unsupported tests
+# can be skipped by calling `pytest.skip(...)` in the fixtures.
 
 
-def test_table_xmax(table_llg_25ps):
-    assert abs(table_llg_25ps.xmax - 25e-12) < 1e-15
+@pytest.fixture
+def table_llg_factory():
+    """LLG tables."""
+    return _table_llg_factory
 
 
-def test_table_lshift(table_llg_factory):
-    table1 = table_llg_factory(x="t")
-    table2 = table_llg_factory(x="t")
-
-    res = table1 << table2
-
-    assert res.xmax == table1.xmax + table2.xmax
-    # Are all time values unique?
-    assert len(set(res.data[res.x].to_numpy())) == len(table1.data) + len(table2.data)
-
-    # Concatenating tables with different independent variables "x" is not possible
-    table3 = table_llg_factory(x="mx")
-    with pytest.raises(ValueError):
-        res = table1 << table3
-
-    with pytest.raises(ValueError):
-        res = table3 << table1
-
-    with pytest.raises(TypeError):
-        res = table3 << 5
+@pytest.fixture
+def table_minimisation_factory():
+    return _table_energy_minimisation_factory
 
 
-def test_table_mpl(table_factory):
-    table = table_factory()
-
-    # plotting requires 'x' to be set to a column in the data frame;
-    # we set it to the first column ("t" or "iteration") for the mock data
-    if table.x is None:
-        table.x = list(table.units.keys())[0]
-
-    # No axis
-    table.mpl()
-
-    # Axis
-    fig = plt.figure(figsize=(10, 8))
-    ax = fig.add_subplot(111)
-    table.mpl(ax=ax)
-
-    # figsize
-    table.mpl(figsize=(10, 5))
-
-    # x
-    table.mpl(x="mx")
-
-    # multiplier
-    table.mpl(multiplier=1e-6)
-
-    # yaxis
-    table.mpl(y=["mx", "my"])
-
-    # xlim
-    table.mpl(xlim=(0, 20e-12))
-
-    # kwargs
-    table.mpl(marker="o")
-
-    # filename
-    filename = "table-plot.pdf"
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmpfilename = os.path.join(tmpdir, filename)
-        table.mpl(filename=tmpfilename)
-
-    # Exception - invalid column name
-    with pytest.raises(ValueError):
-        table.mpl(x="wrong")
-
-    plt.close("all")
+@pytest.fixture
+def table_hysteresis_factory():
+    pytest.skip("Hysteresis not implemented.")
 
 
-def test_table_rfft(table_llg_factory):
-    table = table_llg_factory(x="t")
-    fft_table = table.rfft()
-    fft_table.x = None
-    check_table(fft_table)
+@pytest.fixture(params=[_table_energy_minimisation_factory, _table_llg_factory])
+def table_factory(request):
+    """Energy minimisation or LLG tables."""
+    return request.param
 
 
-# TODO
-def test_table_irfft(table_llg_factory):
-    table = table_llg_factory(x="t")
-    fft_table = table.rfft()
-    ifft_table = fft_table.irfft()
-    ifft_table.x = None  # TODO ASK SAM WHY THIS IS SET TO NONE
-    check_table(ifft_table)
-    assert np.allclose(ifft_table.data["t"].values, table.data["t"].values)
-    for y in ifft_table.y:
-        assert np.allclose(ifft_table.data[y].values, table.data[y].values)
-
-
-# TODO: how do we best deal with this?
-@pytest.mark.skip
-def test_table_slider(self):
-    # Exception
-    table = ut.Table.fromfile(self.odtfiles[0], x="t")
-    assert isinstance(table.slider(x="t"), ipywidgets.SelectionRangeSlider)
-    table = ut.Table.fromfile(self.odtfiles[-5], x="B_hysteresis")
-    assert isinstance(table.slider(x="B_hysteresis"), ipywidgets.SelectionRangeSlider)
-    with pytest.raises(ValueError):
-        table.slider(x="wrong")
-
-
-# TODO: how do we best deal with this?
-@pytest.mark.skip
-def test_table_selector(self):
-    table = ut.Table.fromfile(self.odtfiles[0], x="t")
-    assert isinstance(table.selector(x="t"), ipywidgets.SelectMultiple)
-    table = ut.Table.fromfile(self.odtfiles[-4], x="iteration")
-    assert isinstance(table.selector(), ipywidgets.SelectMultiple)
-    # Exception
-    with pytest.raises(ValueError):
-        table.selector(x="wrong")
+@pytest.fixture
+def table_llg_25ps():
+    """LLG data with tmax=25ps."""
+    data = pd.DataFrame(
+        {
+            "t": [25e-12],
+            "mx": [1],
+        }
+    )
+    units = {"t": "s", "mx": ""}
+    return ut.Table(data, units, x="t")
