@@ -1,6 +1,6 @@
 """
 This module provides tests for the Table class, that plugins should reuse. The tests
-depend on a number of fixtures, whic plugins need to implement.
+depend on a number of fixtures, which plugins need to implement.
 
 The file tests/test_table.py contains a reference implementation of the fixtures using
 mock data.
@@ -189,27 +189,3 @@ def test_table_irfft(table_llg_factory):
     assert np.allclose(ifft_table.data["t"].values, table.data["t"].values)
     for y in ifft_table.y:
         assert np.allclose(ifft_table.data[y].values, table.data[y].values)
-
-
-# TODO: how do we best deal with this?
-@pytest.mark.skip
-def test_table_slider(self):
-    # Exception
-    table = ut.Table.fromfile(self.odtfiles[0], x="t")
-    assert isinstance(table.slider(x="t"), ipywidgets.SelectionRangeSlider)
-    table = ut.Table.fromfile(self.odtfiles[-5], x="B_hysteresis")
-    assert isinstance(table.slider(x="B_hysteresis"), ipywidgets.SelectionRangeSlider)
-    with pytest.raises(ValueError):
-        table.slider(x="wrong")
-
-
-# TODO: how do we best deal with this?
-@pytest.mark.skip
-def test_table_selector(self):
-    table = ut.Table.fromfile(self.odtfiles[0], x="t")
-    assert isinstance(table.selector(x="t"), ipywidgets.SelectMultiple)
-    table = ut.Table.fromfile(self.odtfiles[-4], x="iteration")
-    assert isinstance(table.selector(), ipywidgets.SelectMultiple)
-    # Exception
-    with pytest.raises(ValueError):
-        table.selector(x="wrong")

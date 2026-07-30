@@ -25,8 +25,6 @@ def _table_energy_minimisation_factory(**kwargs):
             {"E": 1e-19, "mx": 0, "my": 0, "mz": 1, "iteration": 1}, index=[0]
         )
         units = {"E": "J", "mx": "", "my": "", "mz": "", "iteration": ""}
-        if "rename" in kwargs:
-            kwargs.pop("rename")
         return ut.Table(data, units, x=x)
 
     return table_from_file("", **kwargs)
@@ -59,8 +57,6 @@ def _table_llg_factory(**kwargs):
             }
         )
         units = {"t": "s", "E": "J", "mx": "", "my": "", "mz": ""}
-        if "rename" in kwargs:
-            kwargs.pop("rename")
         return ut.Table(data, units, x=x)
 
     return table_from_file("", **kwargs)
