@@ -210,10 +210,14 @@ class Table:
 
         Examples
         --------
-        1. Applying absolute function to data.
+        1. Reversing the sign of all dependent columns
 
         >>> import ubermagtable as ut
         >>> table = ut.sample_data()
+        >>> table
+        0  1.000000e-09   1   0   0
+        1  2.000000e-09   0   1   0
+        2  3.000000e-09   0   0   1
         >>> new_table = table.apply(lambda x: -x)
         >>> new_table
                       t  mx  my  mz
@@ -419,7 +423,15 @@ class Table:
 
         >>> import ubermagtable as ut
         >>> table1 = ut.sample_data()
+        >>> table1
+        0  1.000000e-09   1   0   0
+        1  2.000000e-09   0   1   0
+        2  3.000000e-09   0   0   1
         >>> table2 = ut.sample_data()
+        >>> table2
+        0  1.000000e-09   1   0   0
+        1  2.000000e-09   0   1   0
+        2  3.000000e-09   0   0   1
         >>> merged_table = table1 << table2
         >>> table1.xmax
         3e-09
