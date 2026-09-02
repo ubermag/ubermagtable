@@ -10,14 +10,8 @@ def interact(**kwargs):
     -------
     1. Interactive plotting.
 
-    >>> import os
     >>> import ubermagtable as ut
-    ...
-    >>> dirname = os.path.join(os.path.dirname(__file__),
-    ...                        'tests', 'test_sample')
-    >>> odtfile = os.path.join(dirname, 'oommf-old-file1.odt')
-    ...
-    >>> table = ut.Table.fromfile(odtfile, x='t')
+    >>> table = ut.sample_data()
     >>> @ut.interact(xlim=table.slider())  # doctest: +SKIP
     ... def myplot(xlim):
     ...     field.mpl(xlim=xlim)

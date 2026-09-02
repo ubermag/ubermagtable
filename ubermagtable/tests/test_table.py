@@ -1,199 +1,103 @@
-import numbers
-import os
-import tempfile
-
-import ipywidgets
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
 
 import ubermagtable as ut
+from ubermagtable.testing.table import *  # noqa: F403
+
+# === helper functions for fixtures ===
 
 
-def check_table(table):
-    assert isinstance(table, ut.Table)
-    assert isinstance(table.data, pd.DataFrame)
-    assert isinstance(table.units, dict)
+def _table_energy_minimisation_factory(**kwargs):
+    """Create sample tables for energy minimisation.
 
-    assert isinstance(table.y, list)
-    assert all(isinstance(i, str) for i in table.y)
+    Parameters
+    ----------
+    kwargs
+        Keyword arguments to control the table reading function in the adapter class,
+        e.g. to control column renaming.
+    """
 
-    assert isinstance(repr(table), str)
-
-    if table.x is not None:
-        assert isinstance(table.x, str)
-        assert table.x in ["t", "iteration", "B", None]
-
-        assert isinstance(table.xmax, numbers.Real)
-        assert table.xmax > 0
-
-        res = table << table
-        assert isinstance(res, ut.Table)
-        assert res.xmax == 2 * table.xmax
-
-        assert isinstance(table.slider(), ipywidgets.SelectionRangeSlider)
-        assert isinstance(table.selector(), ipywidgets.SelectMultiple)
-
-
-class TestTable:
-    def setup_method(self):
-        dirname = os.path.join(os.path.dirname(__file__), "test_sample/")
-        filenames = [
-            "oommf-old-file1.odt",
-            "oommf-old-file2.odt",
-            "oommf-old-file3.odt",
-            "oommf-old-file4.odt",
-            "oommf-old-file5.odt",
-            "oommf-old-file6.odt",
-            "oommf-old-file7.odt",
-            "oommf-old-file8.odt",
-            "oommf-new-file1.odt",
-            "oommf-new-file2.odt",
-            "oommf-new-file3.odt",
-            "oommf-new-file4.odt",
-            "oommf-new-file5.odt",
-            "oommf-hysteresis1.odt",
-            "oommf-minsteps.odt",
-            "mumax3-file1.txt",
-            "oommf-mel-file.odt",
-            "oommf-issue1.odt",
-        ]
-
-        self.odtfiles = [os.path.join(dirname, f) for f in filenames]
-
-    def test_init(self):
-        table = ut.Table(pd.DataFrame(), units={})
-        assert isinstance(table, ut.Table)
-        assert isinstance(table.data, pd.DataFrame)
-
-    def test_fromfile(self):
-        for odtfile in self.odtfiles:
-            for _rename in [True, False]:
-                table = ut.Table.fromfile(odtfile)
-                check_table(table)
-
-    def test_xy(self):
-        table = ut.Table.fromfile(self.odtfiles[0], x="t")
-        assert table.x == "t"
-        assert "mx" in table.y
-
-        with pytest.raises(ValueError):
-            table = ut.Table.fromfile(self.odtfiles[0], x="wrong")
-
-    def test_xmax(self):
-        table = ut.Table.fromfile(self.odtfiles[0], x="t")
-        assert abs(table.xmax - 25e-12) < 1e-15
-
-    def test_lshift(self):
-        table1 = ut.Table.fromfile(self.odtfiles[0], x="t")
-        table2 = ut.Table.fromfile(self.odtfiles[1], x="t")
-
-        res = table1 << table2
-
-        assert res.xmax == table1.xmax + table2.xmax
-        # Are all time values unique?
-        assert len(set(res.data[res.x].to_numpy())) == 40
-
-        # Exception
-        table3 = ut.Table.fromfile(self.odtfiles[2], x="iteration")
-        with pytest.raises(ValueError):
-            res = table1 << table3
-
-        with pytest.raises(ValueError):
-            res = table3 << table1
-
-        with pytest.raises(TypeError):
-            res = table3 << 5
-
-    def test_mpl(self):
-        table = ut.Table.fromfile(self.odtfiles[0], x="t")
-
-        # No axis
-        table.mpl()
-
-        # Axis
-        fig = plt.figure(figsize=(10, 8))
-        ax = fig.add_subplot(111)
-        table.mpl(ax=ax)
-
-        # figsize
-        table.mpl(figsize=(10, 5))
-
-        # x
-        table.mpl(x="mx")
-
-        # multiplier
-        table.mpl(multiplier=1e-6)
-
-        # yaxis
-        table.mpl(y=["E", "mx"])
-
-        # xlim
-        table.mpl(xlim=(0, 20e-12))
-
-        # kwargs
-        table.mpl(marker="o")
-
-        # filename
-        filename = "table-plot.pdf"
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmpfilename = os.path.join(tmpdir, filename)
-            table.mpl(filename=tmpfilename)
-
-        # Exception - no time column
-        table = ut.Table.fromfile(self.odtfiles[2])
-        with pytest.raises(ValueError):
-            table.mpl(x="t")
-
-        # Hysteresis plot
-        table = ut.Table.fromfile(self.odtfiles[-5], x="B_hysteresis")
-        table.mpl()
-
-        plt.close("all")
-
-    def test_slider(self):
-        # Exception
-        table = ut.Table.fromfile(self.odtfiles[0], x="t")
-        assert isinstance(table.slider(x="t"), ipywidgets.SelectionRangeSlider)
-        table = ut.Table.fromfile(self.odtfiles[-5], x="B_hysteresis")
-        assert isinstance(
-            table.slider(x="B_hysteresis"), ipywidgets.SelectionRangeSlider
+    def table_from_file(filename, /, x=None, rename=True):
+        # micromagneticdata.plugins.read_table function that adapters need to provide
+        # `rename` has no effect in this implementation
+        data = pd.DataFrame(
+            {"E": 1e-19, "mx": 0, "my": 0, "mz": 1, "iteration": 1}, index=[0]
         )
-        with pytest.raises(ValueError):
-            table.slider(x="wrong")
+        units = {"E": "J", "mx": "", "my": "", "mz": "", "iteration": ""}
+        return ut.Table(data, units, x=x)
 
-    def test_selector(self):
-        table = ut.Table.fromfile(self.odtfiles[0], x="t")
-        assert isinstance(table.selector(x="t"), ipywidgets.SelectMultiple)
-        table = ut.Table.fromfile(self.odtfiles[-4], x="iteration")
-        assert isinstance(table.selector(), ipywidgets.SelectMultiple)
-        # Exception
-        with pytest.raises(ValueError):
-            table.selector(x="wrong")
+    return table_from_file("", **kwargs)
 
-    def test_oommf_mel(self):
-        table = ut.Table.fromfile(self.odtfiles[-2])
-        columns = table.data.columns.to_list()
-        assert len(columns) == 16
 
-    def test_oommf_issue1(self):
-        table = ut.Table.fromfile(self.odtfiles[-1])
-        columns = table.data.columns.to_list()
-        assert len(columns) == 30
+# TODO: setting tmin = 0 breaks the lshift test; is this a real problem or unrealistic
+# data?
+def _table_llg_factory(**kwargs):
+    """Create sample tables for time integration.
 
-    def test_rfft(self):
-        table = ut.Table.fromfile(self.odtfiles[12], x="t")
-        fft_table = table.rfft()
-        fft_table.x = None
-        check_table(fft_table)
+    Parameters
+    ----------
+    kwargs
+        Keyword arguments to control the table reading function in the adapter class,
+        e.g. to control column renaming.
+    """
 
-    def test_irfft(self):
-        table = ut.Table.fromfile(self.odtfiles[12], x="t")
-        fft_table = table.rfft()
-        ifft_table = fft_table.irfft()
-        ifft_table.x = None
-        check_table(ifft_table)
-        assert np.allclose(ifft_table.data["t"].values, table.data["t"].values)
-        for y in ifft_table.y:
-            assert np.allclose(ifft_table.data[y].values, table.data[y].values)
+    def table_from_file(filename, /, x=None, rename=True):
+        # micromagneticdata.plugins.read_table function that adapters need to provide
+        # `rename` has no effect in this implementation
+        n = 20
+        ts = np.linspace(1e-9 / n, 1e-9, n)
+        data = pd.DataFrame(
+            {
+                "t": ts,
+                "E": np.linspace(-2e-18, -3e-18, n),
+                "mx": np.sin(ts),
+                "my": np.cos(ts),
+                "mz": np.zeros_like(ts),
+            }
+        )
+        units = {"t": "s", "E": "J", "mx": "", "my": "", "mz": ""}
+        return ut.Table(data, units, x=x)
+
+    return table_from_file("", **kwargs)
+
+
+# === fixtures for testing.table ===
+#
+# Adapter modules must implement the same set of fixtures. Unsupported tests
+# can be skipped by calling `pytest.skip(...)` in the fixtures.
+
+
+@pytest.fixture
+def table_llg_factory():
+    """LLG tables."""
+    return _table_llg_factory
+
+
+@pytest.fixture
+def table_minimisation_factory():
+    return _table_energy_minimisation_factory
+
+
+@pytest.fixture
+def table_hysteresis_factory():
+    pytest.skip("Hysteresis not implemented.")
+
+
+@pytest.fixture(params=[_table_energy_minimisation_factory, _table_llg_factory])
+def table_factory(request):
+    """Energy minimisation or LLG tables."""
+    return request.param
+
+
+@pytest.fixture
+def table_llg_25ps():
+    """LLG data with tmax=25ps."""
+    data = pd.DataFrame(
+        {
+            "t": [25e-12],
+            "mx": [1],
+        }
+    )
+    units = {"t": "s", "mx": ""}
+    return ut.Table(data, units, x="t")

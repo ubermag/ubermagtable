@@ -8,6 +8,7 @@ import pytest
 
 from .interact import interact as interact
 from .table import Table as Table
+from .table import sample_data as sample_data
 
 # Enable default plotting style.
 dirname = os.path.abspath(os.path.dirname(__file__))
