@@ -12,14 +12,6 @@ on:
 
 env:
   PYTEST_ADDOPTS: "--color=yes"
-  # Force the non-interactive Agg backend everywhere. Linux/macOS CI runners
-  # have no display and matplotlib already falls back to Agg there, but on
-  # Windows it picks the interactive TkAgg backend, which creates a new
-  # tk.Tk() interpreter per figure and intermittently fails to load init.tcl
-  # from the freshly-installed conda env (race with antivirus/file
-  # materialization). Pinning Agg avoids Tk/Tcl entirely and keeps behaviour
-  # identical across platforms.
-  MPLBACKEND: "Agg"
 
 jobs:
   tests:
@@ -43,14 +35,30 @@ jobs:
         environment-file: .github/environment.yml
     - name: Install package
       run: python -m pip install .[dev]
+    # Force the non-interactive Agg backend for the plain-pytest steps below.
+    # Linux/macOS CI runners have no display and matplotlib already falls
+    # back to Agg there, but on Windows it picks the interactive TkAgg
+    # backend, which creates a new tk.Tk() interpreter per figure and
+    # intermittently fails to load init.tcl from the freshly-installed conda
+    # env (race with antivirus/file materialization). Pinning Agg avoids
+    # Tk/Tcl entirely and keeps behaviour identical across platforms.
+    # This must NOT be set for the notebook-test step: ipykernel only
+    # auto-activates the headless "inline" backend (which handles figure
+    # display/capture for nbval) when MPLBACKEND is unset.
     - name: Unit tests
       run: invoke test.unittest
       if: matrix.os != 'ubuntu-latest'
+      env:
+        MPLBACKEND: "Agg"
     - name: Unit tests with coverage
       run: invoke test.coverage
       if: matrix.os == 'ubuntu-latest'
+      env:
+        MPLBACKEND: "Agg"
     - name: Documentation tests
       run: invoke test.docs
+      env:
+        MPLBACKEND: "Agg"
     - name: Jupyter notebook tests
       run: invoke test.ipynb
     - name: Upload coverage to Codecov.io
