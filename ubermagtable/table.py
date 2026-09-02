@@ -215,6 +215,7 @@ class Table:
         >>> import ubermagtable as ut
         >>> table = ut.sample_data()
         >>> table
+                      t  mx  my  mz
         0  1.000000e-09   1   0   0
         1  2.000000e-09   0   1   0
         2  3.000000e-09   0   0   1
