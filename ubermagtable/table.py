@@ -424,11 +424,13 @@ class Table:
         >>> import ubermagtable as ut
         >>> table1 = ut.sample_data()
         >>> table1
+                      t  mx  my  mz
         0  1.000000e-09   1   0   0
         1  2.000000e-09   0   1   0
         2  3.000000e-09   0   0   1
         >>> table2 = ut.sample_data()
         >>> table2
+                      t  mx  my  mz
         0  1.000000e-09   1   0   0
         1  2.000000e-09   0   1   0
         2  3.000000e-09   0   0   1
