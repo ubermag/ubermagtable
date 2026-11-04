@@ -1,19 +1,12 @@
 """Manipulation of tabular data."""
 
 import importlib.metadata
-import os
 
-import matplotlib.pyplot as plt
 import pytest
 
 from .interact import interact as interact
 from .table import Table as Table
 from .table import sample_data as sample_data
-
-# Enable default plotting style.
-dirname = os.path.abspath(os.path.dirname(__file__))
-path = os.path.join(dirname, "util", "plotting-style.mplstyle")
-plt.style.use(path)
 
 __version__ = importlib.metadata.version(__package__)
 
